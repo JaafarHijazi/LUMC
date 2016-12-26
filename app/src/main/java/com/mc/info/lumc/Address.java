@@ -3,7 +3,7 @@ package com.mc.info.lumc;
 /**
  * Created by BurgerMan on 12/9/2016.
  */
-
+//Rania 7adret jaleltek
 public class Address {
     private String city,
             street,
