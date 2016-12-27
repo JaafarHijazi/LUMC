@@ -27,7 +27,7 @@ public class Doctor extends Person {
     public String getSpecialty() {
         return specialty;
     }
-
+//burger
     public void setSpecialty(String specialty) {
         this.specialty = specialty;
     }
