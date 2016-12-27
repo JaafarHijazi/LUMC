@@ -6,6 +6,8 @@ import java.util.HashMap;
  * Created by BurgerMan on 12/9/2016.
  */
 
+//Burger
+
 public class Doctor extends Person {
     private String specialty;
     private int experienceYears;
