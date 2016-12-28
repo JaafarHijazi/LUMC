@@ -22,29 +22,30 @@ public class ListPatients extends AppCompatActivity {
     private ArrayList<HashMap<String, String>> data = new ArrayList<>();
     private SimpleAdapter adapter;
     private SearchView sv;
-
+    private PatientListAdapter adapter1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_patients);
         sv= (SearchView) findViewById(R.id.activity_list_patients_search);
-
-
-
-
         patients = dbHandler.getAllPatients();
+        adapter1 = new PatientListAdapter(this,patients);
+
+
+       /*
 
         for (int i = 0; i < patients.size(); i++) {
             data.add(patients.get(i).toHashMap());
         }
 
 
-        String[] hash = {MyDatabaseHandler.COLUMN_FIRST_NAME, MyDatabaseHandler.COLUMN_LAST_NAME};
+         String[] hash = {MyDatabaseHandler.COLUMN_FIRST_NAME, MyDatabaseHandler.COLUMN_LAST_NAME};
         int[] toViewIDs = {R.id.list_item_patient_firstName, R.id.list_item_patient_lastName};
         adapter = new SimpleAdapter(this, data, R.layout.list_patients_item, hash, toViewIDs);
+        */
         lv = (ListView) findViewById(R.id.activity_list_patients_patientList);
-        lv.setAdapter(adapter);
+        lv.setAdapter(adapter1);
 
 
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -65,20 +66,20 @@ public class ListPatients extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String str = adapter.getItem(i).toString();
+               /* String str = adapter1.getItem(i).toString();
                 Patient p;
                 int index=str.lastIndexOf(MyDatabaseHandler.COLUMN_ID+"=");
                 int last=str.indexOf(",",index);
                 if (last == -1){
                     last=str.indexOf("}",index);
                 }
-                String idString = str.substring(index+MyDatabaseHandler.COLUMN_ID.length()+1,last);
-                p = dbHandler.getPatientById(Integer.parseInt(idString));
-                if(idString.equals(String.valueOf( p.getId()))){
+                String idString = str.substring(index+MyDatabaseHandler.COLUMN_ID.length()+1,last);*/
+                Patient p = adapter1.getItem(i);
+
                     Intent j = new Intent(ListPatients.this, PatientInfo.class);
                     j.putExtra("take",p.getId());
                     startActivity(j);
-                }
+
             }
         });
     }
@@ -96,17 +97,16 @@ public class ListPatients extends AppCompatActivity {
             patients = dbHandler.sortPatientsBy(MyDatabaseHandler.COLUMN_FIRST_NAME);
         else if(item.getItemId() == R.id.menu_list_patients_ByLastName)
             patients = dbHandler.sortPatientsBy(MyDatabaseHandler.COLUMN_LAST_NAME);
-        data = new ArrayList<>();
-        for (Patient p1 : patients) {
-            data.add(p1.toHashMap());
-        }
 
-        String[] hash = {MyDatabaseHandler.COLUMN_FIRST_NAME, MyDatabaseHandler.COLUMN_LAST_NAME};
-        int[] toViewIds = {R.id.list_item_patient_firstName, R.id.list_item_patient_lastName};
-        adapter = new SimpleAdapter(this, data, R.layout.list_patients_item, hash, toViewIds);
+
+        adapter1 = new PatientListAdapter(this,patients);
+
+
+
         lv = (ListView) findViewById(R.id.activity_list_patients_patientList);
-        lv.setAdapter(adapter);
+        lv.setAdapter(adapter1);
         return true;
+
     }
 
 }
