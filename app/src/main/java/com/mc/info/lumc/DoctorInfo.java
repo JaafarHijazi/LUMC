@@ -3,18 +3,29 @@ package com.mc.info.lumc;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class DoctorInfo extends AppCompatActivity {
+public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private int index;
-    private MyDatabaseHandler dbHandler = new MyDatabaseHandler(this,null,null,1);
+    private DBHandler dbHandler = new DBHandler(this,null,null,1);
     private TextView txt,call;
+
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,5 +78,54 @@ public class DoctorInfo extends AppCompatActivity {
             });
 
         }
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.doctor_info_drawer);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout,R.string.open,R.string.close);
+
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.main_nav) ;
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item){
+                unCheckAllMenuItems(navigationView);
+                item.setChecked(true);
+                if(item.getItemId()==R.id.drwrViewDoctors)
+                    startActivity(new Intent(DoctorInfo.this, ListDoctors.class));
+                else if(item.getItemId()==R.id.drwrViewPatients)
+                    startActivity(new Intent(DoctorInfo.this, ListPatients.class));
+                return true;
+            }
+        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void unCheckAllMenuItems(NavigationView navigationView) {
+        final Menu menu = navigationView.getMenu();
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            if (item.hasSubMenu()) {
+                SubMenu subMenu = item.getSubMenu();
+                for (int j = 0; j < subMenu.size(); j++) {
+                    MenuItem subMenuItem = subMenu.getItem(j);
+                    subMenuItem.setChecked(false);
+                }
+            } else {
+                item.setChecked(false);
+            }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(toggle.onOptionsItemSelected(item))
+            return true;
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
     }
 }

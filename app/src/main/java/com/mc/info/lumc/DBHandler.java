@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by BurgerMan on 12/9/2016.
  */
 
-public class MyDatabaseHandler extends SQLiteOpenHelper {
+public class DBHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION=1;
     private static final String DATABASE_NAME="MedicalCenter.db";
@@ -32,7 +32,7 @@ public class MyDatabaseHandler extends SQLiteOpenHelper {
 
 
 
-    public MyDatabaseHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 
