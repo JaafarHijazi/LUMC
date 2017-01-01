@@ -5,7 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -224,4 +230,59 @@ public class DBHandler extends SQLiteOpenHelper {
         return results;
     }
 
+    public JSONObject getResults(Context context)
+    {
+
+        String myPath = DATABASE_NAME;// Set path to your database
+
+        String[] myTables =new String[]{TABLE_DOCTOR,TABLE_PATIENT};//Set name of your table
+
+//or you can use `context.getDatabasePath("my_db_test.db")`
+        JSONObject db=new JSONObject();
+
+        SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(context.getDatabasePath(myPath).getPath(), null, SQLiteDatabase.OPEN_READONLY);
+        for(String myTable:myTables){
+            String searchQuery = "SELECT  * FROM " + myTable;
+            Cursor cursor = myDataBase.rawQuery(searchQuery, null);
+
+            JSONObject resultSet = new JSONObject();
+
+            cursor.moveToFirst();
+            while (cursor.isAfterLast() == false) {
+
+                int totalColumn = cursor.getColumnCount();
+                JSONObject rowObject = new JSONObject();
+
+                for (int i = 0; i < totalColumn; i++) {
+                    if (cursor.getColumnName(i) != null) {
+                        if (!cursor.getColumnName(i).equals(COLUMN_ID))
+                            try {
+                                if (cursor.getString(i) != null) {
+                                    Log.d("TAG_NAME", cursor.getString(i));
+                                    rowObject.put(cursor.getColumnName(i), cursor.getString(i));
+                                } else {
+                                    rowObject.put(cursor.getColumnName(i), "");
+                                }
+                            } catch (Exception e) {
+                                Log.d("TAG_NAME", e.getMessage());
+                            }
+                    }
+                }
+                try {
+                    resultSet.put(cursor.getString(cursor.getColumnIndex(COLUMN_ID)), rowObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                cursor.moveToNext();
+            }
+            cursor.close();
+            Log.d("TAG_NAME", resultSet.toString());
+            try {
+                db.put(myTable,resultSet);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return db;
+    }
 }

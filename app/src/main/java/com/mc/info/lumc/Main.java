@@ -2,6 +2,7 @@ package com.mc.info.lumc;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -11,6 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -22,6 +30,17 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //for creating a json file of database tables
+        /*DBHandler dbHandler=new DBHandler(this,null,null,1);
+        JSONObject db=dbHandler.getResults(this);
+        try {
+            FileOutputStream stream=new FileOutputStream(new File(Environment.getExternalStorageDirectory(),"output.json"));
+            stream.write(db.toString().getBytes());
+            stream.flush();
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
         /*DBHandler dbHandler = new DBHandler(this,null,null,1);
 
         String[][] doctors = {
