@@ -6,6 +6,8 @@ import java.util.HashMap;
  * Created by BurgerMan on 12/9/2016.
  */
 
+//Burger
+
 public class Doctor extends Person {
     private String specialty;
     private int experienceYears;
@@ -25,7 +27,7 @@ public class Doctor extends Person {
     public String getSpecialty() {
         return specialty;
     }
-
+//burger
     public void setSpecialty(String specialty) {
         this.specialty = specialty;
     }
@@ -40,10 +42,10 @@ public class Doctor extends Person {
 
     public HashMap<String,String> toHashMap(){
         HashMap<String,String> returnValue = new HashMap<>();
-        returnValue.put(MyDatabaseHandler.COLUMN_FIRST_NAME,getFirstName());
-        returnValue.put(MyDatabaseHandler.COLUMN_LAST_NAME,getLastName());
-        returnValue.put(MyDatabaseHandler.COLUMN_SPECIALTY,getSpecialty());
-        returnValue.put(MyDatabaseHandler.COLUMN_ID,String.valueOf(getId()));
+        returnValue.put(DBHandler.COLUMN_FIRST_NAME,getFirstName());
+        returnValue.put(DBHandler.COLUMN_LAST_NAME,getLastName());
+        returnValue.put(DBHandler.COLUMN_SPECIALTY,getSpecialty());
+        returnValue.put(DBHandler.COLUMN_ID,String.valueOf(getId()));
         return returnValue;
     }
 }

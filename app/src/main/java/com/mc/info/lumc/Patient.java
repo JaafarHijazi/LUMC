@@ -18,9 +18,10 @@ public class Patient extends Person {
 
     public HashMap<String,String> toHashMap(){
         HashMap<String,String> returnValue = new HashMap<>();
-        returnValue.put(MyDatabaseHandler.COLUMN_FIRST_NAME,getFirstName());
-        returnValue.put(MyDatabaseHandler.COLUMN_LAST_NAME,getLastName());
-        returnValue.put(MyDatabaseHandler.COLUMN_ID,String.valueOf(getId()));
+        returnValue.put(DBHandler.COLUMN_FIRST_NAME,getFirstName());
+        returnValue.put(DBHandler.COLUMN_LAST_NAME,getLastName());
+        returnValue.put(DBHandler.COLUMN_ID,String.valueOf(getId()));
         return returnValue;
     }
 }
+///

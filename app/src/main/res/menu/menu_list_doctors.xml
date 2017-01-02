@@ -2,14 +2,19 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:title="By First Name"
-        android:id="@+id/menu_list_doctors_ByFirstName" />
+   <group
+       android:checkableBehavior="single">
+       <item
+           android:title="By First Name"
+           android:id="@+id/menu_list_doctors_ByFirstName"
+           android:checked="true"/>
 
-    <item
-        android:title="By Last Name"
-        android:id="@+id/menu_list_doctors_ByLastName" />
-    <item
-        android:title="By Specialty"
-        android:id="@+id/menu_list_doctors_BySpecialty" />
+       <item
+           android:title="By Last Name"
+           android:id="@+id/menu_list_doctors_ByLastName"
+           />
+       <item
+           android:title="By Specialty"
+           android:id="@+id/menu_list_doctors_BySpecialty" />
+   </group>
 </menu>
