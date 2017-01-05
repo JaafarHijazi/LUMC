@@ -1,10 +1,12 @@
 package com.mc.info.lumc;
 
+import java.io.Serializable;
+
 /**
  * Created by BurgerMan on 12/9/2016.
  */
 
-public class Address {
+public class Address implements Serializable{
     private String city,
             street,
             building;

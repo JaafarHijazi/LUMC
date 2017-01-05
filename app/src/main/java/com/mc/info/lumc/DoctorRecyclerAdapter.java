@@ -49,7 +49,7 @@ public class DoctorRecyclerAdapter extends RecyclerView.Adapter<DoctorRecyclerAd
                 Doctor d = filteredDoctors.get(position);
 
                 Intent intent = new Intent(holder.cardView.getContext(), DoctorInfo.class);
-                intent.putExtra("take",d.getId());
+                intent.putExtra("take",d);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 holder.cardView.getContext().startActivity(intent);
             }

@@ -1,6 +1,7 @@
 package com.mc.info.lumc;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -19,13 +20,13 @@ import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ListPatients extends AppCompatActivity {
     private DBHandler dbHandler = new DBHandler(this, null, null, 1);
     private Menu menu;
     private RecyclerView recyclerView;
-    private ArrayList<Patient> patients;
-    private ArrayList<HashMap<String, String>> data = new ArrayList<>();
+    private List<Patient> patients;
 //    private SimpleAdapter adapter;
     private SearchView sv;
 
@@ -42,7 +43,6 @@ public class ListPatients extends AppCompatActivity {
 
 
 
-        patients = dbHandler.getAllPatients();
 
 //        for (int i = 0; i < filteredPatients.size(); i++) {
 //            data.add(filteredPatients.get(i).toHashMap());
@@ -50,8 +50,27 @@ public class ListPatients extends AppCompatActivity {
 
         recyclerView= (RecyclerView) findViewById(R.id.activity_list_patients_patientList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter=new PatientRecyclerAdapter(patients);
-        recyclerView.setAdapter(adapter);
+        new AsyncTask<Void,Void,List<Patient>>(){
+            @Override
+            protected List<Patient> doInBackground(Void... params) {
+                while (!dbHandler.isDataReady())
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                return dbHandler.getPatients();
+            }
+
+            @Override
+            protected void onPostExecute(List<Patient> patients) {
+                ListPatients.this.patients=patients;
+                adapter=new PatientRecyclerAdapter(patients);
+                recyclerView.setAdapter(adapter);
+            }
+        }.execute();
+
 
 /*
 
@@ -72,6 +91,7 @@ public class ListPatients extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if(adapter!=null)
                 adapter.getFilter().filter(newText);
                 return false;
             }

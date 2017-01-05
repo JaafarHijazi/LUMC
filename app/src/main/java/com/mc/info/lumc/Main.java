@@ -8,10 +8,15 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONObject;
 
@@ -20,16 +25,71 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import studios.codelight.smartloginlibrary.SmartCustomLoginListener;
+import studios.codelight.smartloginlibrary.SmartLoginBuilder;
+import studios.codelight.smartloginlibrary.SmartLoginConfig;
+import studios.codelight.smartloginlibrary.users.SmartFacebookUser;
+import studios.codelight.smartloginlibrary.users.SmartGoogleUser;
+import studios.codelight.smartloginlibrary.users.SmartUser;
+
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
-
+    CircleImageView profile;
+    TextView username;
+    TextView email;
+    Button loginButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        navigationView = (NavigationView) findViewById(R.id.main_nav) ;
+        View header=navigationView.getHeaderView(0);
+        profile = (CircleImageView) header.findViewById(R.id.login_header_profile);
+        username = (TextView) header.findViewById(R.id.login_header_username);
+        email = (TextView) header.findViewById(R.id.login_header_email);
+        loginButton= (Button) header.findViewById(R.id.login_header_button);
+
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SmartLoginBuilder loginBuilder = new SmartLoginBuilder();
+                Intent intent = loginBuilder.with(getApplicationContext())
+                        .setAppLogo(R.mipmap.ic_launcher)
+                        .isFacebookLoginEnabled(false)
+                        //.isFacebookLoginEnabled(true).withFacebookAppId("APP_ID")
+                       // .withFacebookPermissions(PERMISSIONS)
+                        .isCustomLoginEnabled(true)
+                        .setSmartCustomLoginHelper(new SmartCustomLoginListener() {
+                            @Override
+                            public boolean customSignin(SmartUser smartUser) {
+                                //TODO
+                                smartUser.setBirthday("1/1/1993");
+                                return true;
+                            }
+
+                            @Override
+                            public boolean customSignup(SmartUser smartUser) {
+                                //TODO
+                                return false;
+                            }
+
+                            @Override
+                            public boolean customUserSignout(SmartUser smartUser) {
+                                //TODO
+                                return false;
+                            }
+                        })
+                        .isGoogleLoginEnabled(true)
+                        .build();
+                startActivityForResult(intent, SmartLoginConfig.LOGIN_REQUEST);
+            }
+        });
         //for creating a json file of database tables
         /*DBHandler dbHandler=new DBHandler(this,null,null,1);
         JSONObject db=dbHandler.getResults(this);
@@ -479,7 +539,6 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.main_nav) ;
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item){
@@ -510,7 +569,33 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             }
         }
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //Intent "data" contains the user object
+        if(resultCode == SmartLoginConfig.FACEBOOK_LOGIN_REQUEST){
+            SmartFacebookUser user;
+            try {
+                user = data.getParcelableExtra(SmartLoginConfig.USER);
+                //use this user object as per your requirement
+            }catch (Exception e){
+                Log.e(getClass().getSimpleName(), e.getMessage());
+            }
+        }else if(resultCode == SmartLoginConfig.GOOGLE_LOGIN_REQUEST){
+            SmartGoogleUser user;
+            try {
+                user = data.getParcelableExtra(SmartLoginConfig.USER);
+                //use this user object as per your requirement
+            }catch (Exception e){
+                Log.e(getClass().getSimpleName(), e.getMessage());
+            }
+        }else if(resultCode == SmartLoginConfig.CUSTOM_LOGIN_REQUEST){
+            SmartUser user = data.getParcelableExtra(SmartLoginConfig.USER);
+            user.describeContents();
+            //use this user object as per your requirement
+        }else if(resultCode == RESULT_CANCELED){
+            //Login Failed
+        }
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(toggle.onOptionsItemSelected(item))
@@ -533,7 +618,4 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         startActivity(i);
     }*/
 
-    public void signIn(View view){
-        startActivity(new Intent(this,LoginActivity.class));
-    }
 }

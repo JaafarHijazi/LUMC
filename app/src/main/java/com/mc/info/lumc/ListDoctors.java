@@ -1,6 +1,7 @@
 package com.mc.info.lumc;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -18,13 +19,14 @@ import android.widget.SearchView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ListDoctors extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private Menu menu;
     private DBHandler dbHandler = new DBHandler(this, null, null, 1);
     private RecyclerView recyclerView;
-    private ArrayList<Doctor> doctors;
+    private List<Doctor> doctors;
     private ArrayList<HashMap<String, String>> data = new ArrayList<>();
     private DoctorRecyclerAdapter adapter;
 
@@ -38,15 +40,35 @@ public class ListDoctors extends AppCompatActivity implements NavigationView.OnN
         setContentView(R.layout.activity_list_doctors);
         SearchView sv = (SearchView) findViewById(R.id.activity_list_doctors_search);
 
-        doctors = dbHandler.getAllDoctors();
-
+/*
         for (int i = 0; i < doctors.size(); i++) {
             data.add(doctors.get(i).toHashMap());
-        }
+        }*/
+
         recyclerView= (RecyclerView) findViewById(R.id.activity_list_doctors_doctorList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter=new DoctorRecyclerAdapter(doctors);
-        recyclerView.setAdapter(adapter);
+
+        new AsyncTask<Void,Void,List<Doctor>>(){
+            @Override
+            protected List<Doctor> doInBackground(Void... params) {
+                while (!dbHandler.isDataReady())
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                return dbHandler.getDoctors();
+            }
+
+            @Override
+            protected void onPostExecute(List<Doctor> doctors) {
+                ListDoctors.this.doctors=doctors;
+                adapter=new DoctorRecyclerAdapter(doctors);
+                recyclerView.setAdapter(adapter);
+            }
+        }.execute();
+
 
        /* String[] hash = {DBHandler.COLUMN_FIRST_NAME, DBHandler.COLUMN_LAST_NAME , DBHandler.COLUMN_SPECIALTY};
         int[] toViewIds = {R.id.list_doctor_item_txtFname, R.id.list_doctor_item_txtLname , R.id.list_doctor_item_specialty};
@@ -63,6 +85,7 @@ public class ListDoctors extends AppCompatActivity implements NavigationView.OnN
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if(adapter!=null)
                 adapter.getFilter().filter(newText);
                 return false;
             }

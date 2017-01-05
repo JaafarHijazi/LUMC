@@ -1,5 +1,6 @@
 package com.mc.info.lumc;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -8,7 +9,7 @@ import java.util.HashMap;
 
 //Burger
 
-public class Doctor extends Person {
+public class Doctor extends Person implements Serializable{
     private String specialty;
     private int experienceYears;
 
@@ -36,8 +37,8 @@ public class Doctor extends Person {
         return experienceYears;
     }
 
-    public void setExperienceYears(int experienceYears) {
-        this.experienceYears = experienceYears;
+    public void setExperienceYears(String experienceYears) {
+        this.experienceYears = Integer.parseInt(experienceYears);
     }
 
     public HashMap<String,String> toHashMap(){

@@ -18,9 +18,6 @@ import android.widget.Toast;
 
 
 public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-
-    private int index;
-    private DBHandler dbHandler = new DBHandler(this,null,null,1);
     private TextView txt,call;
 
     private DrawerLayout drawerLayout;
@@ -33,8 +30,7 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
         setContentView(R.layout.activity_doctor_info);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            index = extras.getInt("take");
-            Doctor d = dbHandler.getDoctorById(index);
+            Doctor d = (Doctor) extras.getSerializable("take");
             txt = (TextView) findViewById(R.id.activity_doctor_info_firstName);
             txt.setText(d.getFirstName());
             txt = (TextView) findViewById(R.id.activity_doctor_info_lastName);
@@ -49,10 +45,8 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
                 public void onClick(View v) {
                     final Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+call.getText().toString()));
                     startActivity(callIntent);
-
                 }
             });
-
 
             txt = (TextView) findViewById(R.id.activity_doctor_info_address);
             txt.setText(d.getAddress().toString());

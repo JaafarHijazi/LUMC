@@ -1,12 +1,13 @@
 package com.mc.info.lumc;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Created by BurgerMan on 12/9/2016.
  */
 
-public class Patient extends Person {
+public class Patient extends Person implements Serializable {
 
     public Patient() {
         super();

@@ -1,10 +1,12 @@
 package com.mc.info.lumc;
 
+import java.io.Serializable;
+
 /**
  * Created by BurgerMan on 12/9/2016.
  */
 
-public class Person {
+public class Person  implements Serializable{
     private int id;
     private String firstName,
             lastName,

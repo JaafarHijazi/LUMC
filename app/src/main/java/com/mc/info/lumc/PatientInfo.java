@@ -18,8 +18,6 @@ import android.widget.Toast;
 
 public class PatientInfo extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private int index;
-    private DBHandler dbHandler = new DBHandler(this,null,null,1);
     private TextView txt,call;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
@@ -31,8 +29,8 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
         setContentView(R.layout.activity_patient_info);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            index = extras.getInt("take");
-            Patient p = dbHandler.getPatientById(index);
+
+            Patient p = (Patient) extras.getSerializable("take");
             txt = (TextView) findViewById(R.id.activity_patient_info_Name);
             txt.setText(p.getFirstName() + " " + p.getLastName());
             call = (TextView) findViewById(R.id.activity_patient_info_Phone);

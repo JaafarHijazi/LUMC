@@ -7,12 +7,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import org.json.JSONArray;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by BurgerMan on 12/9/2016.
@@ -35,11 +43,46 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_SPECIALTY ="specialty";
     public static final String COLUMN_EXPERIENCE_YEARS ="experienceYears";
 
-
-
-
-    public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public FirebaseDatabase database;
+    private List<Patient> patients;
+    private List<Doctor> doctors;
+    private boolean dataReady =false;
+    public DBHandler(final Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference reference=database.getReference();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                patients=new ArrayList<Patient>();
+                for (DataSnapshot patient : dataSnapshot.child(TABLE_PATIENT).getChildren()) {
+                    Patient p= patient.getValue(Patient.class);
+                    p.setId(Integer.parseInt(patient.getKey()));
+                    patients.add(p);
+                }
+
+                doctors=new ArrayList<Doctor>();
+                for (DataSnapshot doctor : dataSnapshot.child(TABLE_DOCTOR).getChildren()) {
+                    Doctor d=doctor.getValue(Doctor.class);
+                    d.setId(Integer.parseInt(doctor.getKey()));
+                    doctors.add(d);
+                }
+                dataReady =true;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    public boolean isDataReady()
+    {
+        return dataReady;
+    }
+
+    public List<Doctor> getDoctors() {
+        return doctors;
     }
 
     @Override
@@ -85,6 +128,8 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public void addPatient(Patient p){
+        DatabaseReference myRef = database.getReference(TABLE_PATIENT);
+
         Address addr = p.getAddress();
         ContentValues values = new ContentValues();
         values.put( COLUMN_FIRST_NAME , p.getFirstName() );
@@ -127,22 +172,14 @@ public class DBHandler extends SQLiteOpenHelper {
         return sortDoctorsBy("");
     }
 
-    public Patient getPatientById(int id){
-        SQLiteDatabase db = this.getReadableDatabase();
-        String getQuery = " SELECT * FROM " + TABLE_PATIENT + " WHERE " + COLUMN_ID + " = " + id;
-        Cursor c = db.rawQuery(getQuery,null);
-        c.moveToFirst();
-        String fName = c.getString(c.getColumnIndex(COLUMN_FIRST_NAME));
-        String lName = c.getString(c.getColumnIndex(COLUMN_LAST_NAME));
-        String city = c.getString(c.getColumnIndex(COLUMN_CITY));
-        String street = c.getString(c.getColumnIndex(COLUMN_STREET));
-        String building = c.getString(c.getColumnIndex(COLUMN_BUILDING));
-        String phone = c.getString(c.getColumnIndex(COLUMN_PHONE));
-        String email = c.getString(c.getColumnIndex(COLUMN_EMAIL));
-        Patient p = new Patient(id, fName, lName, phone, email, new Address(city, street, building));
-        db.close();
-        return p;
+    public List<Patient> getPatients(){
+        return patients;
     }
+    public Patient getPatientById(final int id){
+       // Patient p=patients.
+        return null;
+    }
+
 
     public Doctor getDoctorById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();

@@ -10,12 +10,12 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
+
 
 /**
  * Created by BurgerMan on 1/1/2017.
@@ -34,8 +34,6 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
     @Override
     public PatientHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.patient_item,parent,false);
-
-
         return new PatientHolder(view);
     }
 
@@ -49,7 +47,7 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
                 Patient p = filteredPatients.get(position);
 
                 Intent intent = new Intent(holder.cardView.getContext(), PatientInfo.class);
-                intent.putExtra("take",p.getId());
+                intent.putExtra("take",p);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 holder.cardView.getContext().startActivity(intent);
             }
