@@ -164,21 +164,15 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<Patient> getAllPatients(){
-        return sortPatientsBy("");
-    }
-
-    public ArrayList<Doctor> getAllDoctors(){
-        return sortDoctorsBy("");
-    }
-
     public List<Patient> getPatients(){
         return patients;
     }
+
     public Patient getPatientById(final int id){
        // Patient p=patients.
         return null;
     }
+
 
 
     public Doctor getDoctorById(int id) {
@@ -198,73 +192,6 @@ public class DBHandler extends SQLiteOpenHelper {
         Doctor d = new Doctor(id, fName, lName, phone, email, new Address(city, street, building),specialty,experienceYears);
         db.close();
         return d;
-    }
-
-    public ArrayList<Patient> sortPatientsBy(String byWhat){
-        ArrayList<Patient> results = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        String orderBy="";
-        if(byWhat.equals(COLUMN_FIRST_NAME))
-            orderBy=" ORDER BY " + COLUMN_FIRST_NAME + " ASC ";
-        else
-        if (byWhat.equals(COLUMN_LAST_NAME) )
-            orderBy=" ORDER BY " + COLUMN_LAST_NAME + " ASC ";
-
-        String query = " SELECT * FROM " + TABLE_PATIENT + orderBy;
-        Cursor c = db.rawQuery(query,null);
-        c.moveToFirst();
-        while(!c.isAfterLast()) {
-            int id = c.getInt(c.getColumnIndex(COLUMN_ID));
-            String fName = c.getString(c.getColumnIndex(COLUMN_FIRST_NAME));
-            String lName = c.getString(c.getColumnIndex(COLUMN_LAST_NAME));
-            String city = c.getString(c.getColumnIndex(COLUMN_CITY));
-            String street = c.getString(c.getColumnIndex(COLUMN_STREET));
-            String building = c.getString(c.getColumnIndex(COLUMN_BUILDING));
-            String phone = c.getString(c.getColumnIndex(COLUMN_PHONE));
-            String email = c.getString(c.getColumnIndex(COLUMN_EMAIL));
-            Patient p = new Patient(id, fName, lName, phone, email, new Address(city, street, building));
-            results.add(p);
-            c.moveToNext();
-        }
-        db.close();
-        c.close();
-        return results;
-    }
-
-
-    public ArrayList<Doctor> sortDoctorsBy(String byWhat){
-        ArrayList<Doctor> results = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        String orderBy="";
-        if(byWhat.equals(COLUMN_FIRST_NAME))
-            orderBy=" ORDER BY " + COLUMN_FIRST_NAME + " ASC ";
-        else
-        if (byWhat.equals(COLUMN_LAST_NAME) )
-            orderBy=" ORDER BY " + COLUMN_LAST_NAME + " ASC ";
-        else
-        if (byWhat.equals(COLUMN_SPECIALTY) )
-            orderBy=" ORDER BY " + COLUMN_SPECIALTY + " ASC ";
-
-        String query = " SELECT * FROM " + TABLE_DOCTOR + orderBy;
-        Cursor c = db.rawQuery(query,null);
-        c.moveToFirst();
-        while(!c.isAfterLast()) {
-            int id = c.getInt(c.getColumnIndex(COLUMN_ID));
-            String fName = c.getString(c.getColumnIndex(COLUMN_FIRST_NAME));
-            String lName = c.getString(c.getColumnIndex(COLUMN_LAST_NAME));
-            String city = c.getString(c.getColumnIndex(COLUMN_CITY));
-            String street = c.getString(c.getColumnIndex(COLUMN_STREET));
-            String building = c.getString(c.getColumnIndex(COLUMN_BUILDING));
-            String phone = c.getString(c.getColumnIndex(COLUMN_PHONE));
-            String email = c.getString(c.getColumnIndex(COLUMN_EMAIL));
-            String specialty = c.getString(c.getColumnIndex(COLUMN_SPECIALTY));
-            int experienceYears = c.getInt(c.getColumnIndex(COLUMN_EXPERIENCE_YEARS));
-            Doctor d = new Doctor(id, fName, lName, phone, email, new Address(city, street, building),specialty,experienceYears);
-            results.add(d);
-            c.moveToNext();
-        }
-        db.close();
-        return results;
     }
 
     public JSONObject getResults(Context context)
