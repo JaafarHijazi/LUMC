@@ -33,8 +33,8 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String TABLE_PATIENT ="patient";
     public static final String TABLE_DOCTOR ="doctor";
     public static final String COLUMN_ID="_id";
-    public static final String COLUMN_FIRST_NAME ="fname";
-    public static final String COLUMN_LAST_NAME ="lname";
+    public static final String COLUMN_FIRST_NAME ="firstname";
+    public static final String COLUMN_LAST_NAME ="lastname";
     public static final String COLUMN_CITY ="city";
     public static final String COLUMN_STREET ="street";
     public static final String COLUMN_BUILDING ="building";
