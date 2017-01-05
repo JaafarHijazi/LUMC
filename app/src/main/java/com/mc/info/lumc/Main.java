@@ -2,7 +2,6 @@ package com.mc.info.lumc;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -17,13 +16,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import studios.codelight.smartloginlibrary.SmartCustomLoginListener;
