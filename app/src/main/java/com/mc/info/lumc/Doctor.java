@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 
 
-
-//Burger
-
 public class Doctor extends Person implements Serializable{
     private String specialty;
     private int experienceYears;

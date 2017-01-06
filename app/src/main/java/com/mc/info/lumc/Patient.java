@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by BurgerMan on 12/9/2016.
- */
-
 public class Patient extends Person implements Serializable {
 
     private List<Integer> consults;

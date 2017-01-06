@@ -3,8 +3,6 @@ package com.mc.info.lumc;
 import java.io.Serializable;
 import java.util.Date;
 
-
-
 public class Consults implements Serializable {
     private int id,
                 pid,
