@@ -5,14 +5,14 @@
 
     <RelativeLayout
         android:layout_width="250dp"
-        android:layout_height="150dp"
+        android:layout_height="150dp">
 
-        >
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/login_back"
+            android:src="@drawable/login_back2"
             android:scaleType="centerCrop"/>
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="50dp"
             android:layout_height="50dp"

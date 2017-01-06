@@ -9,16 +9,19 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ButtonBarLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private TextView txt,call;
+    private Button btn;
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
@@ -31,14 +34,15 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             Doctor d = (Doctor) extras.getSerializable("take");
-            txt = (TextView) findViewById(R.id.activity_doctor_info_firstName);
-            txt.setText(d.getFirstName());
-            txt = (TextView) findViewById(R.id.activity_doctor_info_lastName);
-            txt.setText(d.getLastName());
+            txt = (TextView) findViewById(R.id.activity_doctor_info_Name);
+            txt.setText(d.getFirstName() + " " + d.getLastName());
             txt = (TextView) findViewById(R.id.activity_doctor_info_specialty);
             txt.setText(d.getSpecialty());
+            txt = (TextView) findViewById(R.id.activity_doctor_info_expeienceYears);
+            txt.setText(d.getExperienceYears() + " years");
             call = (TextView) findViewById(R.id.activity_doctor_info_phone);
             call.setText(d.getPhone());
+            btn = (Button)findViewById(R.id.activity_doctor_info_consult);
 
             call.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,7 +109,8 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
                     MenuItem subMenuItem = subMenu.getItem(j);
                     subMenuItem.setChecked(false);
                 }
-            } else {
+            }
+            else {
                 item.setChecked(false);
             }
         }
@@ -121,5 +126,10 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
+    }
+
+    public void consultDoctor(View view) {
+        Toast.makeText(this,"You are now this doctor's patient",Toast.LENGTH_SHORT).show();
+        btn.setVisibility(view.INVISIBLE);
     }
 }
