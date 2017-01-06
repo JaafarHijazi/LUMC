@@ -178,7 +178,7 @@
                 android:layout_centerHorizontal="true"
                 android:onClick="consultDoctor"/>
         </RelativeLayout>
-
+?
     </LinearLayout>
 
     <LinearLayout
