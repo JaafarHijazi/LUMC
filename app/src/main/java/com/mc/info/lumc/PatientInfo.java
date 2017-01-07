@@ -128,5 +128,9 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
     }
+
+    public void newPrescription(View view) {
+        startActivity(new Intent(this,CreatePrescription.class));
+    }
 }
 
