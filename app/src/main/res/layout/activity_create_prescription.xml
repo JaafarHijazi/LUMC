@@ -11,30 +11,9 @@
     tools:context="com.mc.info.lumc.CreatePrescription">
 
 
-    <Button
-        android:text= "New Item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/add_btn1"
-        android:id="@+id/activity_create_prescription_newItem"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="viewTypesList"/>
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:id="@+id/activity_create_prescription_typeList"
-        android:entries="@array/types"
-        android:layout_below="@+id/activity_create_prescription_newItem"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="320dp"
         android:id="@+id/activity_create_prescription_listOfPrescriptions"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -52,16 +31,36 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <Button
-        android:text="SAVE"
+    <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/activity_create_prescription_typeList"
+        android:entries="@array/types"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="New Item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/add_btn1"
         android:id="@+id/activity_create_prescription_saveItem"
         android:onClick="insertPrescription"
-        android:layout_below="@+id/activity_create_prescription_newItem"
+        android:layout_marginRight="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="46dp"
-        android:layout_marginEnd="46dp" />
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="Save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="13dp"
+        android:onClick="insertToDatabase"
+        android:id="@+id/activity_create_prescription_savePrescription" />
 
 </RelativeLayout>

@@ -7,24 +7,14 @@ import java.util.List;
 
 public class MedicalReport implements Serializable{
     private int id;
-    private List<Integer> examinations,
-                          prescriptions;
+    private List<Integer> prescriptions;
 
     public MedicalReport() {
     }
 
     public MedicalReport(int id) {
         this.id = id;
-        this.examinations = new ArrayList<>();
         this.prescriptions = new ArrayList<>();
-    }
-
-    public List<Integer> getExaminations() {
-        return new ArrayList<>(examinations);
-    }
-
-    public void setExaminations(List<Integer> examinations) {
-        this.examinations = new ArrayList<>(examinations);
     }
 
     public List<Integer> getPrescriptions() {

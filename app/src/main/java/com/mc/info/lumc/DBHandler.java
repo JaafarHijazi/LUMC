@@ -6,9 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
@@ -20,7 +22,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by BurgerMan on 12/9/2016.
@@ -32,50 +38,80 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME="MedicalCenter.db";
     public static final String TABLE_PATIENT ="patient";
     public static final String TABLE_DOCTOR ="doctor";
+    public static  final String TABLE_CONSULTS = "consults";
     public static final String COLUMN_ID="_id";
-    public static final String COLUMN_FIRST_NAME ="firstname";
-    public static final String COLUMN_LAST_NAME ="lastname";
+    public static final String COLUMN_FIRST_NAME ="firstName";
+    public static final String COLUMN_LAST_NAME ="lastName";
     public static final String COLUMN_CITY ="city";
+    public static final String COLUMN_ADDRESS = "address";
     public static final String COLUMN_STREET ="street";
     public static final String COLUMN_BUILDING ="building";
     public static final String COLUMN_PHONE ="phone";
     public static final String COLUMN_EMAIL ="email";
     public static final String COLUMN_SPECIALTY ="specialty";
     public static final String COLUMN_EXPERIENCE_YEARS ="experienceYears";
+    public static final String COLUMN_PID_FK = "pid";
+    public static final String COLUMN_DID_FK ="did";
+    public static final String COLUMN_DATEOFCONSULTATION ="dateOfConsultation";
+
+
+
+
 
     public FirebaseDatabase database;
     private List<Patient> patients;
     private List<Doctor> doctors;
     private boolean dataReady =false;
+
+
     public DBHandler(final Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
         database = FirebaseDatabase.getInstance();
         DatabaseReference reference=database.getReference();
         reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {  // get data from database to your arraylist
                 patients=new ArrayList<Patient>();
                 for (DataSnapshot patient : dataSnapshot.child(TABLE_PATIENT).getChildren()) {
                     Patient p= patient.getValue(Patient.class);
-                    p.setId(Integer.parseInt(patient.getKey()));
+                    p.setId(patient.getKey());
                     patients.add(p);
                 }
 
                 doctors=new ArrayList<Doctor>();
+                Doctor d;
                 for (DataSnapshot doctor : dataSnapshot.child(TABLE_DOCTOR).getChildren()) {
-                    Doctor d=doctor.getValue(Doctor.class);
-                    d.setId(Integer.parseInt(doctor.getKey()));
-                    doctors.add(d);
+                    try{
+                        d=doctor.getValue(Doctor.class);
+                        d.setId(doctor.getKey());
+                        doctors.add(d);
+                    }
+                    catch( DatabaseException e){
+                        System.out.print(e.getMessage());
+                    }
+
                 }
                 dataReady =true;
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                //Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
 
             }
         });
     }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+
     public boolean isDataReady()
     {
         return dataReady;
@@ -85,188 +121,75 @@ public class DBHandler extends SQLiteOpenHelper {
         return doctors;
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_DOCTOR);
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_PATIENT);
-        onCreate(db);
-
-    }
-
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-
-        String queryPatientTable ="CREATE TABLE " + TABLE_PATIENT + "(" +
-                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_FIRST_NAME + " VARCHAR[50], " +
-                COLUMN_LAST_NAME + " VARCHAR[50], " +
-                COLUMN_CITY + " VARCHAR[50], " +
-                COLUMN_STREET + " VARCHAR[50], " +
-                COLUMN_BUILDING + " VARCHAR[100], " +
-                COLUMN_PHONE + " VARCHAR[50], " +
-                COLUMN_EMAIL + " VARCHAR[50] " +
-                ");";
-
-        db.execSQL(queryPatientTable);
-
-        String queryDoctorTable ="CREATE TABLE " + TABLE_DOCTOR + "(" +
-                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_FIRST_NAME + " VARCHAR[50], " +
-                COLUMN_LAST_NAME + " VARCHAR[50], " +
-                COLUMN_CITY + " VARCHAR[50], " +
-                COLUMN_STREET + " VARCHAR[50], " +
-                COLUMN_BUILDING + " VARCHAR[100], " +
-                COLUMN_PHONE + " VARCHAR[50], " +
-                COLUMN_EMAIL + " VARCHAR[50], " +
-                COLUMN_SPECIALTY + " VARCHAR[50], " +
-                COLUMN_EXPERIENCE_YEARS + " INTEGER " +
-                ");";
-
-        db.execSQL(queryDoctorTable);
-
-    }
-
     public void addPatient(Patient p){
-        DatabaseReference myRef = database.getReference(TABLE_PATIENT);
 
-        Address addr = p.getAddress();
-        ContentValues values = new ContentValues();
-        values.put( COLUMN_FIRST_NAME , p.getFirstName() );
-        values.put( COLUMN_LAST_NAME , p.getLastName() );
-        values.put( COLUMN_CITY , addr.getCity() );
-        values.put( COLUMN_STREET , addr.getStreet() );
-        values.put( COLUMN_BUILDING ,addr.getBuilding() );
-        values.put( COLUMN_PHONE ,p.getPhone() );
-        values.put( COLUMN_EMAIL ,p.getEmail() );
-        SQLiteDatabase db = getWritableDatabase();
-        int id = (int) db.insert(TABLE_PATIENT, null, values);
-        p.setId(id);
-        db.close();
+        DatabaseReference patientRef = database.getReference().child(TABLE_PATIENT);
+        String key = patientRef.push().getKey();
+        DatabaseReference item = patientRef.child(key);
+        item.child(COLUMN_FIRST_NAME).setValue(p.getFirstName());
+        item.child(COLUMN_LAST_NAME).setValue(p.getLastName());
+        item.child(COLUMN_ADDRESS).setValue(p.getAddress());
+        item.child(COLUMN_EMAIL).setValue(p.getEmail());
+        item.child(COLUMN_PHONE).setValue(p.getPhone());
+        item.child(COLUMN_ID).setValue(Integer.parseInt(key));
+
     }
 
 
     public void addDoctor(Doctor d){
-        Address addr = d.getAddress();
-        ContentValues values = new ContentValues();
-        values.put( COLUMN_FIRST_NAME , d.getFirstName() );
-        values.put( COLUMN_LAST_NAME , d.getLastName() );
-        values.put( COLUMN_CITY , addr.getCity() );
-        values.put( COLUMN_STREET , addr.getStreet() );
-        values.put( COLUMN_BUILDING , addr.getBuilding() );
-        values.put( COLUMN_PHONE , d.getPhone() );
-        values.put( COLUMN_EMAIL , d.getEmail() );
-        values.put( COLUMN_SPECIALTY , d.getSpecialty() );
-        values.put( COLUMN_EXPERIENCE_YEARS , d.getExperienceYears() );
-        SQLiteDatabase db = getWritableDatabase();
-        int id = (int) db.insert(TABLE_DOCTOR, null, values);
-        d.setId(id);
-        db.close();
+
+        DatabaseReference doctorRef = database.getReference().child(TABLE_DOCTOR);
+        String key = doctorRef.push().getKey();
+        DatabaseReference item = doctorRef.child(key);
+        item.child(COLUMN_FIRST_NAME).setValue(d.getFirstName());
+        item.child(COLUMN_LAST_NAME).setValue(d.getLastName());
+        item.child(COLUMN_ADDRESS).setValue(d.getAddress());
+        item.child(COLUMN_EMAIL).setValue(d.getEmail());
+        item.child(COLUMN_PHONE).setValue(d.getPhone());
+        item.child(COLUMN_EXPERIENCE_YEARS).setValue(d.getExperienceYears());
+        item.child(COLUMN_SPECIALTY).setValue(d.getSpecialty());
+        item.child(COLUMN_ID).setValue(Integer.parseInt(key));
+
     }
 
-    public ArrayList<Patient> getAllPatients(){
-        return sortPatientsBy("");
-    }
+    public void addConsult (Consults c){
+        DatabaseReference consultRef = database.getReference().child(TABLE_CONSULTS);
+        String key = consultRef.push().getKey();
+        DatabaseReference item = consultRef.child(key);
+        item.child(COLUMN_PID_FK).setValue(c.getPid());
+        item.child(COLUMN_DID_FK).setValue(c.getDid());
+        item.child(COLUMN_DATEOFCONSULTATION).setValue(c.getDateOfConsultation());
 
-    public ArrayList<Doctor> getAllDoctors(){
-        return sortDoctorsBy("");
     }
 
     public List<Patient> getPatients(){
         return patients;
     }
-    public Patient getPatientById(final int id){
-       // Patient p=patients.
+
+    public Patient getPatientById(final Long id){
+        for (Patient p : patients){
+            if (p.getId().equals(id))
+                return p;
+        }
         return null;
     }
 
 
-    public Doctor getDoctorById(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String getQuery = " SELECT * FROM " + TABLE_DOCTOR + " WHERE " + COLUMN_ID + " = " + id;
-        Cursor c = db.rawQuery(getQuery, null);
-        c.moveToFirst();
-        String fName = c.getString(c.getColumnIndex(COLUMN_FIRST_NAME));
-        String lName = c.getString(c.getColumnIndex(COLUMN_LAST_NAME));
-        String city = c.getString(c.getColumnIndex(COLUMN_CITY));
-        String street = c.getString(c.getColumnIndex(COLUMN_STREET));
-        String building = c.getString(c.getColumnIndex(COLUMN_BUILDING));
-        String phone = c.getString(c.getColumnIndex(COLUMN_PHONE));
-        String email = c.getString(c.getColumnIndex(COLUMN_EMAIL));
-        String specialty = c.getString(c.getColumnIndex(COLUMN_SPECIALTY));
-        int experienceYears = c.getInt(c.getColumnIndex(COLUMN_EXPERIENCE_YEARS));
-        Doctor d = new Doctor(id, fName, lName, phone, email, new Address(city, street, building),specialty,experienceYears);
-        db.close();
-        return d;
-    }
 
-    public ArrayList<Patient> sortPatientsBy(String byWhat){
-        ArrayList<Patient> results = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        String orderBy="";
-        if(byWhat.equals(COLUMN_FIRST_NAME))
-            orderBy=" ORDER BY " + COLUMN_FIRST_NAME + " ASC ";
-        else
-        if (byWhat.equals(COLUMN_LAST_NAME) )
-            orderBy=" ORDER BY " + COLUMN_LAST_NAME + " ASC ";
+    public Doctor getDoctorById(final String id) {
 
-        String query = " SELECT * FROM " + TABLE_PATIENT + orderBy;
-        Cursor c = db.rawQuery(query,null);
-        c.moveToFirst();
-        while(!c.isAfterLast()) {
-            int id = c.getInt(c.getColumnIndex(COLUMN_ID));
-            String fName = c.getString(c.getColumnIndex(COLUMN_FIRST_NAME));
-            String lName = c.getString(c.getColumnIndex(COLUMN_LAST_NAME));
-            String city = c.getString(c.getColumnIndex(COLUMN_CITY));
-            String street = c.getString(c.getColumnIndex(COLUMN_STREET));
-            String building = c.getString(c.getColumnIndex(COLUMN_BUILDING));
-            String phone = c.getString(c.getColumnIndex(COLUMN_PHONE));
-            String email = c.getString(c.getColumnIndex(COLUMN_EMAIL));
-            Patient p = new Patient(id, fName, lName, phone, email, new Address(city, street, building));
-            results.add(p);
-            c.moveToNext();
+        for (Doctor d : doctors){
+            if (d.getId().equals(id))
+                return d;
         }
-        db.close();
-        c.close();
-        return results;
+        return null;
+
     }
 
 
-    public ArrayList<Doctor> sortDoctorsBy(String byWhat){
-        ArrayList<Doctor> results = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        String orderBy="";
-        if(byWhat.equals(COLUMN_FIRST_NAME))
-            orderBy=" ORDER BY " + COLUMN_FIRST_NAME + " ASC ";
-        else
-        if (byWhat.equals(COLUMN_LAST_NAME) )
-            orderBy=" ORDER BY " + COLUMN_LAST_NAME + " ASC ";
-        else
-        if (byWhat.equals(COLUMN_SPECIALTY) )
-            orderBy=" ORDER BY " + COLUMN_SPECIALTY + " ASC ";
 
-        String query = " SELECT * FROM " + TABLE_DOCTOR + orderBy;
-        Cursor c = db.rawQuery(query,null);
-        c.moveToFirst();
-        while(!c.isAfterLast()) {
-            int id = c.getInt(c.getColumnIndex(COLUMN_ID));
-            String fName = c.getString(c.getColumnIndex(COLUMN_FIRST_NAME));
-            String lName = c.getString(c.getColumnIndex(COLUMN_LAST_NAME));
-            String city = c.getString(c.getColumnIndex(COLUMN_CITY));
-            String street = c.getString(c.getColumnIndex(COLUMN_STREET));
-            String building = c.getString(c.getColumnIndex(COLUMN_BUILDING));
-            String phone = c.getString(c.getColumnIndex(COLUMN_PHONE));
-            String email = c.getString(c.getColumnIndex(COLUMN_EMAIL));
-            String specialty = c.getString(c.getColumnIndex(COLUMN_SPECIALTY));
-            int experienceYears = c.getInt(c.getColumnIndex(COLUMN_EXPERIENCE_YEARS));
-            Doctor d = new Doctor(id, fName, lName, phone, email, new Address(city, street, building),specialty,experienceYears);
-            results.add(d);
-            c.moveToNext();
-        }
-        db.close();
-        return results;
-    }
 
+    //function to get JSON Database from android device
     public JSONObject getResults(Context context)
     {
 
