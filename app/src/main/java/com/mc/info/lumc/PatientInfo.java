@@ -123,7 +123,7 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
             return true;
         return super.onOptionsItemSelected(item);
     }
-//
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
