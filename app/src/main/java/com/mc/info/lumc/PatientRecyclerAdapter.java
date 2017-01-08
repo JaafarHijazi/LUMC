@@ -23,9 +23,9 @@ import java.util.regex.Pattern;
  */
 
 public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecyclerAdapter.PatientHolder> implements Filterable{
-    PatientFilter patientFilter;
-    List<Patient> filteredPatients;
-    Sort currentSort=Sort.FIRST_NAME;
+    private PatientFilter patientFilter;
+    private List<Patient> filteredPatients;
+    private Sort currentSort=Sort.FIRST_NAME;
     public PatientRecyclerAdapter(List<Patient> p)
     {
         filteredPatients =new ArrayList<>(p);
@@ -46,7 +46,6 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
             @Override
             public void onClick(View v) {
                 Patient p = filteredPatients.get(position);
-
                 Intent intent = new Intent(holder.cardView.getContext(), PatientInfo.class);
                 intent.putExtra("take",p);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -87,7 +86,6 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
                     }
                 });
                 break;
-
         }
     }
     public enum Sort{
@@ -107,11 +105,11 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
     }
     private class PatientFilter extends Filter{
         List<Patient> filtered;
-        List<Patient> orignal;
+        List<Patient> original;
         PatientRecyclerAdapter adapter;
         public PatientFilter(List<Patient> o,PatientRecyclerAdapter ad)
         {
-            orignal=new ArrayList<>(o);
+            original =new ArrayList<>(o);
             adapter=ad;
             filtered=new ArrayList<>();
         }
@@ -120,10 +118,10 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
             filtered.clear();
             FilterResults results=new FilterResults();
             if(constraint.toString().trim().length()==0)
-                filtered.addAll(orignal);
+                filtered.addAll(original);
             else {
                 Pattern pattern=Pattern.compile(constraint.toString(),Pattern.CASE_INSENSITIVE);
-                for (Patient p: orignal)
+                for (Patient p: original)
                 {
                     if(pattern.matcher(p.getFirstName()).find()||pattern.matcher(p.getLastName()).find())
                         filtered.add(p);

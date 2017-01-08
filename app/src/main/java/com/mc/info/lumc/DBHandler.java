@@ -1,21 +1,16 @@
 package com.mc.info.lumc;
-
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +25,8 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String TABLE_PATIENT ="patient";
     public static final String TABLE_DOCTOR ="doctor";
     public static final String COLUMN_ID="_id";
-    public static final String COLUMN_FIRST_NAME ="firstname";
-    public static final String COLUMN_LAST_NAME ="lastname";
+    public static final String COLUMN_FIRST_NAME ="firstName";
+    public static final String COLUMN_LAST_NAME ="lastName";
     public static final String COLUMN_CITY ="city";
     public static final String COLUMN_STREET ="street";
     public static final String COLUMN_BUILDING ="building";
@@ -39,11 +34,12 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_EMAIL ="email";
     public static final String COLUMN_SPECIALTY ="specialty";
     public static final String COLUMN_EXPERIENCE_YEARS ="experienceYears";
-
     public FirebaseDatabase database;
     private List<Patient> patients;
     private List<Doctor> doctors;
     private boolean dataReady =false;
+
+
     public DBHandler(final Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
         database = FirebaseDatabase.getInstance();
@@ -54,14 +50,14 @@ public class DBHandler extends SQLiteOpenHelper {
                 patients=new ArrayList<Patient>();
                 for (DataSnapshot patient : dataSnapshot.child(TABLE_PATIENT).getChildren()) {
                     Patient p= patient.getValue(Patient.class);
-                    p.setId(Integer.parseInt(patient.getKey()));
+                    p.setId(patient.getKey());
                     patients.add(p);
                 }
 
                 doctors=new ArrayList<Doctor>();
                 for (DataSnapshot doctor : dataSnapshot.child(TABLE_DOCTOR).getChildren()) {
                     Doctor d=doctor.getValue(Doctor.class);
-                    d.setId(Integer.parseInt(doctor.getKey()));
+                    d.setId(doctor.getKey());
                     doctors.add(d);
                 }
                 dataReady =true;
@@ -84,15 +80,16 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_DOCTOR);
+        /*db.execSQL("DROP TABLE IF EXISTS "+ TABLE_DOCTOR);
         db.execSQL("DROP TABLE IF EXISTS "+ TABLE_PATIENT);
-        onCreate(db);
+        onCreate(db);*/
 
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+/*
 
         String queryPatientTable ="CREATE TABLE " + TABLE_PATIENT + "(" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -121,12 +118,15 @@ public class DBHandler extends SQLiteOpenHelper {
                 ");";
 
         db.execSQL(queryDoctorTable);
+*/
 
     }
 
-    public void addPatient(Patient p){
-        DatabaseReference myRef = database.getReference(TABLE_PATIENT);
-
+    public static void addPatient(Patient p){
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(TABLE_PATIENT);
+        p.setId(myRef.push().getKey());
+        myRef.child(p.getId()).setValue(p);
+/*
         Address addr = p.getAddress();
         ContentValues values = new ContentValues();
         values.put( COLUMN_FIRST_NAME , p.getFirstName() );
@@ -137,13 +137,15 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put( COLUMN_PHONE ,p.getPhone() );
         values.put( COLUMN_EMAIL ,p.getEmail() );
         SQLiteDatabase db = getWritableDatabase();
-        int id = (int) db.insert(TABLE_PATIENT, null, values);
+        String id = new Long(db.insert(TABLE_PATIENT, null, values) ).toString();
         p.setId(id);
         db.close();
+        */
     }
 
 
     public void addDoctor(Doctor d){
+        /*
         Address addr = d.getAddress();
         ContentValues values = new ContentValues();
         values.put( COLUMN_FIRST_NAME , d.getFirstName() );
@@ -156,9 +158,10 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put( COLUMN_SPECIALTY , d.getSpecialty() );
         values.put( COLUMN_EXPERIENCE_YEARS , d.getExperienceYears() );
         SQLiteDatabase db = getWritableDatabase();
-        int id = (int) db.insert(TABLE_DOCTOR, null, values);
+        String id = new Long(db.insert(TABLE_DOCTOR, null, values)).toString();
         d.setId(id);
         db.close();
+        */
     }
 
     public List<Patient> getPatients(){
@@ -172,7 +175,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
 
 
-    public Doctor getDoctorById(int id) {
+    public Doctor getDoctorById(String id) {
+        /*
         SQLiteDatabase db = this.getReadableDatabase();
         String getQuery = " SELECT * FROM " + TABLE_DOCTOR + " WHERE " + COLUMN_ID + " = " + id;
         Cursor c = db.rawQuery(getQuery, null);
@@ -189,6 +193,8 @@ public class DBHandler extends SQLiteOpenHelper {
         Doctor d = new Doctor(id, fName, lName, phone, email, new Address(city, street, building),specialty,experienceYears);
         db.close();
         return d;
+        */
+        return null;
     }
 
     public JSONObject getResults(Context context)

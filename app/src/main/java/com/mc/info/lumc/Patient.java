@@ -18,7 +18,7 @@ public class Patient extends Person implements Serializable {
         consults = new ArrayList<>();
     }
 
-    public Patient(int id, String firstName, String lastName, String phone, String email, Address address) {
+    public Patient(String id, String firstName, String lastName, String phone, String email, Address address) {
         super(id, firstName, lastName, phone, email, address);
         consults = new ArrayList<>();
     }

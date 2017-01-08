@@ -14,7 +14,9 @@ import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -30,6 +32,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
+    private int patientID=1;
     CircleImageView profile;
     TextView username;
     TextView email;
@@ -38,7 +41,12 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        try{
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        }
+        catch (Exception e){
+
+        }
         navigationView = (NavigationView) findViewById(R.id.main_nav) ;
         View header=navigationView.getHeaderView(0);
         profile = (CircleImageView) header.findViewById(R.id.login_header_profile);
