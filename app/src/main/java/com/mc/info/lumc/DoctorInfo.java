@@ -13,16 +13,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import static com.mc.info.lumc.R.id.button;
+
 
 public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    private Doctor doctor;
     private TextView txt,call;
-
+    private DBHandler dbHandler ;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
+    private Button btnMyPatients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +37,17 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
         setContentView(R.layout.activity_doctor_info);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            Doctor d = (Doctor) extras.getSerializable("take");
+            doctor = (Doctor) extras.getSerializable("take");
             txt = (TextView) findViewById(R.id.activity_doctor_info_firstName);
-            txt.setText(d.getFirstName());
+            txt.setText(doctor.getFirstName());
             txt = (TextView) findViewById(R.id.activity_doctor_info_lastName);
-            txt.setText(d.getLastName());
+            txt.setText(doctor.getLastName());
             txt = (TextView) findViewById(R.id.activity_doctor_info_specialty);
-            txt.setText(d.getSpecialty());
+            txt.setText(doctor.getSpecialty());
             call = (TextView) findViewById(R.id.activity_doctor_info_phone);
-            call.setText(d.getPhone());
-
+            call.setText(doctor.getPhone());
+            dbHandler = new DBHandler(this, null, null, 1);
+            //dbHandler.addDoctor(d);
             call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -48,10 +56,19 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
                 }
             });
 
+
+           /* txt = (TextView) findViewById(R.id.activity_doctor_info_certificates);
+            ArrayList<Certificates> cert = d.getCertificates();
+            String s = "";
+            for (Certificates c : cert ){
+                s += c.getCertName().toString() + " " + c.getCertYear() + "\n";
+            }
+            txt.setText(s);*/
+
             txt = (TextView) findViewById(R.id.activity_doctor_info_address);
-            txt.setText(d.getAddress().toString());
+            txt.setText(doctor.getAddress().toString());
             txt = (TextView) findViewById(R.id.activity_doctor_info_email);
-            txt.setText(d.getEmail());
+            txt.setText(doctor.getEmail());
 
             txt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,7 +88,17 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
 
             });
 
+            btnMyPatients = (Button)findViewById(R.id.activity_doctor_info_ViewMyPatients);
+            btnMyPatients.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i=new Intent( DoctorInfo.this, MyPatients.class);
+                    i.putExtra("take",doctor);
+                    startActivity(i);
+                }
+            });
         }
+
 
         drawerLayout = (DrawerLayout) findViewById(R.id.doctor_info_drawer);
         toggle = new ActionBarDrawerToggle(this, drawerLayout,R.string.open,R.string.close);

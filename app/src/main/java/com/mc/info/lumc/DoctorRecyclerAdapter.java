@@ -35,7 +35,6 @@ public class DoctorRecyclerAdapter extends RecyclerView.Adapter<DoctorRecyclerAd
     public DoctorHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.doctor_item,parent,false);
 
-
         return new DoctorHolder(view);
     }
 
@@ -120,11 +119,11 @@ public class DoctorRecyclerAdapter extends RecyclerView.Adapter<DoctorRecyclerAd
     }
     private class DoctorFilter extends Filter{
         List<Doctor> filtered;
-        List<Doctor> orignal;
+        List<Doctor> original;
         DoctorRecyclerAdapter adapter;
         public DoctorFilter(List<Doctor> o,DoctorRecyclerAdapter ad)
         {
-            orignal=new ArrayList<>(o);
+            original =new ArrayList<>(o);
             adapter=ad;
             filtered=new ArrayList<>();
         }
@@ -133,10 +132,10 @@ public class DoctorRecyclerAdapter extends RecyclerView.Adapter<DoctorRecyclerAd
             filtered.clear();
             FilterResults results=new FilterResults();
             if(constraint.toString().trim().length()==0)
-                filtered.addAll(orignal);
+                filtered.addAll(original);
             else {
                 Pattern pattern=Pattern.compile(constraint.toString(),Pattern.CASE_INSENSITIVE);
-                for (Doctor d: orignal)
+                for (Doctor d: original)
                 {
                     if(pattern.matcher(d.getFirstName()).find()||pattern.matcher(d.getLastName()).find()||pattern.matcher(d.getSpecialty()).find())
                         filtered.add(d);

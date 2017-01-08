@@ -57,7 +57,6 @@ public class ListDoctors extends AppCompatActivity implements NavigationView.OnN
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
                 return dbHandler.getDoctors();
             }
 

@@ -144,6 +144,13 @@
                 android:id="@+id/activity_patient_info_medical_results"/>
         </LinearLayout>
 
+        <Button
+            android:text="View Medicines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/activity_patient_info_view_medicine"
+            android:onClick="goToMyPatients"/>
+
     </LinearLayout>
 
     <LinearLayout

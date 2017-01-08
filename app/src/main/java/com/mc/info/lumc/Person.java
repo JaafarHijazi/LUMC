@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 
 public class Person  implements Serializable{
-    private int id;
+    private String id;
     private String firstName,
             lastName,
             phone,
@@ -15,7 +15,7 @@ public class Person  implements Serializable{
     private Address address;
 
     public Person(){
-        this.id=-1;
+        this.id="";
         this.firstName = "";
         this.lastName = "";
         this.phone = "";
@@ -23,20 +23,35 @@ public class Person  implements Serializable{
         this.address = new Address();
     }
 
-    public Person(int id, String firstName, String lastName, String phone, String email, Address address) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Person)) return false;
+
+        Person person = (Person) o;
+
+        return id != null ? id.equals(person.id) : person.id == null;
+
+    }
+
+
+    public Person(String id, String firstName, String lastName, String phone, String email, Address address) {
         this.id=id;
         this.firstName = firstName;
         this.lastName = lastName;
+
         this.phone = phone;
         this.email = email;
         this.address = address;
     }
 
-    public int getId() {
+
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
