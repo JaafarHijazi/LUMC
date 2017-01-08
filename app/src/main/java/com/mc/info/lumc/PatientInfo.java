@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
+    private Patient pextra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +32,11 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
 
-            Patient p = (Patient) extras.getSerializable("take");
+            pextra = (Patient) extras.getSerializable("take");
             txt = (TextView) findViewById(R.id.activity_patient_info_Name);
-            txt.setText(p.getFirstName() + " " + p.getLastName());
+            txt.setText(pextra.getFirstName() + " " + pextra.getLastName());
             call = (TextView) findViewById(R.id.activity_patient_info_Phone);
-            call.setText(p.getPhone());
+            call.setText(pextra.getPhone());
 
             call.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -45,11 +47,10 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
                 }
             });
 
-
             txt = (TextView) findViewById(R.id.activity_patient_info_Address);
-            txt.setText(p.getAddress().toString());
+            txt.setText(pextra.getAddress().toString());
             txt = (TextView) findViewById(R.id.activity_patient_info_Email);
-            txt.setText(p.getEmail());
+            txt.setText(pextra.getEmail());
 
             txt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -67,7 +68,10 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
                     }
                 }
             });
+
         }
+
+
         drawerLayout = (DrawerLayout) findViewById(R.id.patient_info_drawer);
         toggle = new ActionBarDrawerToggle(this, drawerLayout,R.string.open,R.string.close);
 
@@ -92,6 +96,16 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
             });
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+
+
+    public void goToMyMedicines(View view){
+        Intent i = new Intent(this,patient_medicines.class);
+        i.putExtra("take",pextra.getId());
+        startActivity(i);
+    }
+
+
 
     private void unCheckAllMenuItems(NavigationView navigationView) {
         final Menu menu = navigationView.getMenu();
