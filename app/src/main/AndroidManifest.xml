@@ -16,11 +16,11 @@
         android:allowBackup="true"
         android:icon="@drawable/lumc_logo2"
         android:label="@string/app_name"
+        android:name=".DBHandler"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="studios.codelight.smartloginlibrary.SmartLoginActivity"
-            android:theme="@style/AppTheme" />
+        <activity android:name=".LoginActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".RegisterActivity" android:theme="@style/Translucent"/>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -42,7 +42,7 @@
         <activity android:name=".PatientInfo" />
         <activity android:name=".DoctorInfo" />
         <activity android:name=".MyPatients" />
-        <activity android:name=".patient_medicines"></activity>
+        <activity android:name=".PatientMedicines"></activity>
     </application>
 
 </manifest>

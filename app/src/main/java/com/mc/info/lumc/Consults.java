@@ -7,17 +7,17 @@ import java.util.Date;
  * Created by BurgerMan on 1/5/2017.
  */
 
-public class Consult implements Serializable {
-    private int id;
+public class Consults implements Serializable {
+    private String cid;
     private String pid;
     private String did;
     private Date dateOfConsultation;
 
-    public Consult() {
+    public Consults() {
     }
 
-    public Consult(int id, String pid, String did, Date dateOfConsultation) {
-        this.id = id;
+    public Consults(String cid, String pid, String did, Date dateOfConsultation) {
+        this.cid = cid;
         this.pid = pid;
         this.did = did;
         this.dateOfConsultation = (Date) dateOfConsultation.clone();
@@ -25,6 +25,14 @@ public class Consult implements Serializable {
 
     public String getPid() {
         return pid;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 
     public void setPid(String pid) {

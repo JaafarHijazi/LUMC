@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MyPatients extends AppCompatActivity {
-    private DBHandler dbHandler = new DBHandler(this, null, null, 1);
     private Menu menu;
     private RecyclerView recyclerView;
     private List<Patient> myPatientsList;
@@ -52,7 +51,7 @@ public class MyPatients extends AppCompatActivity {
                     }*/
                 Bundle extras = getIntent().getExtras();
                 Doctor d = (Doctor) extras.getSerializable("take");
-                return dbHandler.getMyPatients(d);
+                return DBHandler.getInstance().getMyPatients(d);
             }
 
             @Override

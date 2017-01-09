@@ -12,12 +12,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SimpleAdapter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ListPatients extends AppCompatActivity {
-    private DBHandler dbHandler = new DBHandler(this, null, null, 1);
     private Menu menu;
     private RecyclerView recyclerView;
     private List<Patient> patients;
@@ -44,14 +49,14 @@ public class ListPatients extends AppCompatActivity {
         new AsyncTask<Void,Void,List<Patient>>(){
             @Override
             protected List<Patient> doInBackground(Void... params) {
-                while (!dbHandler.isDataReady())
+                while (!DBHandler.getInstance().isDataReady())
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
-                return dbHandler.getPatients();
+                return DBHandler.getInstance().getPatients();
             }
 
             @Override

@@ -13,9 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class patient_medicines extends AppCompatActivity {
+public class PatientMedicines extends AppCompatActivity {
 
-    private DBHandler dbHandler = new DBHandler(this, null, null, 1);
     private ArrayList<HashMap<String, String>> data = new ArrayList<>();
     private List<Medication> myMedicines = new ArrayList<>();
     private ListView lv;
@@ -29,7 +28,7 @@ public class patient_medicines extends AppCompatActivity {
         new AsyncTask<Void, Void, List<Medication>>() {
             @Override
             protected List<Medication> doInBackground(Void... params) {
-                while (!dbHandler.isDataReady())
+                while (!DBHandler.getInstance().isDataReady())
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
@@ -37,7 +36,7 @@ public class patient_medicines extends AppCompatActivity {
                     }
                 Bundle extras = getIntent().getExtras();
                 Patient p = (Patient) extras.getSerializable("take");
-                myMedicines = dbHandler.getPatientMedicines(p);
+                myMedicines = DBHandler.getInstance().getPatientMedicines(p);
                 return myMedicines;
             }
         };
@@ -45,7 +44,7 @@ public class patient_medicines extends AppCompatActivity {
         for (int i = 0; i < myMedicines.size(); i++) {
             data.add(myMedicines.get(i).toHashMap());
         }
-        String[] hash = {dbHandler.COLUMN_MEDICINE_NAME};
+        String[] hash = {DBHandler.COLUMN_MEDICINE_NAME};
         int[] toViewIDs = {R.id.item_medicine_name};
         adapter = new SimpleAdapter(this, data, R.layout.medicine_item, hash, toViewIDs);
         lv = (ListView) findViewById(R.id.activity_patient_medicines_lvmedicines);

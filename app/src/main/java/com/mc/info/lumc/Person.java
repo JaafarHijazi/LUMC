@@ -23,6 +23,18 @@ public class Person  implements Serializable{
         this.address = new Address();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Person)) return false;
+
+        Person person = (Person) o;
+
+        return id != null ? id.equals(person.id) : person.id == null;
+
+    }
+
+
     public Person(String id, String firstName, String lastName, String phone, String email, Address address) {
         this.id=id;
         this.firstName = firstName;

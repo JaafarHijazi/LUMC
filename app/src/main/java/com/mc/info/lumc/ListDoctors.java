@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.SearchView;
 
 import java.util.ArrayList;
@@ -22,7 +24,6 @@ import java.util.List;
 public class ListDoctors extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private Menu menu;
-    private DBHandler dbHandler = new DBHandler(this, null, null, 1);
     private RecyclerView recyclerView;
     private List<Doctor> doctors;
     private ArrayList<HashMap<String, String>> data = new ArrayList<>();
@@ -49,13 +50,13 @@ public class ListDoctors extends AppCompatActivity implements NavigationView.OnN
         new AsyncTask<Void,Void,List<Doctor>>(){
             @Override
             protected List<Doctor> doInBackground(Void... params) {
-                while (!dbHandler.isDataReady())
+                while (!DBHandler.getInstance().isDataReady())
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                return dbHandler.getDoctors();
+                return DBHandler.getInstance().getDoctors();
             }
 
             @Override

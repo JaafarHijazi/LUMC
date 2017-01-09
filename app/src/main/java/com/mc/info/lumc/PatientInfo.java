@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,7 +99,7 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
 
 
     public void goToMyMedicines(View view){
-        Intent i = new Intent(this,patient_medicines.class);
+        Intent i = new Intent(this,PatientMedicines.class);
         i.putExtra("take",pextra.getId());
         startActivity(i);
     }

@@ -14,14 +14,15 @@ import java.util.List;
 public class Doctor extends Person implements Serializable{
     private String specialty;
     private int experienceYears;
-    private List<Integer> consults;
+    private List<String> consults;
+    private ArrayList<Certificates> certificates;
 
     public Doctor() {
         super();
         specialty="";
         experienceYears=0;
         consults = new ArrayList<>();
-
+        certificates= new ArrayList<>();
     }
 
     public Doctor(String id, String firstName, String lastName, String phone, String email, Address address, String specialty, int experienceYears) {
@@ -29,13 +30,29 @@ public class Doctor extends Person implements Serializable{
         this.specialty = specialty;
         this.experienceYears = experienceYears;
         consults = new ArrayList<>();
+        certificates = new ArrayList<>();
+    }
 
+    public List<String > getConsults() {
+        return new ArrayList<>(consults);
+    }
+
+    public void setConsults(List<String > consults) {
+        this.consults = new ArrayList<>(consults);
+    }
+
+    public ArrayList<Certificates> getCertificates() {
+        return new ArrayList<>(certificates);
+    }
+
+    public void setCertificates(ArrayList<Certificates> certificates) {
+        this.certificates = new ArrayList<>(certificates);
     }
 
     public String getSpecialty() {
         return specialty;
     }
-//burger
+
     public void setSpecialty(String specialty) {
         this.specialty = specialty;
     }
@@ -48,12 +65,12 @@ public class Doctor extends Person implements Serializable{
         this.experienceYears = Integer.parseInt(experienceYears);
     }
 
-    public List<Integer> getConsults() {
-        return new ArrayList<>(consults);
+    public void addCertificate (Certificates c ){
+        certificates.add(c);
     }
 
-    public void setConsults(List<Integer> consults) {
-        this.consults = new ArrayList<>(consults);
+    public void addConsult (Consults c){
+        consults.add(c.getCid());
     }
 
     public HashMap<String,String> toHashMap(){
@@ -62,6 +79,13 @@ public class Doctor extends Person implements Serializable{
         returnValue.put(DBHandler.COLUMN_LAST_NAME,getLastName());
         returnValue.put(DBHandler.COLUMN_SPECIALTY,getSpecialty());
         returnValue.put(DBHandler.COLUMN_ID,String.valueOf(getId()));
+        returnValue.put(DBHandler.COLUMN_PHONE,getPhone());
+        returnValue.put(DBHandler.COLUMN_EMAIL,getEmail());
+        returnValue.put(DBHandler.COLUMN_EXPERIENCE_YEARS,String.valueOf(getExperienceYears()));
+        returnValue.put(DBHandler.COLUMN_BUILDING,getAddress().getBuilding());
+        returnValue.put(DBHandler.COLUMN_CITY,getAddress().getCity());
+        returnValue.put(DBHandler.COLUMN_STREET,getAddress().getStreet());
+
         return returnValue;
     }
 }

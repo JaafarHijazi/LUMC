@@ -19,13 +19,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static com.mc.info.lumc.R.id.button;
 
 
 public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private Doctor doctor;
     private TextView txt,call;
-    private DBHandler dbHandler ;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
@@ -46,7 +44,6 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
             txt.setText(doctor.getSpecialty());
             call = (TextView) findViewById(R.id.activity_doctor_info_phone);
             call.setText(doctor.getPhone());
-            dbHandler = new DBHandler(this, null, null, 1);
             //dbHandler.addDoctor(d);
             call.setOnClickListener(new View.OnClickListener() {
                 @Override

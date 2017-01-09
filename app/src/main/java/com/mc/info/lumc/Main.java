@@ -7,32 +7,19 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.FirebaseDatabase;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import studios.codelight.smartloginlibrary.SmartCustomLoginListener;
-import studios.codelight.smartloginlibrary.SmartLoginBuilder;
-import studios.codelight.smartloginlibrary.SmartLoginConfig;
-import studios.codelight.smartloginlibrary.users.SmartFacebookUser;
-import studios.codelight.smartloginlibrary.users.SmartGoogleUser;
-import studios.codelight.smartloginlibrary.users.SmartUser;
-
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
-    private int patientID=1;
     CircleImageView profile;
     TextView username;
     TextView email;
@@ -41,14 +28,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        try{
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        }
-        catch (Exception e){
-
-        }
         navigationView = (NavigationView) findViewById(R.id.main_nav) ;
-        View header=navigationView.getHeaderView(0);
+        View header = navigationView.getHeaderView(0);
         profile = (CircleImageView) header.findViewById(R.id.login_header_profile);
         username = (TextView) header.findViewById(R.id.login_header_username);
         email = (TextView) header.findViewById(R.id.login_header_email);
@@ -56,7 +37,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SmartLoginBuilder loginBuilder = new SmartLoginBuilder();
+                startActivity(new Intent(Main.this,LoginActivity.class));
+       /*         SmartLoginBuilder loginBuilder = new SmartLoginBuilder();
                 Intent intent = loginBuilder.with(getApplicationContext())
                         .setAppLogo(R.mipmap.ic_launcher)
                         .isFacebookLoginEnabled(false)
@@ -85,40 +67,25 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                         })
                         .isGoogleLoginEnabled(true)
                         .build();
-                startActivityForResult(intent, SmartLoginConfig.LOGIN_REQUEST);
+                startActivityForResult(intent, SmartLoginConfig.LOGIN_REQUEST);*/
             }
         });
-        //for creating a json file of database tables
-        /*DBHandler dbHandler=new DBHandler(this,null,null,1);
-        JSONObject db=dbHandler.getResults(this);
-        try {
-            FileOutputStream stream=new FileOutputStream(new File(Environment.getExternalStorageDirectory(),"output.json"));
-            stream.write(db.toString().getBytes());
-            stream.flush();
-            stream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
 
         drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
         toggle = new ActionBarDrawerToggle(this, drawerLayout,R.string.open,R.string.close);
 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-//
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item){
                 unCheckAllMenuItems(navigationView);
                 item.setChecked(true);
-                if(item.getItemId()==R.id.drwrViewDoctors) {
-                    drawerLayout.closeDrawers();
+                if(item.getItemId()== R.id.drwrViewDoctors)
                     startActivity(new Intent(Main.this, ListDoctors.class));
-                }
-                else if(item.getItemId()==R.id.drwrViewPatients) {
-                    drawerLayout.closeDrawers();
+                else if(item.getItemId()==R.id.drwrViewPatients)
                     startActivity(new Intent(Main.this, ListPatients.class));
-                }
                 return true;
             }
         });
@@ -140,33 +107,33 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             }
         }
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //Intent "data" contains the user object
-        if(resultCode == SmartLoginConfig.FACEBOOK_LOGIN_REQUEST){
-            SmartFacebookUser user;
-            try {
-                user = data.getParcelableExtra(SmartLoginConfig.USER);
-                //use this user object as per your requirement
-            }catch (Exception e){
-                Log.e(getClass().getSimpleName(), e.getMessage());
-            }
-        }else if(resultCode == SmartLoginConfig.GOOGLE_LOGIN_REQUEST){
-            SmartGoogleUser user;
-            try {
-                user = data.getParcelableExtra(SmartLoginConfig.USER);
-                //use this user object as per your requirement
-            }catch (Exception e){
-                Log.e(getClass().getSimpleName(), e.getMessage());
-            }
-        }else if(resultCode == SmartLoginConfig.CUSTOM_LOGIN_REQUEST){
-            SmartUser user = data.getParcelableExtra(SmartLoginConfig.USER);
-            user.describeContents();
-            //use this user object as per your requirement
-        }else if(resultCode == RESULT_CANCELED){
-            //Login Failed
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        //Intent "data" contains the user object
+//        if(resultCode == SmartLoginConfig.FACEBOOK_LOGIN_REQUEST){
+//            SmartFacebookUser user;
+//            try {
+//                user = data.getParcelableExtra(SmartLoginConfig.USER);
+//                //use this user object as per your requirement
+//            }catch (Exception e){
+//                Log.e(getClass().getSimpleName(), e.getMessage());
+//            }
+//        }else if(resultCode == SmartLoginConfig.GOOGLE_LOGIN_REQUEST){
+//            SmartGoogleUser user;
+//            try {
+//                user = data.getParcelableExtra(SmartLoginConfig.USER);
+//                //use this user object as per your requirement
+//            }catch (Exception e){
+//                Log.e(getClass().getSimpleName(), e.getMessage());
+//            }
+//        }else if(resultCode == SmartLoginConfig.CUSTOM_LOGIN_REQUEST){
+//            SmartUser user = data.getParcelableExtra(SmartLoginConfig.USER);
+//            user.describeContents();
+//            //use this user object as per your requirement
+//        }else if(resultCode == RESULT_CANCELED){
+//            //Login Failed
+//        }
+//    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(toggle.onOptionsItemSelected(item))
