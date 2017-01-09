@@ -1,6 +1,7 @@
 package com.mc.info.lumc;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -11,7 +12,8 @@ public class Consults implements Serializable {
     private String cid;
     private String pid;
     private String did;
-    private Date dateOfConsultation;
+    private Date dateOfConsult;
+    private ArrayList<String> medicalReports;
 
     public Consults() {
     }
@@ -20,7 +22,7 @@ public class Consults implements Serializable {
         this.cid = cid;
         this.pid = pid;
         this.did = did;
-        this.dateOfConsultation = (Date) dateOfConsultation.clone();
+        this.dateOfConsult = (Date) dateOfConsultation.clone();
     }
 
     public String getPid() {
@@ -48,10 +50,10 @@ public class Consults implements Serializable {
     }
 
     public Date getDateOfConsultation() {
-        return (Date)dateOfConsultation.clone();
+        return (Date)dateOfConsult.clone();
     }
 
-    public void setDateOfConsultation(Date dateOfConsultation) {
-        this.dateOfConsultation = (Date)dateOfConsultation.clone();
+    public void setDateOfConsult(Date dateOfConsultation) {
+        this.dateOfConsult = (Date)dateOfConsult.clone();
     }
 }

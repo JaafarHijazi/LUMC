@@ -4,8 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
@@ -26,13 +29,12 @@ import java.util.concurrent.Semaphore;
 
 public class DBHandler extends Application{
 
-    private static final int DATABASE_VERSION=1;
     private static final String DATABASE_NAME="MedicalCenter.db";
-    public static final String TABLE_PATIENT ="patient";
+    public static final String TABLE_PATIENT ="patientTest";
     public static final String TABLE_DOCTOR ="doctor";
     public static  final String TABLE_CONSULTS = "consults";
-    public static final String TABLE_MEDICATIONS = "medications";
-    public static final String COLUMN_ID="_id";
+    public static final String TABLE_MEDICATIONS = "medication";
+    public static final String COLUMN_ID="id";
     public static final String COLUMN_FIRST_NAME ="firstName";
     public static final String COLUMN_LAST_NAME ="lastName";
     public static final String COLUMN_CITY ="city";
@@ -46,21 +48,49 @@ public class DBHandler extends Application{
     public static final String COLUMN_PID_FK = "pid";
     public static final String COLUMN_DID_FK ="did";
     public static final String COLUMN_DATEOFCONSULTATION ="dateOfConsultation";
-    public static final String COLUMN_MEDICINE_NAME = "medicineName";
+    public static final String COLUMN_MEDICINE_NAME = "name";
 
 
     public FirebaseDatabase database;
     private List<Patient> patients;
     private List<Doctor> doctors;
     private List<Patient> myPatients;
+    private List<Doctor> myDoctors;
     private boolean dataReady =false;
+    private boolean loggedIn=false;
     private static DBHandler singlton;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseUser user;
+
+    public FirebaseUser getUser() {
+        return user;
+    }
+
+    public void setUser(FirebaseUser user) {
+        this.user = user;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         singlton=this;
         database = FirebaseDatabase.getInstance();
         database.setPersistenceEnabled(true);
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    DBHandler.getInstance().setUser(user);
+                    loggedIn = true;
+                } else {
+                    // User is signed out
+                }
+                // ...
+            }
+        };
         myPatients = new ArrayList<>();
         DatabaseReference reference=database.getReference();
         reference.addValueEventListener(new ValueEventListener() {
@@ -164,7 +194,7 @@ public class DBHandler extends Application{
     public List<Patient> getPatients(){
         return patients;
     }
-//this is nice
+
     public List<Patient> getMyPatients(Doctor d) {
         final String did = d.getId();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(TABLE_CONSULTS);
@@ -172,7 +202,7 @@ public class DBHandler extends Application{
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot consult :  dataSnapshot.child(TABLE_CONSULTS).getChildren()) {
+                    for (DataSnapshot consult :  dataSnapshot.getChildren()) {
                         Consults mConsult = consult.getValue(Consults.class);
                         if((mConsult).getDid().equals(did)) {
                             Patient p = getPatientById(mConsult.getPid());
@@ -192,23 +222,58 @@ public class DBHandler extends Application{
     return myPatients;
         }
 
+    public List<Doctor> getMyDoctors( Patient p) {
+        final String pid = p.getId();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(TABLE_CONSULTS);
+        myDoctors = new ArrayList<Doctor>();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot consult :  dataSnapshot.getChildren()) {
+                    Consults mConsult = consult.getValue(Consults.class);
+                    if((mConsult).getPid().equals(pid)) {
+                        Doctor d = getDoctorById(mConsult.getDid());
+                        if (myDoctors.contains(d))
+                            continue;
+                        else
+                            myDoctors.add(d);
+                    }
+                }
 
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+        return myDoctors;
+    }
     public List<Medication> getPatientMedicines(Patient p){
-        final List<Medication> patientmedicines = new ArrayList<>();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        // return p.getPatientMedicines();
+        final String pid = p.getId();
+        final List<Medication> patientMedicines = new ArrayList<>();
+        final DatabaseReference patientRef = FirebaseDatabase.getInstance().getReference(TABLE_PATIENT);
+        //patientRef.orderByChild(COLUMN_ID).equalTo(pid).
+        patientRef.orderByChild(COLUMN_ID).equalTo(pid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                for (DataSnapshot medication : dataSnapshot.child(TABLE_MEDICATIONS).getChildren()){
+                    Medication m = medication.getValue(Medication.class);
+                    patientMedicines.add(m);
+                }
             }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-        return patientmedicines;
-    }
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    });
+    return  patientMedicines;
+
+
+}
 
     public Patient getPatientById(final String id){
         for (Patient p : patients){
@@ -230,18 +295,16 @@ public class DBHandler extends Application{
 
     }
 
-    public void getMedications (Patient p){
-        DatabaseReference doctorRef = database.getReference().child(TABLE_DOCTOR);
-        String key = doctorRef.push().getKey();
-        DatabaseReference item = doctorRef.child(key);
 
-
+    public boolean isLoggedIn() {
+        return loggedIn;
     }
 
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
 
-
-
-//function to get JSON Database from android device
+    //function to get JSON Database from android device
     public JSONObject getResults(Context context)
     {
 

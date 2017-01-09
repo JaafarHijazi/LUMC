@@ -34,40 +34,15 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         username = (TextView) header.findViewById(R.id.login_header_username);
         email = (TextView) header.findViewById(R.id.login_header_email);
         loginButton= (Button) header.findViewById(R.id.login_header_button);
+        if(DBHandler.getInstance().isLoggedIn()){
+            loginButton.setVisibility(View.INVISIBLE);
+            username.setText(DBHandler.getInstance().getUser().getDisplayName());
+            email.setText(DBHandler.getInstance().getUser().getEmail());
+        }
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Main.this,LoginActivity.class));
-       /*         SmartLoginBuilder loginBuilder = new SmartLoginBuilder();
-                Intent intent = loginBuilder.with(getApplicationContext())
-                        .setAppLogo(R.mipmap.ic_launcher)
-                        .isFacebookLoginEnabled(false)
-                        //.isFacebookLoginEnabled(true).withFacebookAppId("APP_ID")
-                       // .withFacebookPermissions(PERMISSIONS)
-                        .isCustomLoginEnabled(true)
-                        .setSmartCustomLoginHelper(new SmartCustomLoginListener() {
-                            @Override
-                            public boolean customSignin(SmartUser smartUser) {
-                                //TODO
-                                smartUser.setBirthday("1/1/1993");
-                                return true;
-                            }
-
-                            @Override
-                            public boolean customSignup(SmartUser smartUser) {
-                                //TODO
-                                return false;
-                            }
-
-                            @Override
-                            public boolean customUserSignout(SmartUser smartUser) {
-                                //TODO
-                                return false;
-                            }
-                        })
-                        .isGoogleLoginEnabled(true)
-                        .build();
-                startActivityForResult(intent, SmartLoginConfig.LOGIN_REQUEST);*/
             }
         });
 

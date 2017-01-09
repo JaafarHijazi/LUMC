@@ -22,7 +22,7 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
-    private Patient pextra;
+    private Patient patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +31,11 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
 
-            pextra = (Patient) extras.getSerializable("take");
+            patient = (Patient) extras.getSerializable("take");
             txt = (TextView) findViewById(R.id.activity_patient_info_Name);
-            txt.setText(pextra.getFirstName() + " " + pextra.getLastName());
+            txt.setText(patient.getFirstName() + " " + patient.getLastName());
             call = (TextView) findViewById(R.id.activity_patient_info_Phone);
-            call.setText(pextra.getPhone());
+            call.setText(patient.getPhone());
 
             call.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -47,9 +47,9 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
             });
 
             txt = (TextView) findViewById(R.id.activity_patient_info_Address);
-            txt.setText(pextra.getAddress().toString());
+            txt.setText(patient.getAddress().toString());
             txt = (TextView) findViewById(R.id.activity_patient_info_Email);
-            txt.setText(pextra.getEmail());
+            txt.setText(patient.getEmail());
 
             txt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -99,8 +99,8 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
 
 
     public void goToMyMedicines(View view){
-        Intent i = new Intent(this,PatientMedicines.class);
-        i.putExtra("take",pextra.getId());
+        Intent i = new Intent(PatientInfo.this,PatientMedicines.class);
+        i.putExtra("take",patient);
         startActivity(i);
     }
 
