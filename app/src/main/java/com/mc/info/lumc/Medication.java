@@ -1,8 +1,6 @@
 package com.mc.info.lumc;
 
-import java.io.DataInput;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by hphh4 on 1/6/2017.
@@ -10,30 +8,32 @@ import java.util.Date;
 
 public class Medication implements Serializable {
 
-    private int id;
-    private String name;
+    private String id;
+    private String Medname;
 
     public Medication() {
+        this.id = "";
+        this.Medname = "";
     }
 
-    public Medication(int id, String name) {
+    public Medication(String id, String Medname) {
         this.id = id;
-        this.name = name;
+        this.Medname = Medname;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getMedname() {
+        return Medname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMedname(String medname) {
+        this.Medname = medname;
     }
 }

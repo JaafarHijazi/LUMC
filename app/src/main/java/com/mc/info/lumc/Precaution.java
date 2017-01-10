@@ -1,7 +1,6 @@
 package com.mc.info.lumc;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by hphh4 on 1/6/2017.
@@ -9,30 +8,32 @@ import java.util.Date;
 
 public class Precaution implements Serializable {
 
-    private int id;
-    private String name;
+    private String id;
+    private String precName;
 
     public Precaution() {
+        this.id = "";
+        this.precName = "";
     }
 
-    public Precaution(int id, String name) {
+    public Precaution(String id, String name) {
         this.id = id;
-        this.name = name;
+        this.precName = name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getPrecName() {
+        return precName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.precName = name;
     }
 }

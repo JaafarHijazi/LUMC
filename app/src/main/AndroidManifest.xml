@@ -41,7 +41,21 @@
             android:launchMode="singleTask" />
         <activity android:name=".PatientInfo" />
         <activity android:name=".DoctorInfo" />
-        <activity android:name=".CreatePrescription"></activity>
+        <activity android:name=".HematologyForm" />
+        <activity android:name=".VitaminDForm" />
+        <activity android:name=".MedicalExaminationForm" />
+        <activity android:name=".CholesterolForm" />
+        <activity android:name=".VitaminAForm" />
+        <activity android:name=".VitaminBForm" />
+        <activity android:name=".VitaminCForm" />
+        <activity android:name=".CreateMedicalReport"></activity>
+        <activity
+            android:name=".ListMedicalResult"
+            android:launchMode="singleTask" />
+        <activity android:name=".MedicalResultInfo"></activity>
+        <activity android:name=".ListReports" />
+        <activity android:name=".ReportDetails" />
     </application>
 
 </manifest>
+

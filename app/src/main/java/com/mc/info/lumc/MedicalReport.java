@@ -1,27 +1,50 @@
 package com.mc.info.lumc;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-public class MedicalReport implements Serializable{
-    private int id;
-    private List<Integer> prescriptions;
+public class MedicalReport implements Serializable {
+
+    private String id,
+                   notes;
+    private Date reportDate;
 
     public MedicalReport() {
+        this.id = "";
+        this.notes = "";
+        this.reportDate = new Date();
     }
 
-    public MedicalReport(int id) {
+    public MedicalReport(String id,String notes,Date reportDate) {
         this.id = id;
-        this.prescriptions = new ArrayList<>();
+        this.notes = notes;
+        this.reportDate = (Date) reportDate.clone();
     }
 
-    public List<Integer> getPrescriptions() {
-        return new ArrayList<>(prescriptions);
+    public String getId() {
+        return id;
     }
 
-    public void setPrescriptions(List<Integer> prescriptions) {
-        this.prescriptions = new ArrayList<>(prescriptions);
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public Date getReportDate() {
+        return (Date) reportDate.clone();
+    }
+
+    public void setReportDate(Date reportDate) {
+        this.reportDate = (Date) reportDate.clone();
     }
 }
