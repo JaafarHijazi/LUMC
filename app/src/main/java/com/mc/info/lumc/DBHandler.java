@@ -85,18 +85,20 @@ public class DBHandler extends SQLiteOpenHelper {
 
                 }
 
-                medicalResults = new ArrayList<>();
+                /*medicalResults = new ArrayList<>();
                 Examination exam;
                 for (DataSnapshot exams : dataSnapshot.child(TABLE_EXAMINATION).getChildren()) {
-                    try {
-                        exam = exams.getValue(Examination.class);
-                        exam.setId(exams.getKey());
-                        medicalResults.add(exam);
-                    } catch (DatabaseException ex) {
-                        System.out.print(ex.getMessage());
+                //for (DataSnapshot exams : dataSnapshot.child(TABLE_EXAMINATION+"/"+id).getChildren()) {
+                        try {
+                            exam = exams.getValue(Examination.class);
+                            exam.setId(exams.getKey());
+                            medicalResults.add(exam);
+                        } catch (DatabaseException ex) {
+                            System.out.print(ex.getMessage());
+                        }
+
                     }
 
-                }
                 medicalDatas = new ArrayList<>();
                 MedicalData data;
                 for (DataSnapshot exams : dataSnapshot.child(TABLE_MEDICAL_DATA).getChildren()) {
@@ -110,7 +112,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
                     }
 
-                }
+                }*/
                 dataReady = true;
             }
             @Override
@@ -128,7 +130,46 @@ public class DBHandler extends SQLiteOpenHelper {
     public List<Doctor> getDoctors() {
         return doctors;
     }
-    public List<Examination> getMedicalResult() {
+    public List<Examination> getMedicalResult(final String Pid) {
+        dataReady=false;
+        database.getReference().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                medicalResults = new ArrayList<>();
+                Examination exam;
+                for (DataSnapshot exams : dataSnapshot.child(TABLE_EXAMINATION+"/"+Pid).getChildren()) {
+                    try {
+                        exam = exams.getValue(Examination.class);
+                        exam.setId(exams.getKey());
+                        medicalResults.add(exam);
+                    } catch (DatabaseException ex) {
+                        System.out.print(ex.getMessage());
+                    }
+
+                }
+
+                medicalDatas = new ArrayList<>();
+                MedicalData data;
+                for (DataSnapshot exams : dataSnapshot.child(TABLE_MEDICAL_DATA).getChildren()) {
+                    try {
+                        data = exams.getValue(MedicalData.class);
+                        data.setId(exams.getKey());
+                        medicalDatas.add(data);
+                    } catch (DatabaseException ex) {
+                        System.out.print(ex.getMessage());
+
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        dataReady=true;
         return medicalResults;
     }
     public List<MedicalData> getMedicalData(){ return medicalDatas; }
@@ -290,14 +331,21 @@ public class DBHandler extends SQLiteOpenHelper {
         myRef.child(key).setValue(m);
     }
 
-    public static void addExamination(Examination e){
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(TABLE_EXAMINATION);
+    public static void addExamination(Patient p, Examination e){
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(TABLE_EXAMINATION).child(p.getId());
         String key = myRef.push().getKey();
         e.setId(key);
         myRef.child(key).setValue(e);
     }
 
     public static void addMedicalData(Examination e, MedicalData m){
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(TABLE_MEDICAL_DATA).child(e.getId());
+        String key = myRef.push().getKey();
+        m.setId(key);
+        myRef.child(key).setValue(m);
+    }
+
+    public static void add(Examination e, MedicalData m){
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(TABLE_MEDICAL_DATA).child(e.getId());
         String key = myRef.push().getKey();
         m.setId(key);

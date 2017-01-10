@@ -40,7 +40,7 @@ public class VitaminDForm extends AppCompatActivity {
                 Examination e;
                 MedicalData data = new MedicalData(null,textName.getText().toString(),value.getText().toString());
                 e = new Examination(null,examName.getText().toString(),date.getText().toString(), Examination.examType.VITAMIN_D);
-                DBHandler.addExamination(e);
+                DBHandler.addExamination(p,e);
                 DBHandler.addMedicalData(e,data);
                 finish();
             }

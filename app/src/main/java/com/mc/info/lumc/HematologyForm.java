@@ -58,7 +58,7 @@ public class HematologyForm extends AppCompatActivity {
 
                 e = new Examination(null,examName.getText().toString(),date.getText().toString(), Examination.examType.HEMATOLOGY);
 
-                DBHandler.addExamination(e);
+                DBHandler.addExamination(p,e);
 
                 DBHandler.addMedicalData(e,RBC);
                 DBHandler.addMedicalData(e,HCT);

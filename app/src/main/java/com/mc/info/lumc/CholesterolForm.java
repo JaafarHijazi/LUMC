@@ -50,7 +50,7 @@ public class CholesterolForm extends AppCompatActivity {
                 hdl = new MedicalData(null,textNameHDL.getText().toString(),valueHDL.getText().toString());
                 e = new Examination(null,examName.getText().toString(),date.getText().toString(), Examination.examType.CHOLESTEROL);
 
-                DBHandler.addExamination(e);
+                DBHandler.addExamination(p,e);
 
                 DBHandler.addMedicalData(e,cholesterol);
                 DBHandler.addMedicalData(e,triglycerides);

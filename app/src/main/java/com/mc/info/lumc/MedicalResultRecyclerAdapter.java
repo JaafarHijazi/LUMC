@@ -17,8 +17,8 @@ import java.util.List;
 public class MedicalResultRecyclerAdapter extends RecyclerView.Adapter<MedicalResultRecyclerAdapter.ResultHolder>{
     List<Examination> exams;
 
-    public MedicalResultRecyclerAdapter(List<Examination> m) {
-        exams =new ArrayList<>(m);
+    public MedicalResultRecyclerAdapter(List<Examination> e) {
+        exams =new ArrayList<>(e);
     }
 
     public MedicalResultRecyclerAdapter.ResultHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -35,9 +35,9 @@ public class MedicalResultRecyclerAdapter extends RecyclerView.Adapter<MedicalRe
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Examination m = exams.get(position);
+                Examination e = exams.get(position);
                 Intent intent = new Intent(holder.cardView.getContext(), MedicalResultInfo.class);
-                intent.putExtra("take",m);
+                intent.putExtra("take",e);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 holder.cardView.getContext().startActivity(intent);
             }
@@ -48,6 +48,7 @@ public class MedicalResultRecyclerAdapter extends RecyclerView.Adapter<MedicalRe
     public int getItemCount() {
         return exams.size();
     }
+
     public class ResultHolder extends RecyclerView.ViewHolder{
 
         TextView textViewName;

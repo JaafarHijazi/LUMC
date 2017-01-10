@@ -12,11 +12,16 @@ public class ListMedicalResult extends AppCompatActivity {
     private RecyclerView recyclerView; private List exams;
     private ArrayList<HashMap<String,String>> data = new ArrayList<>();
     private MedicalResultRecyclerAdapter adapter;
+    private Bundle extras;
+    private Patient p;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_medical_result);
+
+        extras = getIntent().getExtras();
+        p = (Patient) extras.getSerializable("patient");
 
         recyclerView= (RecyclerView) findViewById(R.id.activity_list_medical_result_medicalResultList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -27,7 +32,7 @@ public class ListMedicalResult extends AppCompatActivity {
                     Thread.sleep(100); }
                 catch (InterruptedException e) {
                     e.printStackTrace(); }
-                return dbHandler.getMedicalResult();
+                return dbHandler.getMedicalResult(p.getId());
             }
             @Override protected void onPostExecute(List<Examination> exams) {
                 ListMedicalResult.this.exams=exams;

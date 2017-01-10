@@ -151,7 +151,7 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
     }
     public void goToMedicalResult(View view){
         Intent intent = new Intent(this,ListMedicalResult.class);
-        intent.putExtra("take",p);
+        intent.putExtra("patient",p);
         startActivity(intent);
     }
 }
