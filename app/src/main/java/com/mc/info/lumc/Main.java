@@ -36,8 +36,9 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         loginButton= (Button) header.findViewById(R.id.login_header_button);
         if(DBHandler.getInstance().isLoggedIn()){
             loginButton.setVisibility(View.INVISIBLE);
-            username.setText(DBHandler.getInstance().getUser().getDisplayName());
-            email.setText(DBHandler.getInstance().getUser().getEmail());
+            Person p = DBHandler.getInstance().getActiveUser();
+            username.setText(p.getFirstName()+ " " + p.getLastName() );
+            email.setText(p.getEmail());
         }
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,33 +83,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             }
         }
     }
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        //Intent "data" contains the user object
-//        if(resultCode == SmartLoginConfig.FACEBOOK_LOGIN_REQUEST){
-//            SmartFacebookUser user;
-//            try {
-//                user = data.getParcelableExtra(SmartLoginConfig.USER);
-//                //use this user object as per your requirement
-//            }catch (Exception e){
-//                Log.e(getClass().getSimpleName(), e.getMessage());
-//            }
-//        }else if(resultCode == SmartLoginConfig.GOOGLE_LOGIN_REQUEST){
-//            SmartGoogleUser user;
-//            try {
-//                user = data.getParcelableExtra(SmartLoginConfig.USER);
-//                //use this user object as per your requirement
-//            }catch (Exception e){
-//                Log.e(getClass().getSimpleName(), e.getMessage());
-//            }
-//        }else if(resultCode == SmartLoginConfig.CUSTOM_LOGIN_REQUEST){
-//            SmartUser user = data.getParcelableExtra(SmartLoginConfig.USER);
-//            user.describeContents();
-//            //use this user object as per your requirement
-//        }else if(resultCode == RESULT_CANCELED){
-//            //Login Failed
-//        }
-//    }
+    ;
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(toggle.onOptionsItemSelected(item))
@@ -121,14 +96,5 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         return false;
     }
 
-    /*public void goToListDoctors(View view){
-        Intent i = new Intent(this,ListDoctors.class);
-        startActivity(i);
-    }
-
-    public void goToListPatients(View view){
-        Intent i = new Intent(this,ListPatients.class);
-        startActivity(i);
-    }*/
 
 }

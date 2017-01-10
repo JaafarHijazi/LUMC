@@ -17,8 +17,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 
 
 public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{

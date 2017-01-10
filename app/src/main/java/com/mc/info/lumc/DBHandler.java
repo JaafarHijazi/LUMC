@@ -1,9 +1,9 @@
 package com.mc.info.lumc;
+
 import android.app.Application;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -21,7 +20,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 /**
  * Created by BurgerMan on 12/9/2016.
@@ -62,13 +60,74 @@ public class DBHandler extends Application{
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser user;
+    private Patient patientMe;
+    private Doctor doctorMe;
+    private LoginType loginType;
+
+    public enum LoginType {
+        DOCTOR,PATIENT
+    }
+
+    public Person getActiveUser(){
+        switch (loginType){
+            case DOCTOR:
+                return doctorMe;
+            case PATIENT:
+                return patientMe;
+        }
+        return null;
+    }
+
+    public void setActiveUser(Person p){
+        switch (loginType){
+            case DOCTOR:
+                doctorMe = (Doctor) p;
+            case PATIENT:
+                patientMe = (Patient) p;
+        }
+    }
+
+    public LoginType getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(LoginType loginType) {
+        this.loginType = loginType;
+    }
 
     public FirebaseUser getUser() {
-        return user;
+        return mAuth.getCurrentUser();
     }
 
     public void setUser(FirebaseUser user) {
-        this.user = user;
+        /*database.getReference().child(TABLE_PATIENT).child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Patient person= dataSnapshot.getValue(Patient.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
+        this.user=user;
+    }
+
+    public FirebaseAuth getmAuth() {
+        return mAuth;
+    }
+
+    public void setmAuth(FirebaseAuth mAuth) {
+        this.mAuth = mAuth;
+    }
+
+    public FirebaseAuth.AuthStateListener getmAuthListener() {
+        return mAuthListener;
+    }
+
+    public void setmAuthListener(FirebaseAuth.AuthStateListener mAuthListener) {
+        this.mAuthListener = mAuthListener;
     }
 
     @Override
@@ -83,14 +142,31 @@ public class DBHandler extends Application{
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    DBHandler.getInstance().setUser(user);
+                    DBHandler db = DBHandler.getInstance();
+                    db.setUser(user);
+                    db.database.getReference(TABLE_PATIENT).child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            DBHandler.getInstance().setActiveUser(dataSnapshot.getValue(Patient.class));
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                     loggedIn = true;
+                    //
+                    setLoginType(LoginType.PATIENT);
                 } else {
                     // User is signed out
+                    loggedIn=false;
                 }
                 // ...
             }
         };
+        mAuth.addAuthStateListener(mAuthListener);
+
         myPatients = new ArrayList<>();
         DatabaseReference reference=database.getReference();
         reference.addValueEventListener(new ValueEventListener() {
@@ -105,7 +181,7 @@ public class DBHandler extends Application{
 
                 doctors=new ArrayList<Doctor>();
                 for (DataSnapshot doctor : dataSnapshot.child(TABLE_DOCTOR).getChildren()) {
-                    Doctor d=doctor.getValue(Doctor.class);
+                    Doctor d= doctor.getValue(Doctor.class);
                     d.setId(doctor.getKey());
                     doctors.add(d);
                 }
@@ -160,18 +236,6 @@ public class DBHandler extends Application{
         d.setId(key);
         myRef.child(key).setValue(d);
 
-        /*DatabaseReference doctorRef = database.getReference().child(TABLE_DOCTOR);
-        String key = doctorRef.push().getKey();
-        DatabaseReference item = doctorRef.child(key);
-        item.child(COLUMN_FIRST_NAME).setValue(d.getFirstName());
-        item.child(COLUMN_LAST_NAME).setValue(d.getLastName());
-        item.child(COLUMN_ADDRESS).setValue(d.getAddress());
-        item.child(COLUMN_EMAIL).setValue(d.getEmail());
-        item.child(COLUMN_PHONE).setValue(d.getPhone());
-        item.child(COLUMN_EXPERIENCE_YEARS).setValue(d.getExperienceYears());
-        item.child(COLUMN_SPECIALTY).setValue(d.getSpecialty());
-        item.child(COLUMN_ID).setValue(Integer.parseInt(key));*/
-
     }
 
     public void addConsult (Consults c){
@@ -180,12 +244,6 @@ public class DBHandler extends Application{
         String key = myRef.push().getKey();
         c.setCid(key);
         myRef.child(key).setValue(c);
-        /*DatabaseReference consultRef = database.getReference().child(TABLE_CONSULTS);
-        String key = consultRef.push().getKey();
-        DatabaseReference item = consultRef.child(key);
-        item.child(COLUMN_PID_FK).setValue(c.getPid());
-        item.child(COLUMN_DID_FK).setValue(c.getDid());
-        item.child(COLUMN_DATEOFCONSULTATION).setValue(c.getDateOfConsultation());*/
 
     }
     public void signUp(Person person){

@@ -1,9 +1,7 @@
 package com.mc.info.lumc;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by BurgerMan on 12/9/2016.
@@ -14,39 +12,17 @@ import java.util.List;
 public class Doctor extends Person implements Serializable{
     private String specialty;
     private int experienceYears;
-    private List<String> consults;
-    private ArrayList<Certificates> certificates;
 
     public Doctor() {
         super();
         specialty="";
         experienceYears=0;
-        consults = new ArrayList<>();
-        certificates= new ArrayList<>();
     }
 
     public Doctor(String id, String firstName, String lastName, String phone, String email, Address address, String specialty, int experienceYears) {
         super(id, firstName, lastName, phone, email, address);
         this.specialty = specialty;
         this.experienceYears = experienceYears;
-        consults = new ArrayList<>();
-        certificates = new ArrayList<>();
-    }
-
-    public List<String > getConsults() {
-        return new ArrayList<>(consults);
-    }
-
-    public void setConsults(List<String > consults) {
-        this.consults = new ArrayList<>(consults);
-    }
-
-    public ArrayList<Certificates> getCertificates() {
-        return new ArrayList<>(certificates);
-    }
-
-    public void setCertificates(ArrayList<Certificates> certificates) {
-        this.certificates = new ArrayList<>(certificates);
     }
 
     public String getSpecialty() {
@@ -63,14 +39,6 @@ public class Doctor extends Person implements Serializable{
 
     public void setExperienceYears(String experienceYears) {
         this.experienceYears = Integer.parseInt(experienceYears);
-    }
-
-    public void addCertificate (Certificates c ){
-        certificates.add(c);
-    }
-
-    public void addConsult (Consults c){
-        consults.add(c.getCid());
     }
 
     public HashMap<String,String> toHashMap(){
