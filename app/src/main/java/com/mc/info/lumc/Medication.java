@@ -1,25 +1,24 @@
 package com.mc.info.lumc;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 /**
- * Created by TOSHIBA on 07-Jan-17.
+ * Created by hphh4 on 1/6/2017.
  */
 
 public class Medication implements Serializable {
 
-    private String  id;
-    private String name;
+    private String id;
+    private String Medname;
 
     public Medication() {
-        id = "";
-        name = "";
+        this.id = "";
+        this.Medname = "";
     }
 
-    public Medication(String id, String name) {
+    public Medication(String id, String Medname) {
         this.id = id;
-        this.name = name;
+        this.Medname = Medname;
     }
 
     public String getId() {
@@ -30,20 +29,11 @@ public class Medication implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getMedname() {
+        return Medname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMedname(String medname) {
+        this.Medname = medname;
     }
-
-    public HashMap<String,String> toHashMap()
-    {
-        HashMap<String, String> returnValue = new HashMap<>();
-        returnValue.put(DBHandler.COLUMN_MEDICINE_NAME, getName());
-        return returnValue;
-    }
-
-
 }

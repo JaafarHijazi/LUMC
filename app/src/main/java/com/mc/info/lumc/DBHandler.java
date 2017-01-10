@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -20,6 +21,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by BurgerMan on 12/9/2016.
@@ -28,10 +30,14 @@ import java.util.List;
 public class DBHandler extends Application{
 
     private static final String DATABASE_NAME="MedicalCenter.db";
-    public static final String TABLE_PATIENT ="patientTest";
+    public static final String TABLE_PATIENT ="patient";
     public static final String TABLE_DOCTOR ="doctor";
     public static  final String TABLE_CONSULTS = "consults";
-    public static final String TABLE_MEDICATIONS = "medication";
+    public static final String TABLE_MEDICAL_EXAMINATION ="medicalExamination";
+    public static final String TABLE_MEDICAL_REPORT ="medicalReport";
+    public static final String TABLE_MEDICATION ="medication";
+    public static final String TABLE_PRECAUTION ="precaution";
+    public static final String COULMN_DATE ="date";
     public static final String COLUMN_ID="id";
     public static final String COLUMN_FIRST_NAME ="firstName";
     public static final String COLUMN_LAST_NAME ="lastName";
@@ -43,6 +49,8 @@ public class DBHandler extends Application{
     public static final String COLUMN_EMAIL ="email";
     public static final String COLUMN_SPECIALTY ="specialty";
     public static final String COLUMN_EXPERIENCE_YEARS ="experienceYears";
+    public static final String COLUMN_MEDICATION ="medication";
+    public static final String COLUMN_MEDICAL_REPORTS ="medicalReports";
     public static final String COLUMN_PID_FK = "pid";
     public static final String COLUMN_DID_FK ="did";
     public static final String COLUMN_DATEOFCONSULTATION ="dateOfConsultation";
@@ -52,6 +60,7 @@ public class DBHandler extends Application{
     public FirebaseDatabase database;
     private List<Patient> patients;
     private List<Doctor> doctors;
+    private List<Examination> medicalResults;
     private List<Patient> myPatients;
     private List<Doctor> myDoctors;
     private boolean dataReady =false;
@@ -206,6 +215,10 @@ public class DBHandler extends Application{
     public List<Doctor> getDoctors() {
         return doctors;
     }
+    public List<Examination> getMedicalResult() {
+        return medicalResults;
+    }
+
 
     public void addPatient(Patient p){
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(TABLE_PATIENT);
@@ -257,6 +270,14 @@ public class DBHandler extends Application{
         final String did = d.getId();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(TABLE_CONSULTS);
 
+
+    public Doctor getDoctorById(String id) {
+        for (Doctor d : doctors){
+            if (d.getId().equals(id))
+                return d;
+        }
+        return null;
+    }
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -417,5 +438,56 @@ public class DBHandler extends Application{
             }
         }
         return db;
+    }
+
+    public static void addMedicalReport(MedicalReport mr , Patient p){
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(TABLE_MEDICAL_REPORT).child(p.getId());
+        String key = myRef.push().getKey();
+        mr.setId(key);
+        myRef.child(key).setValue(mr);
+    }
+
+    public static void addMedication(Medication m , MedicalReport mr){
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(TABLE_MEDICATION).child(mr.getId());
+        String key = myRef.push().getKey();
+        m.setId(key);
+        myRef.child(key).setValue(m);
+    }
+
+    public static void addPrecaution(Precaution p , MedicalReport mr){
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(TABLE_PRECAUTION).child(mr.getId());
+        String key = myRef.push().getKey();
+        p.setId(key);
+        myRef.child(key).setValue(p);
+    }
+
+    public static List<MedicalReport> getMedicalReports (Patient p){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference=database.getReference();
+        List<MedicalReport>  mr1;
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {  // get data from database to your arraylist
+                List<MedicalReport> mr = new ArrayList<>();
+                for (DataSnapshot medR : dataSnapshot.child(TABLE_MEDICAL_REPORT).getChildren()) {
+                    try {
+                        MedicalReport p = medR.getValue(MedicalReport.class);
+                        p.setId(medR.getKey());
+                        mr.add(p);
+                    }
+                    catch( DatabaseException e){
+                        System.out.print(e.getMessage());
+                    }
+                }
+                getMedicalReports(p).mr1 = mr;
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return mr;
     }
 }

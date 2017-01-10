@@ -36,8 +36,7 @@ public class ListDoctors extends AppCompatActivity implements NavigationView.OnN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_doctors);
         SearchView sv = (SearchView) findViewById(R.id.activity_list_doctors_search);
-
-/*
+        /*
         for (int i = 0; i < doctors.size(); i++) {
             data.add(doctors.get(i).toHashMap());
         }*/

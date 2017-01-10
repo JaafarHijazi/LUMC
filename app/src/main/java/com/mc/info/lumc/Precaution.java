@@ -3,21 +3,22 @@ package com.mc.info.lumc;
 import java.io.Serializable;
 
 /**
- * Created by TOSHIBA on 07-Jan-17.
+ * Created by hphh4 on 1/6/2017.
  */
 
 public class Precaution implements Serializable {
+
     private String id;
-    private String name;
+    private String precName;
 
     public Precaution() {
-        id ="";
-        name = "";
+        this.id = "";
+        this.precName = "";
     }
 
     public Precaution(String id, String name) {
         this.id = id;
-        this.name = name;
+        this.precName = name;
     }
 
     public String getId() {
@@ -28,11 +29,11 @@ public class Precaution implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getPrecName() {
+        return precName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.precName = name;
     }
 }

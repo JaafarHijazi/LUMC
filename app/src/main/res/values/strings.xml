@@ -22,6 +22,22 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string-array name="types">
+        <item>Medication</item>
+        <item>Precaution</item>
+        <item>Examination</item>
+    </string-array>
+
+    <string-array name="Exams">
+        <item>Cholesterol</item>
+        <item>Hematology</item>
+        <item>Vitamin A</item>
+        <item>Vitamin B</item>
+        <item>Vitamin C</item>
+        <item>Vitamin D</item>
+    </string-array>
+
     <string name="login">LOGIN</string>
     <string name="Username">Username</string>
     <string name="Password">Password</string>

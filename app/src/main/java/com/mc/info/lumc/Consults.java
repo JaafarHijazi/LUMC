@@ -2,58 +2,63 @@ package com.mc.info.lumc;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-
-/**
- * Created by BurgerMan on 1/5/2017.
- */
+import java.util.GregorianCalendar;
+import java.util.List;
 
 public class Consults implements Serializable {
-    private String cid;
-    private String pid;
-    private String did;
-    private Date dateOfConsult;
-    private ArrayList<String> medicalReports;
+    private String id,
+                   pid,
+                   did;
+    private Date dateOfConsultation;
+    private List<MedicalReport> medicalReports;
 
     public Consults() {
+        this.id = "";
+        this.did = "";
+        this.pid = "";
+        this.dateOfConsultation = new Date();
+        this.medicalReports = new ArrayList<>();
     }
 
-    public Consults(String cid, String pid, String did, Date dateOfConsultation) {
-        this.cid = cid;
-        this.pid = pid;
+    public Consults(String id, String did, String pid, Date dateOfConsultation) {
+        this.id = id;
         this.did = did;
-        this.dateOfConsult = (Date) dateOfConsultation.clone();
+        this.pid = pid;
+        this.dateOfConsultation = (Date) dateOfConsultation.clone();
+        this.medicalReports = new ArrayList<>();
     }
 
-    public String getPid() {
-        return pid;
+    public String getId() {
+        return id;
     }
 
-    public String getCid() {
-        return cid;
-    }
-
-    public void setCid(String cid) {
-        this.cid = cid;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setPid(String pid) {
         this.pid = pid;
     }
 
-    public String getDid() {
-        return did;
-    }
-
     public void setDid(String did) {
         this.did = did;
     }
 
-    public Date getDateOfConsultation() {
-        return (Date)dateOfConsult.clone();
+    public List<MedicalReport> getMedicalReports() {
+        return new ArrayList<>(medicalReports);
     }
 
-    public void setDateOfConsult(Date dateOfConsultation) {
-        this.dateOfConsult = (Date)dateOfConsult.clone();
+    public void setMedicalReports(List<MedicalReport> medicalReports) {
+        this.medicalReports = new ArrayList<>(medicalReports);
+    }
+
+    public Date getDateOfConsultation() {
+        return (Date) dateOfConsultation.clone();
+    }
+
+    public void setDateOfConsultation(Date dateOfConsultation) {
+        this.dateOfConsultation = (Date) dateOfConsultation.clone();
     }
 }

@@ -1,13 +1,12 @@
 package com.mc.info.lumc;
 
+import android.content.ContentValues;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-/**
- * Created by BurgerMan on 12/9/2016.
- */
-
-//Burger
 
 public class Doctor extends Person implements Serializable{
     private String specialty;

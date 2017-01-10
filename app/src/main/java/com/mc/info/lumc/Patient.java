@@ -1,10 +1,9 @@
 package com.mc.info.lumc;
 
 import java.io.Serializable;
-
-/**
- * Created by BurgerMan on 12/9/2016.
- */
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Patient extends Person implements Serializable {
 

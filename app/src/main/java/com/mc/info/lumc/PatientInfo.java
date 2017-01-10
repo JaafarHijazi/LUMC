@@ -22,7 +22,7 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
-    private Patient patient;
+    Patient p;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +31,11 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
 
-            patient = (Patient) extras.getSerializable("take");
+            p = (Patient) extras.getSerializable("take");
             txt = (TextView) findViewById(R.id.activity_patient_info_Name);
-            txt.setText(patient.getFirstName() + " " + patient.getLastName());
+            txt.setText(p.getFirstName() + " " + p.getLastName());
             call = (TextView) findViewById(R.id.activity_patient_info_Phone);
-            call.setText(patient.getPhone());
+            call.setText(p.getPhone());
 
             call.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -47,9 +47,9 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
             });
 
             txt = (TextView) findViewById(R.id.activity_patient_info_Address);
-            txt.setText(patient.getAddress().toString());
+            txt.setText(p.getAddress().toString());
             txt = (TextView) findViewById(R.id.activity_patient_info_Email);
-            txt.setText(patient.getEmail());
+            txt.setText(p.getEmail());
 
             txt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -67,10 +67,7 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
                     }
                 }
             });
-
         }
-
-
         drawerLayout = (DrawerLayout) findViewById(R.id.patient_info_drawer);
         toggle = new ActionBarDrawerToggle(this, drawerLayout,R.string.open,R.string.close);
 
@@ -140,6 +137,23 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
+    }
+
+    public void newPrescription(View view) {
+        MedicalReport p = new MedicalReport();
+        Intent intent = new Intent(this, CreateMedicalReport.class);
+        intent.putExtra("take", p);
+        startActivity(intent);
+    }
+
+    public void goToExam(View view) {
+        startActivity(new Intent(this,MedicalExaminationForm.class));
+    }
+
+    public void goToListReports(View view) {
+        Intent intent = new Intent(this,ListReports.class);
+        intent.putExtra("take",p);
+        startActivity(intent);
     }
 }
 

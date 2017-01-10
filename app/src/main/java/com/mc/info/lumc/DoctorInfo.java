@@ -9,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ButtonBarLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -18,10 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-
 public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private Doctor doctor;
     private TextView txt,call;
+    private Button btn;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
@@ -33,16 +34,17 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
         setContentView(R.layout.activity_doctor_info);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            doctor = (Doctor) extras.getSerializable("take");
-            txt = (TextView) findViewById(R.id.activity_doctor_info_firstName);
-            txt.setText(doctor.getFirstName());
-            txt = (TextView) findViewById(R.id.activity_doctor_info_lastName);
-            txt.setText(doctor.getLastName());
+            Doctor d = (Doctor) extras.getSerializable("take");
+            txt = (TextView) findViewById(R.id.activity_doctor_info_Name);
+            txt.setText(d.getFirstName() + " " + d.getLastName());
             txt = (TextView) findViewById(R.id.activity_doctor_info_specialty);
-            txt.setText(doctor.getSpecialty());
+            txt.setText(d.getSpecialty());
+            txt = (TextView) findViewById(R.id.activity_doctor_info_expeienceYears);
+            txt.setText(d.getExperienceYears() + " years");
             call = (TextView) findViewById(R.id.activity_doctor_info_phone);
-            call.setText(doctor.getPhone());
-            //dbHandler.addDoctor(d);
+            call.setText(d.getPhone());
+            btn = (Button)findViewById(R.id.activity_doctor_info_consult);
+
             call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -51,19 +53,10 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
                 }
             });
 
-
-           /* txt = (TextView) findViewById(R.id.activity_doctor_info_certificates);
-            ArrayList<Certificates> cert = d.getCertificates();
-            String s = "";
-            for (Certificates c : cert ){
-                s += c.getCertName().toString() + " " + c.getCertYear() + "\n";
-            }
-            txt.setText(s);*/
-
             txt = (TextView) findViewById(R.id.activity_doctor_info_address);
-            txt.setText(doctor.getAddress().toString());
+            txt.setText(d.getAddress().toString());
             txt = (TextView) findViewById(R.id.activity_doctor_info_email);
-            txt.setText(doctor.getEmail());
+            txt.setText(d.getEmail());
 
             txt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -127,7 +120,8 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
                     MenuItem subMenuItem = subMenu.getItem(j);
                     subMenuItem.setChecked(false);
                 }
-            } else {
+            }
+            else {
                 item.setChecked(false);
             }
         }
@@ -143,5 +137,10 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
+    }
+
+    public void consultDoctor(View view) {
+        Toast.makeText(this,"You are now this doctor's patient",Toast.LENGTH_SHORT).show();
+        btn.setVisibility(view.INVISIBLE);
     }
 }
