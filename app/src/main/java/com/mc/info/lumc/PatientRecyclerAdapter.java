@@ -17,10 +17,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 
-/**
- * Created by BurgerMan on 1/1/2017.
- */
-
 public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecyclerAdapter.PatientHolder> implements Filterable{
     PatientFilter patientFilter;
     List<Patient> filteredPatients;

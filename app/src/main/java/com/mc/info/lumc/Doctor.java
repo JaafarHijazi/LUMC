@@ -1,5 +1,7 @@
 package com.mc.info.lumc;
 
+import android.content.ContentValues;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +11,7 @@ import java.util.List;
 public class Doctor extends Person implements Serializable{
     private String specialty;
     private int experienceYears;
-    private List<Integer> consults;
+    private List<Consults> consults;
 
     public Doctor() {
         super();
@@ -41,11 +43,11 @@ public class Doctor extends Person implements Serializable{
         this.experienceYears = Integer.parseInt(experienceYears);
     }
 
-    public List<Integer> getConsults() {
+    public List<Consults> getConsults() {
         return new ArrayList<>(consults);
     }
 
-    public void setConsults(List<Integer> consults) {
+    public void setConsults(List<Consults> consults) {
         this.consults = new ArrayList<>(consults);
     }
 

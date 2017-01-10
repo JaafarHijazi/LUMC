@@ -9,22 +9,24 @@ import java.util.Date;
 
 public class Precaution implements Serializable {
 
-    private int id;
+    private String id;
     private String name;
 
     public Precaution() {
+        this.id = "";
+        this.name = "";
     }
 
-    public Precaution(int id, String name) {
+    public Precaution(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

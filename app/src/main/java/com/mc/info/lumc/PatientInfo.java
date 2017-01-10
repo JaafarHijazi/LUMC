@@ -23,6 +23,8 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
 
+    Patient p;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +32,7 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
 
-            Patient p = (Patient) extras.getSerializable("take");
+            p = (Patient) extras.getSerializable("take");
             txt = (TextView) findViewById(R.id.activity_patient_info_Name);
             txt.setText(p.getFirstName() + " " + p.getLastName());
             call = (TextView) findViewById(R.id.activity_patient_info_Phone);
@@ -130,7 +132,27 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
     }
 
     public void newPrescription(View view) {
-        startActivity(new Intent(this,CreatePrescription.class));
+        MedicalReport p = new MedicalReport();
+        Intent intent = new Intent(this, CreateMedicalReport.class);
+        intent.putExtra("take", p);
+        startActivity(intent);
+    }
+
+    public void goToExam(View view) {
+        Intent intent = new Intent(this, MedicalExaminationForm.class);
+        intent.putExtra("patient", p);
+        startActivity(intent);
+    }
+
+    public void goToListReports(View view) {
+        Intent intent = new Intent(this,ListReports.class);
+        intent.putExtra("take",p);
+        startActivity(intent);
+    }
+    public void goToMedicalResult(View view){
+        Intent intent = new Intent(this,ListMedicalResult.class);
+        intent.putExtra("take",p);
+        startActivity(intent);
     }
 }
 

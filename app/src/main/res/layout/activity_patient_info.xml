@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mc.info.lumc.Main"
+    tools:context="com.mc.info.lumc.PatientInfo"
     android:id="@+id/patient_info_drawer">
 
     <LinearLayout
@@ -135,37 +135,36 @@
                 android:textSize="14dp"
                 android:padding="8dp"
                 android:layout_weight="1"
+                android:onClick="goToExam"
                 android:id="@+id/activity_patient_info_medical_examination"/>
 
             <Button
-                android:text="Medical Results"
+                android:text="Medical Reports"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14dp"
                 android:padding="8dp"
                 android:layout_weight="1"
-                android:id="@+id/activity_patient_info_medical_results"/>
+                android:onClick="goToListReports"
+                android:id="@+id/activity_patient_info_medical_reports"/>
+
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:orientation="horizontal">
-
             <Button
-                android:text="New Prescription"
+                android:text="MedicalResult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:textSize="14dp"
-                android:padding="8dp"
-                android:id="@+id/activity_patient_info_prescription"
-                android:onClick="newPrescription"/>
-        </RelativeLayout>
+                android:id="@+id/activity_patient_info_medical_result"
+                android:layout_weight="1"
+                android:onClick="goToMedicalResult" />
+        </LinearLayout>
 
     </LinearLayout>
-
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -184,5 +183,7 @@
             app:headerLayout="@layout/login_header"/>
 
     </LinearLayout>
+
+
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,27 +1,86 @@
 package com.mc.info.lumc;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicalReport implements Serializable{
-    private int id;
-    private List<Integer> prescriptions;
+/**
+ * Created by hphh4 on 1/6/2017.
+ */
+
+public class MedicalReport implements Serializable {
+
+    private String id,
+                   notes;
+    private List<Medication> medication;
+    private List<Examination> examination;
+    private List<Precaution> precaution;
 
     public MedicalReport() {
+        this.id = "";
+        this.notes = "";
+        this.medication = new ArrayList<>();
+        this.examination = new ArrayList<>();
+        this.precaution = new ArrayList<>();
     }
 
-    public MedicalReport(int id) {
+    public MedicalReport(String id,String notes) {
         this.id = id;
-        this.prescriptions = new ArrayList<>();
+        this.notes = notes;
+        this.medication = new ArrayList<>();
+        this.examination = new ArrayList<>();
+        this.precaution = new ArrayList<>();
     }
 
-    public List<Integer> getPrescriptions() {
-        return new ArrayList<>(prescriptions);
+    public String getId() {
+        return id;
     }
 
-    public void setPrescriptions(List<Integer> prescriptions) {
-        this.prescriptions = new ArrayList<>(prescriptions);
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public List<Medication> getMedication() {
+        return new ArrayList<>(medication);
+    }
+
+    public void setMedication(List<Medication> medication) {
+        this.medication = new ArrayList<>(medication);
+    }
+
+    public List<Examination> getExamination() {
+        return new ArrayList<>(examination);
+    }
+
+    public void setExamination(List<Examination> examination) {
+        this.examination = new ArrayList<>(examination);
+    }
+
+    public List<Precaution> getPrecaution() {
+        return new ArrayList<>(precaution);
+    }
+
+    public void setPrecaution(List<Precaution> precaution) {
+        this.precaution = new ArrayList<>(precaution);
+    }
+
+    public void addMedication(Medication m){
+        medication.add(m);
+    }
+
+    public void addPrecaution(Precaution p){
+        precaution.add(p);
+    }
+
+    public void addExamination(Examination e){
+        examination.add(e);
     }
 }

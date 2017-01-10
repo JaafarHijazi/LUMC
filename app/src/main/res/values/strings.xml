@@ -29,4 +29,13 @@
         <item>Examination</item>
     </string-array>
 
+    <string-array name="Exams">
+        <item>Cholesterol</item>
+        <item>Hematology</item>
+        <item>Vitamin A</item>
+        <item>Vitamin B</item>
+        <item>Vitamin C</item>
+        <item>Vitamin D</item>
+    </string-array>
+
 </resources>
