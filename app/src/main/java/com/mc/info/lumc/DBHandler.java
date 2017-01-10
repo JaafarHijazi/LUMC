@@ -150,36 +150,15 @@ public class DBHandler extends Application{
         database = FirebaseDatabase.getInstance();
         database.setPersistenceEnabled(true);
         mAuth = FirebaseAuth.getInstance();
+        checkLogin();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    DBHandler db = DBHandler.getInstance();
-                    db.setUser(user);
-                    db.database.getReference(TABLE_PATIENT).child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            DBHandler.getInstance().setActiveUser(dataSnapshot.getValue(Patient.class));
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                    loggedIn = true;
-                    //
-                    setLoginType(LoginType.PATIENT);
-                } else {
-                    // User is signed out
-                    loggedIn=false;
-                }
+                checkLogin();
                 // ...
             }
         };
         mAuth.addAuthStateListener(mAuthListener);
-
         myPatients = new ArrayList<>();
         DatabaseReference reference=database.getReference();
         reference.addValueEventListener(new ValueEventListener() {
@@ -207,6 +186,34 @@ public class DBHandler extends Application{
             }
         });
     }
+
+    private void checkLogin() {
+        loggedIn=false;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            DBHandler db = DBHandler.getInstance();
+            db.setUser(user);
+            db.database.getReference(TABLE_PATIENT).child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    DBHandler.getInstance().setActiveUser(dataSnapshot.getValue(Patient.class));
+                    loggedIn=true;
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    loggedIn=true;
+                }
+            });
+
+            //
+            setLoginType(LoginType.PATIENT);
+        } else {
+            // User is signed out
+            loggedIn=true;
+        }
+    }
+
     public static DBHandler getInstance()
     {
         return singlton;

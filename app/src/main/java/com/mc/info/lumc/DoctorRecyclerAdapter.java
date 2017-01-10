@@ -21,10 +21,10 @@ import java.util.regex.Pattern;
  * Created by BurgerMan on 1/1/2017.
  */
 
-public class DoctorRecyclerAdapter extends RecyclerView.Adapter<DoctorRecyclerAdapter.DoctorHolder> implements Filterable{
+public class DoctorRecyclerAdapter extends AbstractAdapter<DoctorRecyclerAdapter.DoctorHolder>{
     DoctorFilter doctorFilter;
     List<Doctor> filteredDoctors;
-    Sort currentSort=Sort.FIRST_NAME;
+    Sort currentSort= Sort.FIRST_NAME;
     public DoctorRecyclerAdapter(List<Doctor> d)
     {
         filteredDoctors =new ArrayList<>(d);
@@ -70,7 +70,7 @@ public class DoctorRecyclerAdapter extends RecyclerView.Adapter<DoctorRecyclerAd
     {
         switch (type){
             case FIRST_NAME:
-                currentSort=Sort.FIRST_NAME;
+                currentSort= Sort.FIRST_NAME;
                 Collections.sort(filteredDoctors, new Comparator<Doctor>() {
                     @Override
                     public int compare(Doctor o1, Doctor o2) {
@@ -79,7 +79,7 @@ public class DoctorRecyclerAdapter extends RecyclerView.Adapter<DoctorRecyclerAd
                 });
                 break;
             case LAST_NAME:
-                currentSort=Sort.LAST_NAME;
+                currentSort= Sort.LAST_NAME;
                 Collections.sort(filteredDoctors, new Comparator<Doctor>() {
                     @Override
                     public int compare(Doctor o1, Doctor o2) {
@@ -88,7 +88,7 @@ public class DoctorRecyclerAdapter extends RecyclerView.Adapter<DoctorRecyclerAd
                 });
                 break;
             case SPECIALTY:
-                currentSort=Sort.SPECIALTY;
+                currentSort= Sort.SPECIALTY;
                 Collections.sort(filteredDoctors, new Comparator<Doctor>() {
                     @Override
                     public int compare(Doctor o1, Doctor o2) {
@@ -99,9 +99,7 @@ public class DoctorRecyclerAdapter extends RecyclerView.Adapter<DoctorRecyclerAd
 
         }
     }
-    public enum Sort{
-        FIRST_NAME,LAST_NAME,SPECIALTY
-    }
+
     public class DoctorHolder extends RecyclerView.ViewHolder{
 
         TextView textViewName;

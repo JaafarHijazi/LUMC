@@ -179,7 +179,7 @@ public class ListDoctors extends AppCompatActivity implements NavigationView.OnN
         {
             unCheckAllMenuItems(menu);
             item.setChecked(true);
-            adapter.sortBy(DoctorRecyclerAdapter.Sort.FIRST_NAME);
+            adapter.sortBy(Sort.FIRST_NAME);
             adapter.notifyDataSetChanged();
 
             return true;
@@ -188,7 +188,7 @@ public class ListDoctors extends AppCompatActivity implements NavigationView.OnN
         {
             unCheckAllMenuItems(menu);
             item.setChecked(true);
-            adapter.sortBy(DoctorRecyclerAdapter.Sort.LAST_NAME);
+            adapter.sortBy(Sort.LAST_NAME);
             adapter.notifyDataSetChanged();
             return true;
         }
@@ -196,7 +196,7 @@ public class ListDoctors extends AppCompatActivity implements NavigationView.OnN
         {
             unCheckAllMenuItems(menu);
             item.setChecked(true);
-            adapter.sortBy(DoctorRecyclerAdapter.Sort.SPECIALTY);
+            adapter.sortBy(Sort.SPECIALTY);
             adapter.notifyDataSetChanged();
             return true;
         }
