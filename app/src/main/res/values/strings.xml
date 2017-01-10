@@ -38,4 +38,19 @@
         <item>Vitamin D</item>
     </string-array>
 
+    <string name="login">LOGIN</string>
+    <string name="Username">Username</string>
+    <string name="Password">Password</string>
+    <string name="forgot_your_password">Forgot your password ?</string>
+    <string name="go">GO</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="next">NEXT</string>
+    <string name="register">REGISTER</string>
+    <string name="lname" >Last Name</string>
+    <string name="fname" >First Name</string>
+    <string name="phone">Phone</string>
+    <string name="city">City</string>
+    <string name="street">Street</string>
+    <string name="building">Building</string>
+    <string name="Email">Email</string>
 </resources>

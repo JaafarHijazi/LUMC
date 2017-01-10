@@ -22,7 +22,6 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
-
     Patient p;
 
     @Override
@@ -94,6 +93,16 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
             });
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+
+
+    public void goToMyMedicines(View view){
+        Intent i = new Intent(PatientInfo.this,PatientMedicines.class);
+        i.putExtra("take",patient);
+        startActivity(i);
+    }
+
+
 
     private void unCheckAllMenuItems(NavigationView navigationView) {
         final Menu menu = navigationView.getMenu();

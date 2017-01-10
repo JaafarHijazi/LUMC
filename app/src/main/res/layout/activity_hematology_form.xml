@@ -15,7 +15,7 @@
         android:text="Hematology"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtHematologyTitle"
+        android:id="@+id/txtHematology"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="0dp"
         android:textSize="20sp"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
-            android:id="@+id/hematology_form_date"
+            android:id="@+id/TestDate"
             android:layout_weight="0.16" />
 
     </LinearLayout>
@@ -49,10 +49,10 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="RBC"
+            android:text="RBC: "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/hematology_form_RBC_name"
+            android:id="@+id/txtRBC"
             android:layout_weight="0.44" />
 
         <EditText
@@ -60,31 +60,8 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/hematology_form_RBC_value"
+            android:id="@+id/hematology_form_RBC"
             android:layout_weight="0.01" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:text="HCT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/hematology_form_HCT_name"
-            android:layout_weight="0.44" />
-
-        <EditText
-            android:layout_width="187dp"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/hematology_form_HCT_value"
-            android:layout_weight="0.01" />
-
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -92,19 +69,19 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="MCV"
+            android:text="HGB :"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/hematology_form_MCV_name"
+            android:id="@+id/txtHGB"
             android:layout_weight="0.44" />
 
         <EditText
             android:layout_width="187dp"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/hematology_form_MCV_value"
-            android:layout_weight="0.01" />
+            android:id="@+id/hematology_form_HGB"
+            android:layout_weight="0.01"
+            android:inputType="numberDecimal" />
 
 
     </LinearLayout>
@@ -114,10 +91,54 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="MCH"
+            android:text="HCT: "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/hematology_form_MCH_name"
+            android:id="@+id/txtHCT"
+            android:layout_weight="0.44" />
+
+        <EditText
+            android:layout_width="187dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/hematology_form_HCT"
+            android:layout_weight="0.01" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="MCV: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtMCV"
+            android:layout_weight="0.44" />
+
+        <EditText
+            android:layout_width="187dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/hematology_form_MCV"
+            android:layout_weight="0.01" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="MCH: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtMCH"
             android:layout_weight="0.44" />
 
         <EditText
@@ -125,7 +146,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/hematology_form_MCH_value"
+            android:id="@+id/hematology_form_MCH"
             android:layout_weight="0.02" />
 
 
@@ -136,10 +157,10 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="RDW"
+            android:text="RDW: "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/hematology_form_RDW_name"
+            android:id="@+id/txtRDW"
             android:layout_weight="0.44" />
 
         <EditText
@@ -147,7 +168,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/hematology_form_RDW_value"
+            android:id="@+id/hematology_form_RDW"
             android:layout_weight="0.13" />
 
 
@@ -158,10 +179,10 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="WBC"
+            android:text="WBC: "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/hematology_form_WBC_name"
+            android:id="@+id/txtWBC"
             android:layout_weight="0.44" />
 
         <EditText
@@ -169,14 +190,14 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/hematology_form_WBC_value"
+            android:id="@+id/hematology_form_WBC"
             android:layout_weight="0.01" />
 
 
     </LinearLayout>
 
     <Button
-        android:text="Save"
+        android:text="Ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnInsertHematology"

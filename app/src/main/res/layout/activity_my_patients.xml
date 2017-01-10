@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mc.info.lumc.Main"
-    android:id="@+id/list_patients_drawer"
-    android:padding="0dp">
+    android:id="@+id/list_patients_drawer">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -24,13 +23,12 @@
         <SearchView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/activity_list_patients_search"/>
+            android:id="@+id/activity_my_patients_search"/>
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="0dp"
-            android:id="@+id/activity_list_patients_patientList"/>
+            android:id="@+id/activity_my_patients_myPatientList"/>
 
     </LinearLayout>
 
@@ -49,7 +47,7 @@
             android:layout_height="match_parent"
             android:id="@+id/main_nav"
             app:menu="@menu/menu_drawer"
-            app:headerLayout="@layout/login_header"/>
+            app:headerLayout="@layout/user_drawer_header"/>
 
     </LinearLayout>
 

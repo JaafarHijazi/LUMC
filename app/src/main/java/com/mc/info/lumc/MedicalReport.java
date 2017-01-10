@@ -2,34 +2,26 @@ package com.mc.info.lumc;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-
-/**
- * Created by hphh4 on 1/6/2017.
- */
 
 public class MedicalReport implements Serializable {
 
     private String id,
                    notes;
-    private List<Medication> medication;
-    private List<Examination> examination;
-    private List<Precaution> precaution;
+    private Date reportDate;
 
     public MedicalReport() {
         this.id = "";
         this.notes = "";
-        this.medication = new ArrayList<>();
-        this.examination = new ArrayList<>();
-        this.precaution = new ArrayList<>();
+        this.reportDate = new Date();
     }
 
-    public MedicalReport(String id,String notes) {
+    public MedicalReport(String id,String notes,Date reportDate) {
         this.id = id;
         this.notes = notes;
-        this.medication = new ArrayList<>();
-        this.examination = new ArrayList<>();
-        this.precaution = new ArrayList<>();
+        this.reportDate = (Date) reportDate.clone();
     }
 
     public String getId() {
@@ -48,39 +40,11 @@ public class MedicalReport implements Serializable {
         this.notes = notes;
     }
 
-    public List<Medication> getMedication() {
-        return new ArrayList<>(medication);
+    public Date getReportDate() {
+        return (Date) reportDate.clone();
     }
 
-    public void setMedication(List<Medication> medication) {
-        this.medication = new ArrayList<>(medication);
-    }
-
-    public List<Examination> getExamination() {
-        return new ArrayList<>(examination);
-    }
-
-    public void setExamination(List<Examination> examination) {
-        this.examination = new ArrayList<>(examination);
-    }
-
-    public List<Precaution> getPrecaution() {
-        return new ArrayList<>(precaution);
-    }
-
-    public void setPrecaution(List<Precaution> precaution) {
-        this.precaution = new ArrayList<>(precaution);
-    }
-
-    public void addMedication(Medication m){
-        medication.add(m);
-    }
-
-    public void addPrecaution(Precaution p){
-        precaution.add(p);
-    }
-
-    public void addExamination(Examination e){
-        examination.add(e);
+    public void setReportDate(Date reportDate) {
+        this.reportDate = (Date) reportDate.clone();
     }
 }

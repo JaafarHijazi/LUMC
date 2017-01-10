@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_lipids_form"
     android:layout_width="match_parent"
@@ -34,12 +35,12 @@
             android:layout_weight="2.87" />
 
         <EditText
-            android:layout_width="172dp"
+            android:layout_width="187dp"
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
-            android:id="@+id/cholesterol_form_date"
-            android:layout_weight="0.10" />
+            android:id="@+id/TestDate"
+            android:layout_weight="0.45" />
 
     </LinearLayout>
 
@@ -49,10 +50,10 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="Triglycerides"
+            android:text="Triglycerides: "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cholesterol_form_Triglycerides_name"
+            android:id="@+id/txtTriglycerides"
             android:layout_weight="12.64" />
 
         <EditText
@@ -60,7 +61,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/cholesterol_form_Triglycerides_value" />
+            android:id="@+id/lipids_form_Triglycerides" />
     </LinearLayout>
 
     <LinearLayout
@@ -72,7 +73,7 @@
             android:text="cholesterol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cholesterol_form_Cholesterol_name"
+            android:id="@+id/txtCholesterol"
             android:layout_weight="21.60" />
 
         <EditText
@@ -80,7 +81,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/cholesterol_form_Cholesterol_value" />
+            android:id="@+id/lipids_form_Cholesterol" />
 
 
     </LinearLayout>
@@ -90,10 +91,10 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="HDL"
+            android:text="HDL:  "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cholesterol_form_HDl_name"
+            android:id="@+id/txtHCT"
             android:layout_weight="20.59" />
 
         <EditText
@@ -101,7 +102,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/cholesterol_form_HDl_value" />
+            android:id="@+id/lipids_form_HDL" />
 
 
     </LinearLayout>
@@ -111,10 +112,10 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="LDL"
+            android:text="LDL: "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cholesterol_form_LDL_name"
+            android:id="@+id/txtMCV"
             android:layout_weight="13.05" />
 
         <EditText
@@ -122,14 +123,14 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/cholesterol_form_LDL_value"
+            android:id="@+id/lipids_form_LDL"
             android:layout_weight="0.53" />
 
 
     </LinearLayout>
 
     <Button
-        android:text="Save"
+        android:text="Ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnInsertCholesterol"

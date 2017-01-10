@@ -16,61 +16,45 @@ import android.widget.SearchView;
 
 import java.util.List;
 
-public class ListPatients extends AppCompatActivity {
+public class MyPatients extends AppCompatActivity {
     private Menu menu;
     private RecyclerView recyclerView;
-    private List<Patient> patients;
+    private List<Patient> myPatientsList;
+    private PatientRecyclerAdapter myPatientsAdapter;
 
     private SearchView sv;
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
-    private PatientRecyclerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_patients);
-        sv= (SearchView) findViewById(R.id.activity_list_patients_search);
-
-
-//        for (int i = 0; i < filteredPatients.size(); i++) {
-//            data.add(filteredPatients.get(i).toHashMap());
-//        }
-
-        recyclerView= (RecyclerView) findViewById(R.id.activity_list_patients_patientList);
+        setContentView(R.layout.activity_my_patients);
+        sv = (SearchView) findViewById(R.id.activity_my_patients_search);
+        recyclerView = (RecyclerView) findViewById(R.id.activity_my_patients_myPatientList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        new AsyncTask<Void,Void,List<Patient>>(){
+        new AsyncTask<Void, Void, List<Patient>>() {
             @Override
             protected List<Patient> doInBackground(Void... params) {
-                while (!DBHandler.getInstance().isDataReady())
+                /*while (!dbHandler.isDataReady())
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }
-
-                return DBHandler.getInstance().getPatients();
+                    }*/
+                Bundle extras = getIntent().getExtras();
+                Doctor d = (Doctor) extras.getSerializable("take");
+                return DBHandler.getInstance().getMyPatients(d);
             }
 
             @Override
-            protected void onPostExecute(List<Patient> patients) {
-                ListPatients.this.patients=patients;
-                adapter=new PatientRecyclerAdapter(patients);
-                recyclerView.setAdapter(adapter);
+            protected void onPostExecute(List<Patient> myPatientsList) {
+                MyPatients.this.myPatientsList = myPatientsList;
+                myPatientsAdapter = new PatientRecyclerAdapter(myPatientsList);
+                recyclerView.setAdapter(myPatientsAdapter);
             }
         }.execute();
-
-
-/*
-
-
-        String[] hash = {DBHandler.COLUMN_FIRST_NAME, DBHandler.COLUMN_LAST_NAME};
-        int[] toViewIDs = {R.id.list_item_patient_firstName, R.id.list_item_patient_lastName};
-        adapter = new SimpleAdapter(this, data, R.layout.list_patients_item, hash, toViewIDs);
-        lv = (ListView) findViewById(R.id.activity_list_patients_patientList);
-        lv.setAdapter(adapter);
-*/
 
 
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -81,25 +65,33 @@ public class ListPatients extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(adapter!=null)
-                adapter.getFilter().filter(newText);
+                if(myPatientsAdapter!=null)
+                    myPatientsAdapter.getFilter().filter(newText);
                 return false;
             }
         });
 
-
-//
-//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Patient p = adapter1.getItem(i);
-//
-//                Intent j = new Intent(ListPatients.this, PatientInfo.class);
-//                j.putExtra("take",p.getId());
-//                startActivity(j);
-//
+ //       recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+ //          @Override
+//           public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                String str = myPatientsAdapter.getItem(i).toString();
+//               Doctor d;
+//               int index=str.lastIndexOf(DBHandler.COLUMN_ID+"=");
+//                int last=str.indexOf(",",index);
+//                if (last == -1){
+//                    last=str.indexOf("}",index);
+//                }
+//                String idString = str.substring(index+ DBHandler.COLUMN_ID.length()+1,last);
+//                d = dbHandler.getPatientById(Integer.parseInt(idString));
+//                if(idString.equals(String.valueOf( d.getId()))){
+//                    Intent j = new Intent(myPatient.this, PatientInfo.class);
+//                    j.putExtra("take",p.getId());
+//                    startActivity(j);
+//                }
 //            }
 //        });
+
+
 
         drawerLayout = (DrawerLayout) findViewById(R.id.list_patients_drawer);
         toggle = new ActionBarDrawerToggle(this, drawerLayout,R.string.open,R.string.close);
@@ -116,12 +108,12 @@ public class ListPatients extends AppCompatActivity {
                 if(item.getItemId()==R.id.drwrViewDoctors)
                 {
                     drawerLayout.closeDrawers();
-                    startActivity(new Intent(ListPatients.this, ListDoctors.class));
+                    startActivity(new Intent(MyPatients.this, ListDoctors.class));
                 }
                 else if(item.getItemId()==R.id.drwrViewPatients)
                 {
                     drawerLayout.closeDrawers();
-                    startActivity(new Intent(ListPatients.this, ListPatients.class));
+                    startActivity(new Intent(MyPatients.this, ListPatients.class));
                 }
                 return true;
             }
@@ -173,30 +165,24 @@ public class ListPatients extends AppCompatActivity {
         {
             unCheckAllMenuItems(menu);
             item.setChecked(true);
-            adapter.sortBy(PatientRecyclerAdapter.Sort.FIRST_NAME);
-            adapter.notifyDataSetChanged();
+            myPatientsAdapter.sortBy(PatientRecyclerAdapter.Sort.FIRST_NAME);
+            myPatientsAdapter.notifyDataSetChanged();
             return true;
         }
         else if(item.getItemId() == R.id.menu_list_patients_ByLastName)
         {
             unCheckAllMenuItems(menu);
             item.setChecked(true);
-            adapter.sortBy(PatientRecyclerAdapter.Sort.LAST_NAME);
-            adapter.notifyDataSetChanged();
+            myPatientsAdapter.sortBy(PatientRecyclerAdapter.Sort.LAST_NAME);
+            myPatientsAdapter.notifyDataSetChanged();
             return true;
         }
-/*
-
-        String[] hash = {DBHandler.COLUMN_FIRST_NAME, DBHandler.COLUMN_LAST_NAME};
-        int[] toViewIds = {R.id.list_item_patient_firstName, R.id.list_item_patient_lastName};
-        adapter = new SimpleAdapter(this, data, R.layout.list_patients_item, hash, toViewIds);
-        lv = (ListView) findViewById(R.id.activity_list_patients_patientList);
-        lv.setAdapter(adapter);
-*/
-
         if(toggle.onOptionsItemSelected(item))
             return true;
         return super.onOptionsItemSelected(item);
     }
 
 }
+
+
+

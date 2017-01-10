@@ -16,16 +16,11 @@
         android:allowBackup="true"
         android:icon="@drawable/lumc_logo2"
         android:label="@string/app_name"
+        android:name=".DBHandler"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="studios.codelight.smartloginlibrary.SmartLoginActivity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".LoginActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".RegisterActivity" android:theme="@style/Translucent"/>
         <activity android:name=".Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,6 +36,22 @@
             android:launchMode="singleTask" />
         <activity android:name=".PatientInfo" />
         <activity android:name=".DoctorInfo" />
+        <activity android:name=".MyPatients" />
+        <activity android:name=".PatientMedicines"></activity>
+        <activity android:name=".HematologyForm" />
+        <activity android:name=".VitaminDForm" />
+        <activity android:name=".MedicalExaminationForm" />
+        <activity android:name=".CholesterolForm" />
+        <activity android:name=".VitaminAForm" />
+        <activity android:name=".VitaminBForm" />
+        <activity android:name=".VitaminCForm" />
+        <activity android:name=".CreateMedicalReport"></activity>
+        <activity
+            android:name=".ListMedicalResult"
+            android:launchMode="singleTask" />
+        <activity android:name=".MedicalResultInfo"></activity>
+        <activity android:name=".ListReports" />
+        <activity android:name=".ReportDetails" />
         <activity android:name=".HematologyForm" />
         <activity android:name=".VitaminDForm" />
         <activity android:name=".MedicalExaminationForm" />

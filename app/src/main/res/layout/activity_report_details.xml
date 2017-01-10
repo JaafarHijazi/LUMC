@@ -27,6 +27,7 @@
 
         <TextView
             android:text="date"
+            android:id="@+id/activity_report_details_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
@@ -49,6 +50,7 @@
 
         <TextView
             android:text="name"
+            android:id="@+id/activity_report_details_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="6"
@@ -72,6 +74,7 @@
 
         <TextView
             android:text="notes"
+            android:id="@+id/activity_report_details_notes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="6"
@@ -95,6 +98,7 @@
 
         <TextView
             android:text="exams"
+            android:id="@+id/activity_report_details_exams"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="6"
@@ -118,6 +122,7 @@
 
         <TextView
             android:text="meds"
+            android:id="@+id/activity_report_details_meds"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="6"
@@ -141,6 +146,7 @@
 
         <TextView
             android:text="precs"
+            android:id="@+id/activity_report_details_precs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="6"

@@ -18,13 +18,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    private Doctor doctor;
     private TextView txt,call;
     private Button btn;
-
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
+    private Button btnMyPatients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,17 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
 
             });
 
+            btnMyPatients = (Button)findViewById(R.id.activity_doctor_info_ViewMyPatients);
+            btnMyPatients.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i=new Intent( DoctorInfo.this, MyPatients.class);
+                    i.putExtra("take",doctor);
+                    startActivity(i);
+                }
+            });
         }
+
 
         drawerLayout = (DrawerLayout) findViewById(R.id.doctor_info_drawer);
         toggle = new ActionBarDrawerToggle(this, drawerLayout,R.string.open,R.string.close);

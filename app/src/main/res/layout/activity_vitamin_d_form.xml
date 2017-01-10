@@ -18,8 +18,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="0dp"
         android:textSize="20sp"
-        android:textStyle="normal|bold"
-        android:id="@+id/txtVitaminDTitle" />
+        android:textStyle="normal|bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +36,7 @@
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
-            android:id="@+id/vitamin_d_form_vitamin_d_date"
+            android:id="@+id/vitamin_d_form_test_date"
             android:layout_weight="0.45" />
 
     </LinearLayout>
@@ -48,11 +47,10 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="Vitamin D"
+            android:text="Vitamin D: "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2.87"
-            android:id="@+id/vitamin_d_form_vitamin_d_name" />
+            android:layout_weight="2.87" />
 
         <EditText
             android:layout_width="187dp"

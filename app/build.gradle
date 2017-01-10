@@ -25,16 +25,9 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
-    compile project(':smartloginlibrary-v0.5beta')
-    //Facebook SDK
-    compile 'com.facebook.android:facebook-android-sdk:4.0.1'
-    //Google Play Services
-    compile 'com.google.android.gms:play-services-auth:9.6.1'
-    compile 'com.google.android.gms:play-services-plus:9.6.1'
-    //GSON library
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.google.firebase:firebase-database:9.6.1'
+    compile 'com.google.firebase:firebase-database:10.0.1'
     compile 'de.hdodenhof:circleimageview:1.3.0'
+    compile 'com.google.firebase:firebase-auth:10.0.1'
 }
 
 
