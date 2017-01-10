@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 public class ListMedicalResult extends AppCompatActivity {
-    private DBHandler dbHandler = new DBHandler(this, null, null, 1);
+    private DBHandler dbHandler = DBHandler.getInstance();
     private RecyclerView recyclerView; private List exams;
     private ArrayList<HashMap<String,String>> data = new ArrayList<>();
     private MedicalResultRecyclerAdapter adapter;

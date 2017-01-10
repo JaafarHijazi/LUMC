@@ -34,15 +34,15 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
         setContentView(R.layout.activity_doctor_info);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            Doctor d = (Doctor) extras.getSerializable("take");
+            doctor = (Doctor) extras.getSerializable("take");
             txt = (TextView) findViewById(R.id.activity_doctor_info_Name);
-            txt.setText(d.getFirstName() + " " + d.getLastName());
+            txt.setText(doctor.getFirstName() + " " + doctor.getLastName());
             txt = (TextView) findViewById(R.id.activity_doctor_info_specialty);
-            txt.setText(d.getSpecialty());
+            txt.setText(doctor.getSpecialty());
             txt = (TextView) findViewById(R.id.activity_doctor_info_expeienceYears);
-            txt.setText(d.getExperienceYears() + " years");
+            txt.setText(doctor.getExperienceYears() + " years");
             call = (TextView) findViewById(R.id.activity_doctor_info_phone);
-            call.setText(d.getPhone());
+            call.setText(doctor.getPhone());
             btn = (Button)findViewById(R.id.activity_doctor_info_consult);
 
             call.setOnClickListener(new View.OnClickListener() {
@@ -54,9 +54,9 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
             });
 
             txt = (TextView) findViewById(R.id.activity_doctor_info_address);
-            txt.setText(d.getAddress().toString());
+            txt.setText(doctor.getAddress().toString());
             txt = (TextView) findViewById(R.id.activity_doctor_info_email);
-            txt.setText(d.getEmail());
+            txt.setText(doctor.getEmail());
 
             txt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,7 +81,7 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
                 @Override
                 public void onClick(View v) {
                     Intent i=new Intent( DoctorInfo.this, MyPatients.class);
-                    i.putExtra("take",doctor);
+                    i.putExtra("take", DoctorInfo.this.doctor);
                     startActivity(i);
                 }
             });

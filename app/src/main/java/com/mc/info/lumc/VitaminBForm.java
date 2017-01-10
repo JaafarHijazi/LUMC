@@ -31,14 +31,13 @@ public class VitaminBForm extends AppCompatActivity {
         save = (Button) findViewById(R.id.vitamin_b_form_vitamin_b_btnInsert);
         value = (EditText) findViewById(R.id.vitamin_b_form_vitamin_b_value) ;
         examName = (TextView) findViewById(R.id.txtVitaminBTitle);
-        textName = (TextView) findViewById(R.id.vitamin_b_form_vitamin_b_name);
         date = (EditText) findViewById(R.id.vitamin_b_form_vitamin_b_date) ;
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Examination e;
-                MedicalData data = new MedicalData(null,textName.getText().toString(),value.getText().toString());
+                MedicalData data = new MedicalData(null,examName.getText().toString(),value.getText().toString());
                 e = new Examination(null,examName.getText().toString(),date.getText().toString(), Examination.examType.VITAMIN_B);
                 DBHandler.addExamination(p,e);
                 DBHandler.addMedicalData(e,data);

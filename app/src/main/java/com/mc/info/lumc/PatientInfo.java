@@ -98,7 +98,7 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
 
     public void goToMyMedicines(View view){
         Intent i = new Intent(PatientInfo.this,PatientMedicines.class);
-        i.putExtra("take",patient);
+        i.putExtra("take",p);
         startActivity(i);
     }
 

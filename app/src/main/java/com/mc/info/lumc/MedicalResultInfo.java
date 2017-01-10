@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MedicalResultInfo extends AppCompatActivity {
 
-    private DBHandler dbHandler = new DBHandler(this, null, null, 1);
+    private DBHandler dbHandler = DBHandler.getInstance();
     private RecyclerView recyclerView;
     private List exams;
     private ArrayList<HashMap<String,String>> data = new ArrayList<>();
@@ -30,7 +30,7 @@ public class MedicalResultInfo extends AppCompatActivity {
                     Thread.sleep(100); }
                 catch (InterruptedException e) {
                     e.printStackTrace(); }
-                return dbHandler.getMedicalData();
+                return null;//dbHandler.getMedicalData();
             }
             @Override
             protected void onPostExecute(List<MedicalData> exams) {

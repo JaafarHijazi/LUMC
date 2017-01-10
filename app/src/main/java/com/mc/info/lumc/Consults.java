@@ -8,34 +8,34 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Consults implements Serializable {
-    private String id,
+    private String cid,
                    pid,
                    did;
     private Date dateOfConsultation;
     private List<MedicalReport> medicalReports;
 
     public Consults() {
-        this.id = "";
+        this.cid = "";
         this.did = "";
         this.pid = "";
         this.dateOfConsultation = new Date();
         this.medicalReports = new ArrayList<>();
     }
 
-    public Consults(String id, String did, String pid, Date dateOfConsultation) {
-        this.id = id;
+    public Consults(String cid, String did, String pid, Date dateOfConsultation) {
+        this.cid = cid;
         this.did = did;
         this.pid = pid;
         this.dateOfConsultation = (Date) dateOfConsultation.clone();
         this.medicalReports = new ArrayList<>();
     }
 
-    public String getId() {
-        return id;
+    public String getCid() {
+        return cid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setCid(String id) {
+        this.cid = cid;
     }
 
     public void setPid(String pid) {
@@ -44,6 +44,14 @@ public class Consults implements Serializable {
 
     public void setDid(String did) {
         this.did = did;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public String getDid() {
+        return did;
     }
 
     public List<MedicalReport> getMedicalReports() {

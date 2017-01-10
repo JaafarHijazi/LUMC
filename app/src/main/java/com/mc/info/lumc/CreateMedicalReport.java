@@ -1,5 +1,6 @@
 package com.mc.info.lumc;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -64,30 +65,25 @@ public class CreateMedicalReport extends AppCompatActivity implements Serializab
 
     public void insertToDatabase(View view) {
         String s;
+        mr = new MedicalReport();
         mr.setNotes(txtNotes.getText().toString());
+        DBHandler.addMedicalReport(mr , p);
         for(int i=0 ; i<adapter.getCount() ; i++){
             s = adapter.getItem(i).substring(adapter.getItem(i).indexOf(":")+2);
             if(adapter.getItem(i).contains("Medication")){
                 Medication m = new Medication("",s);
-                mr.addMedication(m);
-                p.addMedication(m);
-                DBHandler.addMedication(m , p);
+                DBHandler.addMedication(m , mr);
             }
             else if(adapter.getItem(i).contains("Precaution")){
                 Precaution pr = new Precaution("",s);
-                mr.addPrecaution(pr);
-                DBHandler.addPrecaution(pr);
+                DBHandler.addPrecaution(pr , mr);
             }
-            /*else if(adapter.getItem(i).contains("Examination")){
-                Examination e = new Examination();
-                mr.addExamination(e.getId());
-            }*/
         }
-        p.addMedicalReport(mr);
-        DBHandler.addMedicalReport(mr , p);
         Toast.makeText(this,"added to Database",Toast.LENGTH_SHORT).show();
-        /*adapter.clear();
-        startActivity(new Intent(this,MedicalReport.class));*/
+        adapter.clear();
+        Intent intent = new Intent(this,ListReports.class);
+        intent.putExtra("take",p);
+        startActivity(intent);
     }
 }
 

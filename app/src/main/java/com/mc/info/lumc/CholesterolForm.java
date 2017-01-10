@@ -30,7 +30,6 @@ public class CholesterolForm extends AppCompatActivity {
         valueLDL = (EditText) findViewById(R.id.cholesterol_form_LDL_value) ;
         valueHDL = (EditText) findViewById(R.id.cholesterol_form_HDl_value) ;
         date = (EditText) findViewById(R.id.cholesterol_form_date) ;
-
         textNameCholesterol = (TextView) findViewById(R.id.cholesterol_form_Cholesterol_name) ;
         textNameTriglycerides = (TextView) findViewById(R.id.cholesterol_form_Triglycerides_name) ;
         textNameLDL = (TextView) findViewById(R.id.cholesterol_form_LDL_name) ;

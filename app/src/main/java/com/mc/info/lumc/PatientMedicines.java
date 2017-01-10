@@ -46,7 +46,7 @@ public class PatientMedicines extends AppCompatActivity {
             data.add(myMedicines.get(i).toHashMap());
         }
 
-        String[] hash = {DBHandler.getInstance().COLUMN_MEDICINE_NAME};
+        String[] hash = {DBHandler.COLUMN_MEDICINE_NAME};
         int[] toViewIDs = {R.id.activity_item_medicine_name};
         adapter = new SimpleAdapter(this, data, R.layout.medicine_item, hash, toViewIDs);
         lv = (ListView) findViewById(R.id.activity_patient_medicines_lvmedicines);

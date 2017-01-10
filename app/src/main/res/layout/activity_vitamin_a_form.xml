@@ -36,9 +36,9 @@
         <EditText
             android:layout_width="187dp"
             android:layout_height="wrap_content"
-            android:inputType="date"
+            android:inputType="textCapCharacters|date"
             android:ems="10"
-            android:id="@+id/TestDate"/>
+            android:id="@+id/vitamin_a_form_vitamin_a_date"/>
 
     </LinearLayout>
 
@@ -48,10 +48,11 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="Vitamin A: "
+            android:text="Vitamin A"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2.87" />
+            android:layout_weight="2.87"
+            android:id="@+id/vitamin_a_form_vitamin_a_name" />
 
         <EditText
             android:layout_width="187dp"
@@ -63,12 +64,13 @@
     </LinearLayout>
 
     <Button
-        android:text="OK"
+        android:text="Save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/vitamin_a_form_vitamin_a_btnInsert"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="128dp" />
+        android:layout_marginLeft="128dp"
+        android:onClick="insertVitaminA" />
 
 
 </LinearLayout>
