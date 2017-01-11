@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
+
 
 public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private Doctor doctor;
@@ -140,6 +142,8 @@ public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNa
     }
 
     public void consultDoctor(View view) {
+        Consults consults = new Consults(null,doctor.getId(),DBHandler.getInstance().getUser().getUid(),new Date());
+        DBHandler.getInstance().addConsult(consults);
         Toast.makeText(this,"You are now this doctor's patient",Toast.LENGTH_SHORT).show();
         btn.setVisibility(view.INVISIBLE);
     }

@@ -1,6 +1,8 @@
 package com.mc.info.lumc;
 
-public class MedicalData {
+import java.io.Serializable;
+
+public class MedicalData implements Serializable {
 
 
     private String name,value;

@@ -10,7 +10,7 @@ import java.util.List;
 public class ListMedicalResult extends AppCompatActivity {
     private DBHandler dbHandler = DBHandler.getInstance();
     private RecyclerView recyclerView; private List exams;
-    private ArrayList<HashMap<String,String>> data = new ArrayList<>();
+    private ArrayList<MedicalData> data = new ArrayList<>();
     private MedicalResultRecyclerAdapter adapter;
     private Bundle extras;
     private Patient p;
@@ -25,21 +25,10 @@ public class ListMedicalResult extends AppCompatActivity {
 
         recyclerView= (RecyclerView) findViewById(R.id.activity_list_medical_result_medicalResultList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        new AsyncTask<Void,Void,List<Examination>>(){
-            @Override
-            protected List<Examination> doInBackground(Void... params) {
-                while (!dbHandler.isDataReady()) try {
-                    Thread.sleep(100); }
-                catch (InterruptedException e) {
-                    e.printStackTrace(); }
-                return dbHandler.getMedicalResult(p.getId());
-            }
-            @Override protected void onPostExecute(List<Examination> exams) {
-                ListMedicalResult.this.exams=exams;
+
+                exams=dbHandler.getMedicalExaminations(p.getId());
                 adapter=new MedicalResultRecyclerAdapter(exams);
                 recyclerView.setAdapter(adapter);
-            }
-        }.execute();
     }
 }
 

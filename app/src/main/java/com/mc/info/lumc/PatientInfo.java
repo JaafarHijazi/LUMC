@@ -143,12 +143,6 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
         return false;
     }
 
-    public void newPrescription(View view) {
-        MedicalReport p = new MedicalReport();
-        Intent intent = new Intent(this, CreateMedicalReport.class);
-        intent.putExtra("take", p);
-        startActivity(intent);
-    }
 
     public void goToExam(View view) {
         Intent intent = new Intent(this, MedicalExaminationForm.class);

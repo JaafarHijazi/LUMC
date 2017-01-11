@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -32,6 +33,8 @@ public class DBHandler extends Application{
     private static final String DATABASE_NAME="MedicalCenter.db";
     public static final String TABLE_PATIENT ="patient";
     public static final String TABLE_DOCTOR ="doctor";
+    public static  final String TABLE_DOCTOR_CONSULTS = "doctorConsults";
+    public static  final String TABLE_PATIENT_CONSULTS = "patientConsults";
     public static  final String TABLE_CONSULTS = "consults";
     public static final String TABLE_MEDICAL_EXAMINATION ="medicalExamination";
     public static final String TABLE_EXAMINATION ="examination";
@@ -71,6 +74,14 @@ public class DBHandler extends Application{
     private Doctor doctorMe;
     private LoginType loginType;
     private DataSnapshot dataSnapshot;
+
+    public List<Examination> getMedicalExaminations(String pid) {
+        List<Examination> exams = new ArrayList<>();
+        for(DataSnapshot d: dataSnapshot.child(TABLE_EXAMINATION+"/"+pid).getChildren())
+            exams.add(d.getValue(Examination.class));
+        return exams;
+    }
+
     public enum LoginType {
         DOCTOR,PATIENT
     }
@@ -226,22 +237,11 @@ public class DBHandler extends Application{
             return doctors;
     }
 
-    public List<Examination> getMedicalResult(final String Pid) {
-        List<Examination> medicalResults = new ArrayList<>();
-                Examination exam;
-                for (DataSnapshot exams : dataSnapshot.child(TABLE_EXAMINATION+"/"+Pid).getChildren()) {
-                        exam = exams.getValue(Examination.class);
-                        //exam.setId(exams.getKey());
-                        medicalResults.add(exam);
-                }
-        List<MedicalData> medicalData = new ArrayList<>();
-                MedicalData data;
-                for (DataSnapshot exams : dataSnapshot.child(TABLE_MEDICAL_DATA).getChildren()) {
-                        data = exams.getValue(MedicalData.class);
-                        //data.setId(exams.getKey());
-                        medicalData.add(data);
-            }
-        return medicalResults;
+    public List<MedicalData> getMedicalResult(final String pid,final String eid) {
+        List<MedicalData> medicalData=new ArrayList<>();
+        for(DataSnapshot d: dataSnapshot.child(TABLE_EXAMINATION+"/"+pid+"/"+eid).getChildren())
+            medicalData.add(d.getValue(MedicalData.class));
+        return medicalData;
     }
 
     public void addPatient(Patient p){
@@ -267,6 +267,8 @@ public class DBHandler extends Application{
         String key = myRef.push().getKey();
         c.setCid(key);
         myRef.child(key).setValue(c);
+        FirebaseDatabase.getInstance().getReference(TABLE_DOCTOR_CONSULTS+"/"+c.getDid()+"/"+c.getCid()).setValue(c);
+        FirebaseDatabase.getInstance().getReference(TABLE_PATIENT_CONSULTS+"/"+c.getPid()+"/"+c.getCid()).setValue(c);
 
     }
     public void signUp(Person person){
@@ -449,31 +451,13 @@ public class DBHandler extends Application{
         myRef.child(key).setValue(p);
     }
 
-    public static List<MedicalReport> getMedicalReports (Patient p){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference=database.getReference();
-        final List<MedicalReport> finalMr = new ArrayList<>();
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {  // get data from database to your arraylist
-                for (DataSnapshot medR : dataSnapshot.child(TABLE_MEDICAL_REPORT).getChildren()) {
-                    try {
-                        MedicalReport p = medR.getValue(MedicalReport.class);
-                        p.setId(medR.getKey());
-                        finalMr.add(p);
-                    }
-                    catch( DatabaseException e){
-                        System.out.print(e.getMessage());
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return finalMr;
+    public List<MedicalReport> getMedicalReports (Patient p){
+        List<MedicalReport> medicalReports = new ArrayList<>();
+        for (DataSnapshot medR : dataSnapshot.child(TABLE_MEDICAL_REPORT).getChildren()) {
+            MedicalReport rep = medR.getValue(MedicalReport.class);
+            medicalReports.add(rep);
+        }
+        return medicalReports;
     }
 
     public static void addMedication(Medication m , Patient p){

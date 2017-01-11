@@ -15,8 +15,9 @@ public class MedicalResultInfo extends AppCompatActivity {
     private DBHandler dbHandler = DBHandler.getInstance();
     private RecyclerView recyclerView;
     private List exams;
-    private ArrayList<HashMap<String,String>> data = new ArrayList<>();
+    private ArrayList<MedicalData> data = new ArrayList<>();
     private MedicalResultInfoRecyclerAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
