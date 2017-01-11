@@ -26,6 +26,9 @@ public class MedicalResultInfoRecyclerAdapter extends RecyclerView.Adapter<Medic
     }
 
     public void onBindViewHolder(final MedicalResultInfoRecyclerAdapter.ResultHolder holder, final int position) {
+        holder.textViewName.setText(data.get(position).getName());
+        holder.textViewValue.setText(data.get(position).getValue());
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
