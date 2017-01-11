@@ -2,6 +2,7 @@ package com.mc.info.lumc;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -72,7 +73,7 @@ public class DBHandler extends Application{
     private FirebaseUser user;
     private Patient patientMe;
     private Doctor doctorMe;
-    private LoginType loginType;
+    private LoginType loginType=LoginType.PATIENT;
     private DataSnapshot dataSnapshot;
     private Patient quickFixPatent;
     private Examination quickFixExamination;

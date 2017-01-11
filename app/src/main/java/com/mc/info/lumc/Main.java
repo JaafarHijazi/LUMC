@@ -118,7 +118,7 @@ public class Main extends AppCompatActivity{
                         navigationView.getMenu().removeItem(R.id.drwrViewPatients);
                     }
                 }
-                else startActivity(new Intent(Main.this,LoginActivity.class));
+                //else startActivity(new Intent(Main.this,LoginActivity.class));
             }
         }.execute();
 
