@@ -74,6 +74,24 @@ public class DBHandler extends Application{
     private Doctor doctorMe;
     private LoginType loginType;
     private DataSnapshot dataSnapshot;
+    private Patient quickFixPatent;
+    private Examination quickFixExamination;
+
+    public Patient getQuickFixPatent() {
+        return quickFixPatent;
+    }
+
+    public void setQuickFixPatent(Patient quickFixPatent) {
+        this.quickFixPatent = quickFixPatent;
+    }
+
+    public Examination getQuickFixExamination() {
+        return quickFixExamination;
+    }
+
+    public void setQuickFixExamination(Examination quickFixExamination) {
+        this.quickFixExamination = quickFixExamination;
+    }
 
     public List<Examination> getMedicalExaminations(String pid) {
         List<Examination> exams = new ArrayList<>();
@@ -239,7 +257,7 @@ public class DBHandler extends Application{
 
     public List<MedicalData> getMedicalResult(final String pid,final String eid) {
         List<MedicalData> medicalData=new ArrayList<>();
-        for(DataSnapshot d: dataSnapshot.child(TABLE_EXAMINATION+"/"+pid+"/"+eid).getChildren())
+        for(DataSnapshot d: dataSnapshot.child(TABLE_EXAMINATION+"/"+pid+"/"+eid+"/medicalData").getChildren())
             medicalData.add(d.getValue(MedicalData.class));
         return medicalData;
     }

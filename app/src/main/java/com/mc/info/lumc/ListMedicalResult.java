@@ -27,6 +27,7 @@ public class ListMedicalResult extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
                 exams=dbHandler.getMedicalExaminations(p.getId());
+                dbHandler.setQuickFixPatent(p);
                 adapter=new MedicalResultRecyclerAdapter(exams);
                 recyclerView.setAdapter(adapter);
     }

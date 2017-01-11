@@ -1,6 +1,8 @@
 package com.mc.info.lumc;
 
+import android.app.Application;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +18,8 @@ import java.util.List;
 
 public class MedicalResultRecyclerAdapter extends RecyclerView.Adapter<MedicalResultRecyclerAdapter.ResultHolder>{
     List<Examination> exams;
+    private Bundle extras;
+    private Patient p;
 
     public MedicalResultRecyclerAdapter(List<Examination> e) {
         exams =new ArrayList<>(e);
@@ -36,6 +40,7 @@ public class MedicalResultRecyclerAdapter extends RecyclerView.Adapter<MedicalRe
             @Override
             public void onClick(View v) {
                 Examination e = exams.get(position);
+                DBHandler.getInstance().setQuickFixExamination(e);
                 Intent intent = new Intent(holder.cardView.getContext(), MedicalResultInfo.class);
                 intent.putExtra("take",e);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

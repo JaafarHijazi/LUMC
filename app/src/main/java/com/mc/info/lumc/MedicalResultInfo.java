@@ -14,7 +14,6 @@ public class MedicalResultInfo extends AppCompatActivity {
 
     private DBHandler dbHandler = DBHandler.getInstance();
     private RecyclerView recyclerView;
-    private List exams;
     private ArrayList<MedicalData> data = new ArrayList<>();
     private MedicalResultInfoRecyclerAdapter adapter;
 
@@ -24,21 +23,8 @@ public class MedicalResultInfo extends AppCompatActivity {
         setContentView(R.layout.activity_list_medical_result_info);
         recyclerView= (RecyclerView) findViewById(R.id.activity_medical_result_info_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        new AsyncTask<Void,Void,List<MedicalData>>(){
-            @Override
-            protected List<MedicalData> doInBackground(Void... params) {
-                while (!dbHandler.isDataReady()) try {
-                    Thread.sleep(100); }
-                catch (InterruptedException e) {
-                    e.printStackTrace(); }
-                return null;//dbHandler.getMedicalData();
-            }
-            @Override
-            protected void onPostExecute(List<MedicalData> exams) {
-                MedicalResultInfo.this.exams=exams;
-                adapter = new MedicalResultInfoRecyclerAdapter(exams);
-                recyclerView.setAdapter(adapter);
-            }
-        }.execute();
+        List<MedicalData> exams=dbHandler.getMedicalResult(dbHandler.getQuickFixPatent().getId(),dbHandler.getQuickFixExamination().getId());
+        adapter = new MedicalResultInfoRecyclerAdapter(exams);
+        recyclerView.setAdapter(adapter);
     }
 }

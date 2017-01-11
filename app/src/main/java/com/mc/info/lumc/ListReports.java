@@ -27,14 +27,12 @@ public class ListReports extends AppCompatActivity implements Serializable {
         lvReports = (ListView) findViewById(R.id.activity_list_reports_all_reports);
         adapter = new ArrayAdapter<>(this,R.layout.list_report_item,R.id.list_report_item_details);
         lvReports.setAdapter(adapter);
-        adapter.add("batee5");
         lvReports.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent j = new Intent(ListReports.this, ReportDetails.class);
                 j.putExtra("take",p);
                 startActivity(j);
-
             }
         });
     }
