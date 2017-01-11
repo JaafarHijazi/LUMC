@@ -46,6 +46,7 @@ public class CreateMedicalReport extends AppCompatActivity implements Serializab
         if(extras!=null){
             mr = (MedicalReport) extras.getSerializable("take");
             p = (Patient) extras.getSerializable("patient");
+
         }
     }
 

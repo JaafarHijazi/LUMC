@@ -3,11 +3,15 @@ package com.mc.info.lumc;
 public class MedicalData {
 
 
-    private String name,id,value;
+    private String name,value;
 
-    public MedicalData(String id, String name, String value) {
+    public MedicalData(){
+        name="";
+        value="";
+    }
+
+    public MedicalData(String name, String value) {
         this.name = name;
-        this.id = id;
         this.value = value;
     }
 
@@ -17,14 +21,6 @@ public class MedicalData {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getValue() {

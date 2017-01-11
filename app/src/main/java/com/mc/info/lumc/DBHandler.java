@@ -60,12 +60,6 @@ public class DBHandler extends Application{
 
 
     public FirebaseDatabase database;
-    private List<Patient> patients;
-    private List<Doctor> doctors;
-    private List<Examination> medicalResults;
-    private List<Patient> myPatients;
-    private List<Doctor> myDoctors;
-    private List<MedicalData> medicalData;
 
     private boolean dataReady =false;
     private boolean loggedIn=false;
@@ -76,7 +70,7 @@ public class DBHandler extends Application{
     private Patient patientMe;
     private Doctor doctorMe;
     private LoginType loginType;
-
+    private DataSnapshot dataSnapshot;
     public enum LoginType {
         DOCTOR,PATIENT
     }
@@ -159,12 +153,12 @@ public class DBHandler extends Application{
             }
         };
         mAuth.addAuthStateListener(mAuthListener);
-        myPatients = new ArrayList<>();
         DatabaseReference reference=database.getReference();
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                patients=new ArrayList<Patient>();
+                DBHandler.this.dataSnapshot=dataSnapshot;
+                /*patients=new ArrayList<Patient>();
                 for (DataSnapshot patient : dataSnapshot.child(TABLE_PATIENT).getChildren()) {
                     Patient p= patient.getValue(Patient.class);
                     p.setId(patient.getKey());
@@ -176,7 +170,7 @@ public class DBHandler extends Application{
                     Doctor d= doctor.getValue(Doctor.class);
                     d.setId(doctor.getKey());
                     doctors.add(d);
-                }
+                }*/
                 dataReady =true;
             }
 
@@ -224,51 +218,29 @@ public class DBHandler extends Application{
     }
 
     public List<Doctor> getDoctors() {
-        return doctors;
+        List<Doctor> doctors=new ArrayList<Doctor>();
+        for (DataSnapshot doctor : dataSnapshot.child(TABLE_DOCTOR).getChildren()) {
+            Doctor d= doctor.getValue(Doctor.class);
+            d.setId(doctor.getKey());
+            doctors.add(d);}
+            return doctors;
     }
-    public List<Examination> getMedicalResult() {
-        return medicalResults;
-    }
+
     public List<Examination> getMedicalResult(final String Pid) {
-        dataReady=false;
-        database.getReference().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                medicalResults = new ArrayList<>();
+        List<Examination> medicalResults = new ArrayList<>();
                 Examination exam;
                 for (DataSnapshot exams : dataSnapshot.child(TABLE_EXAMINATION+"/"+Pid).getChildren()) {
-                    try {
                         exam = exams.getValue(Examination.class);
-                        exam.setId(exams.getKey());
+                        //exam.setId(exams.getKey());
                         medicalResults.add(exam);
-                    } catch (DatabaseException ex) {
-                        System.out.print(ex.getMessage());
-                    }
-
                 }
-
-                medicalData = new ArrayList<>();
+        List<MedicalData> medicalData = new ArrayList<>();
                 MedicalData data;
                 for (DataSnapshot exams : dataSnapshot.child(TABLE_MEDICAL_DATA).getChildren()) {
-                    try {
                         data = exams.getValue(MedicalData.class);
-                        data.setId(exams.getKey());
+                        //data.setId(exams.getKey());
                         medicalData.add(data);
-                    } catch (DatabaseException ex) {
-                        System.out.print(ex.getMessage());
-
-
-                    }
-
-                }
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        dataReady=true;
         return medicalResults;
     }
 
@@ -300,58 +272,39 @@ public class DBHandler extends Application{
     public void signUp(Person person){
 
     }
-    public List<Patient> getPatients(){
+    public List<Patient> getPatients() {
+        List<Patient> patients=new ArrayList<Patient>();
+        for (DataSnapshot patient : dataSnapshot.child(TABLE_PATIENT).getChildren()) {
+            Patient p= patient.getValue(Patient.class);
+            p.setId(patient.getKey());
+            patients.add(p);
+        }
         return patients;
     }
 
 
     public List<Patient> getMyPatients(Doctor d) {
+        List<Patient> myPatients = new ArrayList<>();
         final String did = d.getId();
-        if(myPatients==null)
-            myPatients=new ArrayList<>();
-        else
-            myPatients.clear();
-        final Semaphore semaphore=new Semaphore(0);
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(TABLE_CONSULTS);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot consult :  dataSnapshot.getChildren()) {
+
+                    for (DataSnapshot consult :  dataSnapshot.child(TABLE_CONSULTS).getChildren()) {
                         Consults mConsult = consult.getValue(Consults.class);
-                        if((mConsult).getDid().equals(did)) {
+                        if ((mConsult).getDid().equals(did)) {
                             Patient p = getPatientById(mConsult.getPid());
                             if (myPatients.contains(p))
                                 continue;
                             else
                                 myPatients.add(p);
                         }
-                }
-
-            semaphore.release();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                //Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-            }
-        });
-        try {
-            semaphore.acquire();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+                    }
         return myPatients;
         }
 
     public List<Doctor> getMyDoctors( Patient p) {
-        final String pid = p.getId();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(TABLE_CONSULTS);
-        myDoctors = new ArrayList<Doctor>();
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot consult :  dataSnapshot.getChildren()) {
+        List<Doctor> myDoctors = new ArrayList<Doctor>();
+        for (DataSnapshot consult :  dataSnapshot.getChildren()) {
                     Consults mConsult = consult.getValue(Consults.class);
-                    if((mConsult).getPid().equals(pid)) {
+                    if((mConsult).getPid().equals(p.getId())) {
                         Doctor d = getDoctorById(mConsult.getDid());
                         if (myDoctors.contains(d))
                             continue;
@@ -359,13 +312,6 @@ public class DBHandler extends Application{
                             myDoctors.add(d);
                     }
                 }
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                //Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-            }
-        });
         return myDoctors;
     }
     public List<Medication> getPatientMedicines(Patient p){
@@ -374,7 +320,8 @@ public class DBHandler extends Application{
         final List<Medication> patientMedicines = new ArrayList<>();
         final DatabaseReference patientRef = FirebaseDatabase.getInstance().getReference(TABLE_PATIENT);
         //patientRef.orderByChild(COLUMN_ID).equalTo(pid).
-        patientRef.orderByChild(COLUMN_ID).equalTo(pid).addValueEventListener(new ValueEventListener() {
+        final Semaphore semaphore=new Semaphore(0);
+        patientRef.orderByChild(COLUMN_ID).equalTo(pid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -382,6 +329,7 @@ public class DBHandler extends Application{
                     Medication m = medication.getValue(Medication.class);
                     patientMedicines.add(m);
                 }
+                semaphore.release();
             }
 
 
@@ -390,25 +338,28 @@ public class DBHandler extends Application{
 
         }
     });
-    return  patientMedicines;
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return  patientMedicines;
 
 
 }
 
     public Patient getPatientById(final String id){
-        for (Patient p : patients){
+        /*for (Patient p : patients){
             if (p.getId().equals(id))
                 return p;
         }
-        return null;
+        return null;*/
+        return dataSnapshot.child(TABLE_PATIENT+"/"+id).getValue(Patient.class);
     }
 
     public Doctor getDoctorById(String id) {
-        for (Doctor d : doctors){
-            if (d.getId().equals(id))
-                return d;
-        }
-        return null;
+        return dataSnapshot.child(TABLE_DOCTOR+"/"+id).getValue(Doctor.class);
+
     }
 
 
@@ -556,16 +507,10 @@ public class DBHandler extends Application{
     }
 
     public static void addMedicalData(Examination e, MedicalData m){
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(TABLE_MEDICAL_DATA).child(e.getId());
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(TABLE_EXAMINATION).child(e.getId());
+
         String key = myRef.push().getKey();
-        m.setId(key);
         myRef.child(key).setValue(m);
     }
 
-    public static void add(Examination e, MedicalData m){
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(TABLE_MEDICAL_DATA).child(e.getId());
-        String key = myRef.push().getKey();
-        m.setId(key);
-        myRef.child(key).setValue(m);
-    }
 }

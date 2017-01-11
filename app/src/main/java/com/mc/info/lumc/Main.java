@@ -65,7 +65,9 @@ public class Main extends AppCompatActivity{
                 }
 
                 else if(item.getItemId()==R.id.drwrViewPatients)
+                {
                     startActivity(new Intent(Main.this, ListPatients.class));
+                }
                 return true;
             }
         });
@@ -90,12 +92,33 @@ public class Main extends AppCompatActivity{
             }
 
             @Override
-            protected void onPostExecute(Person p) {
+            protected void onPostExecute(final Person p) {
                 if(p!=null){
                     loginButton.setVisibility(View.INVISIBLE);
                     username.setText(p.getFirstName()+ " " + p.getLastName() );
                     email.setText(p.getEmail());
+                    navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(DBHandler.getInstance().getLoginType().equals(DBHandler.LoginType.PATIENT))
+                            {
+                                Intent intent=new Intent(Main.this,PatientInfo.class);
+                                intent.putExtra("take",p);
+                                startActivity(intent);
+                            }
+                            else
+                            {
+                                Intent intent=new Intent(Main.this,DoctorInfo.class);
+                                intent.putExtra("take",p);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                    if(p instanceof Patient){
+                        navigationView.getMenu().removeItem(R.id.drwrViewPatients);
+                    }
                 }
+                else startActivity(new Intent(Main.this,LoginActivity.class));
             }
         }.execute();
 

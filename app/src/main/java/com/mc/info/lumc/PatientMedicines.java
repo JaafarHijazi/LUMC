@@ -14,8 +14,7 @@ import java.util.List;
 
 public class PatientMedicines extends AppCompatActivity {
 
-    private ArrayList<HashMap<String, String>> data = new ArrayList<>();
-    private List<Medication> myMedicines = new ArrayList<>();
+
     private ListView lv;
     private SimpleAdapter adapter;
     private SearchView sv;
@@ -25,6 +24,7 @@ public class PatientMedicines extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_medicines);
         sv= (SearchView) findViewById(R.id.activity_patient_medicines_search);
+        lv = (ListView) findViewById(R.id.activity_patient_medicines_lvmedicines);
 
         new AsyncTask<Void, Void, List<Medication>>() {
             @Override
@@ -35,22 +35,29 @@ public class PatientMedicines extends AppCompatActivity {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }*/
+                List<Medication> myMedicines = new ArrayList<>();
+
                 Bundle extras = getIntent().getExtras();
                 Patient p = (Patient) extras.getSerializable("take");
                 myMedicines = DBHandler.getInstance().getPatientMedicines(p);
                 return myMedicines;
             }
-        };
 
-        for (int i = 0; i < myMedicines.size(); i++) {
-            data.add(myMedicines.get(i).toHashMap());
-        }
+            @Override
+            protected void onPostExecute(List<Medication> myMedicines) {
+                ArrayList<HashMap<String, String>> data = new ArrayList<>();
+                for (int i = 0; i < myMedicines.size(); i++) {
+                    data.add(myMedicines.get(i).toHashMap());
+                }
 
-        String[] hash = {DBHandler.COLUMN_MEDICINE_NAME};
-        int[] toViewIDs = {R.id.activity_item_medicine_name};
-        adapter = new SimpleAdapter(this, data, R.layout.medicine_item, hash, toViewIDs);
-        lv = (ListView) findViewById(R.id.activity_patient_medicines_lvmedicines);
-        lv.setAdapter(adapter);
+                String[] hash = {DBHandler.COLUMN_MEDICINE_NAME};
+                int[] toViewIDs = {R.id.activity_item_medicine_name};
+                adapter = new SimpleAdapter(getApplicationContext(), data, R.layout.medicine_item, hash, toViewIDs);
+                lv.setAdapter(adapter);            }
+        }.execute();
+
+
+
 
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -60,6 +67,7 @@ public class PatientMedicines extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if(adapter!=null)
                 adapter.getFilter().filter(newText);
                 return false;
             }

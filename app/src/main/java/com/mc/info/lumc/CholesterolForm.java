@@ -43,19 +43,17 @@ public class CholesterolForm extends AppCompatActivity {
                 Examination e;
                 MedicalData cholesterol,triglycerides,ldl,hdl;
 
-                cholesterol = new MedicalData(null,textNameCholesterol.getText().toString(),valueCholesterol.getText().toString());
-                triglycerides = new MedicalData(null,textNameTriglycerides.getText().toString(),valueTriglycerides.getText().toString());
-                ldl = new MedicalData(null,textNameLDL.getText().toString(),valueLDL.getText().toString());
-                hdl = new MedicalData(null,textNameHDL.getText().toString(),valueHDL.getText().toString());
+                cholesterol = new MedicalData(textNameCholesterol.getText().toString(),valueCholesterol.getText().toString());
+                triglycerides = new MedicalData(textNameTriglycerides.getText().toString(),valueTriglycerides.getText().toString());
+                ldl = new MedicalData(textNameLDL.getText().toString(),valueLDL.getText().toString());
+                hdl = new MedicalData(textNameHDL.getText().toString(),valueHDL.getText().toString());
                 e = new Examination(null,examName.getText().toString(),date.getText().toString(), Examination.examType.CHOLESTEROL);
-
+                e.setType(Examination.examType.CHOLESTEROL);
+                e.getMedicalData().add(cholesterol);
+                e.getMedicalData().add(triglycerides);
+                e.getMedicalData().add(ldl);
+                e.getMedicalData().add(hdl);
                 DBHandler.addExamination(p,e);
-
-                DBHandler.addMedicalData(e,cholesterol);
-                DBHandler.addMedicalData(e,triglycerides);
-                DBHandler.addMedicalData(e,ldl);
-                DBHandler.addMedicalData(e,hdl);
-
                 finish();
             }
         });

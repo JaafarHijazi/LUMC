@@ -38,10 +38,10 @@ public class VitaminDForm extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Examination e;
-                MedicalData data = new MedicalData(null,textName.getText().toString(),value.getText().toString());
+                MedicalData data = new MedicalData(textName.getText().toString(),value.getText().toString());
                 e = new Examination(null,examName.getText().toString(),date.getText().toString(), Examination.examType.VITAMIN_D);
+                e.getMedicalData().add(data);
                 DBHandler.addExamination(p,e);
-                DBHandler.addMedicalData(e,data);
                 finish();
             }
         });

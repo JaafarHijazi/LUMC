@@ -49,24 +49,22 @@ public class HematologyForm extends AppCompatActivity {
                 Examination e;
                 MedicalData RBC,HCT,MCV,MCH,RDW,WBC;
 
-                RBC = new MedicalData(null,textNameRBC.getText().toString(),valueRBC.getText().toString());
-                HCT = new MedicalData(null,textNameHCT.getText().toString(),valueHCT.getText().toString());
-                MCV = new MedicalData(null,textNameMCV.getText().toString(),valueMCV.getText().toString());
-                MCH = new MedicalData(null,textNameMCH.getText().toString(),valueMCH.getText().toString());
-                RDW = new MedicalData(null,textNameRDW.getText().toString(),valueRDW.getText().toString());
-                WBC = new MedicalData(null,textNameWBC.getText().toString(),valueWBC.getText().toString());
+                RBC = new MedicalData(textNameRBC.getText().toString(),valueRBC.getText().toString());
+                HCT = new MedicalData(textNameHCT.getText().toString(),valueHCT.getText().toString());
+                MCV = new MedicalData(textNameMCV.getText().toString(),valueMCV.getText().toString());
+                MCH = new MedicalData(textNameMCH.getText().toString(),valueMCH.getText().toString());
+                RDW = new MedicalData(textNameRDW.getText().toString(),valueRDW.getText().toString());
+                WBC = new MedicalData(textNameWBC.getText().toString(),valueWBC.getText().toString());
 
                 e = new Examination(null,examName.getText().toString(),date.getText().toString(), Examination.examType.HEMATOLOGY);
 
+                e.getMedicalData().add(RBC);
+                e.getMedicalData().add(HCT);
+                e.getMedicalData().add(MCV);
+                e.getMedicalData().add(MCH);
+                e.getMedicalData().add(RDW);
+                e.getMedicalData().add(WBC);
                 DBHandler.addExamination(p,e);
-
-                DBHandler.addMedicalData(e,RBC);
-                DBHandler.addMedicalData(e,HCT);
-                DBHandler.addMedicalData(e,MCV);
-                DBHandler.addMedicalData(e,MCH);
-                DBHandler.addMedicalData(e,RDW);
-                DBHandler.addMedicalData(e,WBC);
-
                 finish();
             }
         });

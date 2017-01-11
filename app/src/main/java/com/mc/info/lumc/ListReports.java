@@ -17,12 +17,13 @@ public class ListReports extends AppCompatActivity implements Serializable {
     private ListView lvReports;
     private ArrayAdapter<String> adapter;
     Bundle extras;
-
+    Patient p;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_reports);
         extras = getIntent().getExtras();
+        p=(Patient) extras.getSerializable("take");
         lvReports = (ListView) findViewById(R.id.activity_list_reports_all_reports);
         adapter = new ArrayAdapter<>(this,R.layout.list_report_item,R.id.list_report_item_details);
         lvReports.setAdapter(adapter);
@@ -31,6 +32,7 @@ public class ListReports extends AppCompatActivity implements Serializable {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent j = new Intent(ListReports.this, ReportDetails.class);
+                j.putExtra("take",p);
                 startActivity(j);
 
             }

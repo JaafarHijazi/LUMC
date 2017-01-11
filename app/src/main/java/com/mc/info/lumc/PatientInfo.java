@@ -92,6 +92,9 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
                 }
             });
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(DBHandler.getInstance().getLoginType().equals(DBHandler.LoginType.PATIENT)){
+
+        }
         }
 
 

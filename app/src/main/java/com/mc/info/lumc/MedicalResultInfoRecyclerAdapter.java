@@ -22,7 +22,6 @@ public class MedicalResultInfoRecyclerAdapter extends RecyclerView.Adapter<Medic
 
     public MedicalResultInfoRecyclerAdapter.ResultHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.medical_result_info_item,parent,false);
-
         return new MedicalResultInfoRecyclerAdapter.ResultHolder(view);
     }
 

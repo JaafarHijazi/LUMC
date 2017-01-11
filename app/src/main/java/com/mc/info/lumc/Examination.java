@@ -1,17 +1,39 @@
 package com.mc.info.lumc;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class Examination implements Serializable{
     private String id,examName;
     private String date;
     private examType type;
+    private List<MedicalData> medicalData;
+
+    public List<MedicalData> getMedicalData() {
+        return medicalData;
+    }
+
+    public void setMedicalData(List<MedicalData> medicalData) {
+        this.medicalData = medicalData;
+    }
+
+    public examType getType() {
+        return type;
+    }
+
+    public void setType(examType type) {
+        this.type = type;
+    }
 
     public Examination() {
         this.id = "";
         this.examName = "";
         this.date ="";
         this.type = examType.CHOLESTEROL;
+        medicalData=new ArrayList<>();
     }
 
     public Examination(String id, String examName, String date, examType type) {
@@ -19,6 +41,7 @@ public class Examination implements Serializable{
         this.examName = examName;
         this.date = date;
         this.type = type;
+        medicalData=new ArrayList<>();
     }
 
 
