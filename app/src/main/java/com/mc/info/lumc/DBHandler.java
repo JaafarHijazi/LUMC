@@ -28,7 +28,7 @@ import java.util.concurrent.Semaphore;
 /**
  * Created by BurgerMan on 12/9/2016.
  */
-
+//e5ir commit 3inde
 public class DBHandler extends Application{
 
     private static final String DATABASE_NAME="MedicalCenter.db";
