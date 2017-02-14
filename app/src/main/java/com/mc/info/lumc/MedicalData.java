@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class MedicalData implements Serializable {
 
-
     private String name,value;
 
     public MedicalData(){

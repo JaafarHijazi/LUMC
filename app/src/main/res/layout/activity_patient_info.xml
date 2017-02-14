@@ -157,12 +157,29 @@
             android:padding="15dp"
             android:id="@+id/activity_patient_info_view_medicine"
             android:onClick="goToMyMedicines"/>
-        <Button
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
             android:text="MedicalResult"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/activity_patient_info_medical_result"
-            android:onClick="goToMedicalResult" />
+            android:onClick="goToMedicalResult"
+                android:layout_weight="2"/>
+            <Button
+                android:text="health data graph"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/activity_doctor_info_Graph"
+                android:padding="8dp"
+                android:layout_centerHorizontal="true"
+                android:onClick="Graph"
+                android:layout_weight="2"/>
+        </android.support.v7.widget.LinearLayoutCompat>
+
+
+
     </LinearLayout>
 
     <LinearLayout

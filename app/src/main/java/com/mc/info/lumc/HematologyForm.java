@@ -42,7 +42,7 @@ public class HematologyForm extends AppCompatActivity {
         valueWBC = (EditText) findViewById(R.id.hematology_form_WBC_value) ;
         date = (EditText) findViewById(R.id.hematology_form_date) ;
 
-        save.setOnClickListener(new View.OnClickListener() {
+        save.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

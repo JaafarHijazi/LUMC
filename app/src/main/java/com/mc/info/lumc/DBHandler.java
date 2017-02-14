@@ -2,7 +2,6 @@ package com.mc.info.lumc;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -12,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -20,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -67,7 +64,7 @@ public class DBHandler extends Application{
 
     private boolean dataReady =false;
     private boolean loggedIn=false;
-    private static DBHandler singlton;
+    private static DBHandler singleton;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser user;
@@ -170,7 +167,7 @@ public class DBHandler extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        singlton=this;
+        singleton =this;
         database = FirebaseDatabase.getInstance();
         database.setPersistenceEnabled(true);
         mAuth = FirebaseAuth.getInstance();
@@ -212,6 +209,7 @@ public class DBHandler extends Application{
     }
 
     private void checkLogin() {
+        //TODO implement check doctor table
         loggedIn=false;
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -240,8 +238,9 @@ public class DBHandler extends Application{
 
     public static DBHandler getInstance()
     {
-        return singlton;
+        return singleton;
     }
+
     public boolean isDataReady()
     {
         return dataReady;
@@ -290,9 +289,12 @@ public class DBHandler extends Application{
         FirebaseDatabase.getInstance().getReference(TABLE_PATIENT_CONSULTS+"/"+c.getPid()+"/"+c.getCid()).setValue(c);
 
     }
-    public void signUp(Person person){
 
+    public void signUp(Person person){
+        //TODO add implementation
     }
+
+
     public List<Patient> getPatients() {
         List<Patient> patients=new ArrayList<Patient>();
         for (DataSnapshot patient : dataSnapshot.child(TABLE_PATIENT).getChildren()) {
@@ -307,49 +309,50 @@ public class DBHandler extends Application{
     public List<Patient> getMyPatients(Doctor d) {
         List<Patient> myPatients = new ArrayList<>();
         final String did = d.getId();
-
-                    for (DataSnapshot consult :  dataSnapshot.child(TABLE_CONSULTS).getChildren()) {
-                        Consults mConsult = consult.getValue(Consults.class);
-                        if ((mConsult).getDid().equals(did)) {
-                            Patient p = getPatientById(mConsult.getPid());
-                            if (myPatients.contains(p))
-                                continue;
-                            else
-                                myPatients.add(p);
-                        }
-                    }
-        return myPatients;
+        for (DataSnapshot consult : dataSnapshot.child(TABLE_CONSULTS).getChildren()) {
+            Consults mConsult = consult.getValue(Consults.class);
+            if ((mConsult).getDid().equals(did)) {
+                Patient p = getPatientById(mConsult.getPid());
+                if (myPatients.contains(p))
+                    continue;
+                else
+                    myPatients.add(p);
+            }
         }
+        return myPatients;
+    }
 
     public List<Doctor> getMyDoctors( Patient p) {
         List<Doctor> myDoctors = new ArrayList<Doctor>();
         for (DataSnapshot consult :  dataSnapshot.getChildren()) {
-                    Consults mConsult = consult.getValue(Consults.class);
-                    if((mConsult).getPid().equals(p.getId())) {
-                        Doctor d = getDoctorById(mConsult.getDid());
-                        if (myDoctors.contains(d))
-                            continue;
-                        else
-                            myDoctors.add(d);
-                    }
-                }
+            Consults mConsult = consult.getValue(Consults.class);
+            if((mConsult).getPid().equals(p.getId())) {
+                Doctor d = getDoctorById(mConsult.getDid());
+                if (myDoctors.contains(d))
+                    continue;
+                else
+                    myDoctors.add(d);
+            }
+        }
         return myDoctors;
     }
+
     public List<Medication> getPatientMedicines(Patient p){
         // return p.getPatientMedicines();
         final String pid = p.getId();
         final List<Medication> patientMedicines = new ArrayList<>();
+        /*
         final DatabaseReference patientRef = FirebaseDatabase.getInstance().getReference(TABLE_PATIENT);
-        //patientRef.orderByChild(COLUMN_ID).equalTo(pid).
         final Semaphore semaphore=new Semaphore(0);
         patientRef.orderByChild(COLUMN_ID).equalTo(pid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot medication : dataSnapshot.child(TABLE_MEDICATION).getChildren()){
-                    Medication m = medication.getValue(Medication.class);
-                    patientMedicines.add(m);
-                }
+*/
+        for (DataSnapshot medication : dataSnapshot.child(TABLE_MEDICATION).getChildren()){
+            Medication m = medication.getValue(Medication.class);
+            patientMedicines.add(m);
+        }
+        /*
                 semaphore.release();
             }
 
@@ -363,10 +366,8 @@ public class DBHandler extends Application{
             semaphore.acquire();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         return  patientMedicines;
-
-
 }
 
     public Patient getPatientById(final String id){
@@ -390,63 +391,6 @@ public class DBHandler extends Application{
 
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
-    }
-
-    //function to get JSON Database from android device
-    public JSONObject getResults(Context context)
-    {
-
-        String myPath = DATABASE_NAME;// Set path to your database
-
-        String[] myTables =new String[]{TABLE_DOCTOR,TABLE_PATIENT};//Set name of your table
-
-//or you can use `context.getDatabasePath("my_db_test.db")`
-        JSONObject db=new JSONObject();
-
-        SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(context.getDatabasePath(myPath).getPath(), null, SQLiteDatabase.OPEN_READONLY);
-        for(String myTable:myTables){
-            String searchQuery = "SELECT  * FROM " + myTable;
-            Cursor cursor = myDataBase.rawQuery(searchQuery, null);
-
-            JSONObject resultSet = new JSONObject();
-
-            cursor.moveToFirst();
-            while (cursor.isAfterLast() == false) {
-
-                int totalColumn = cursor.getColumnCount();
-                JSONObject rowObject = new JSONObject();
-
-                for (int i = 0; i < totalColumn; i++) {
-                    if (cursor.getColumnName(i) != null) {
-                        if (!cursor.getColumnName(i).equals(COLUMN_ID))
-                            try {
-                                if (cursor.getString(i) != null) {
-                                    Log.d("TAG_NAME", cursor.getString(i));
-                                    rowObject.put(cursor.getColumnName(i), cursor.getString(i));
-                                } else {
-                                    rowObject.put(cursor.getColumnName(i), "");
-                                }
-                            } catch (Exception e) {
-                                Log.d("TAG_NAME", e.getMessage());
-                            }
-                    }
-                }
-                try {
-                    resultSet.put(cursor.getString(cursor.getColumnIndex(COLUMN_ID)), rowObject);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                cursor.moveToNext();
-            }
-            cursor.close();
-            Log.d("TAG_NAME", resultSet.toString());
-            try {
-                db.put(myTable,resultSet);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return db;
     }
 
     public static void addMedicalReport(MedicalReport mr , Patient p){
@@ -507,6 +451,15 @@ public class DBHandler extends Application{
         String key = myRef.push().getKey();
         e.setId(key);
         myRef.child(key).setValue(e);
+    }
+
+    public List<Examination> getExaminations (Patient p){
+        List<Examination> examinations = new ArrayList<>();
+        for (DataSnapshot exam : dataSnapshot.child(TABLE_EXAMINATION+"/"+p.getId().toString()).getChildren()) {
+            Examination ex = exam.getValue(Examination.class);
+            examinations.add(ex);
+        }
+        return examinations;
     }
 
     public static void addMedicalData(Examination e, MedicalData m){

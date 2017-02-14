@@ -47,7 +47,6 @@ public class Examination implements Serializable{
 
     public enum examType{
         HEMATOLOGY,VITAMIN_A,VITAMIN_B,VITAMIN_C,VITAMIN_D,CHOLESTEROL;
-
     }
 
     public String getExamName(){

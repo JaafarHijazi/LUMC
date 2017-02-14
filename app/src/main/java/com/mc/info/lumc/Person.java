@@ -1,6 +1,9 @@
 package com.mc.info.lumc;
 
+import android.widget.Toast;
+
 import java.io.Serializable;
+import java.text.ParseException;
 
 /**
  * Created by BurgerMan on 12/9/2016.
@@ -11,7 +14,10 @@ public class Person  implements Serializable{
             lastName,
             phone,
             email,
-            id;
+            id,
+            bloodGroup,
+            height,
+            weight;
     private Address address;
 
     public Person(){
@@ -21,6 +27,30 @@ public class Person  implements Serializable{
         this.phone = "";
         this.email = "";
         this.address = new Address();
+    }
+
+    public String getBloodGroup() {
+        return bloodGroup;
+    }
+
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 
     public Person(String id, String firstName, String lastName, String phone, String email, Address address) {
@@ -37,7 +67,7 @@ public class Person  implements Serializable{
     }
 
     public void setId(String id) {
-        this.id = id;
+            this.id=id;
     }
 
     public String getFirstName() {

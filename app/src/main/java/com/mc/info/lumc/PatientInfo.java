@@ -160,5 +160,11 @@ public class PatientInfo extends AppCompatActivity implements NavigationView.OnN
         intent.putExtra("patient",p);
         startActivity(intent);
     }
+
+    public void Graph(View view){
+        Intent intent=new Intent( this, Graph.class);
+        intent.putExtra("patient",p);
+        startActivity(intent);
+    }
 }
 
