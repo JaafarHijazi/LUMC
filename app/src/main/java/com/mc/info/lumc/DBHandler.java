@@ -249,10 +249,12 @@ public class DBHandler extends Application{
     public List<Doctor> getDoctors() {
         List<Doctor> doctors=new ArrayList<Doctor>();
         for (DataSnapshot doctor : dataSnapshot.child(TABLE_DOCTOR).getChildren()) {
-            Doctor d= doctor.getValue(Doctor.class);
-            d.setId(doctor.getKey());
-            doctors.add(d);}
-            return doctors;
+                Doctor d= doctor.getValue(Doctor.class);
+                d.setId(doctor.getKey());
+                doctors.add(d);
+
+        }
+        return doctors;
     }
 
     public List<MedicalData> getMedicalResult(final String pid,final String eid) {
@@ -276,7 +278,6 @@ public class DBHandler extends Application{
         String key = myRef.push().getKey();
         d.setId(key);
         myRef.child(key).setValue(d);
-
     }
 
     public void addConsult (Consults c){

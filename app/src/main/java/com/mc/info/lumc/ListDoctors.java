@@ -53,7 +53,8 @@ public class ListDoctors extends AppCompatActivity implements NavigationView.OnN
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                return DBHandler.getInstance().getDoctors();
+                List<Doctor> docs = DBHandler.getInstance().getDoctors();
+                return docs;
             }
 
             @Override
@@ -61,6 +62,7 @@ public class ListDoctors extends AppCompatActivity implements NavigationView.OnN
                 ListDoctors.this.doctors=doctors;
                 adapter=new DoctorRecyclerAdapter(doctors);
                 recyclerView.setAdapter(adapter);
+
             }
         }.execute();
 
@@ -134,6 +136,7 @@ public class ListDoctors extends AppCompatActivity implements NavigationView.OnN
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     private void unCheckAllMenuItems(NavigationView navigationView) {

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Date;
+import java.util.List;
 
 
 public class DoctorInfo extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
